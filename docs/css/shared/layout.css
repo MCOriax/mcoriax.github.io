@@ -115,9 +115,7 @@
   padding: 0.4rem;
   list-style: none;
   margin: 0;
-  background: var(--glass-strong);
-  -webkit-backdrop-filter: var(--blur);
-  backdrop-filter: var(--blur);
+  background: #ffffff;
   border: 1px solid var(--hairline);
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow-md);
@@ -179,9 +177,11 @@
     align-items: stretch;
     gap: 0.15rem;
     padding: 0.8rem;
-    background: var(--glass-strong);
-    -webkit-backdrop-filter: var(--blur);
-    backdrop-filter: var(--blur);
+    /* Solid, opaque panel — it covers page content, so blur is pointless and
+       a nested backdrop-filter can suppress the background paint. */
+    background: #ffffff;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
     border-bottom: 1px solid var(--hairline);
     box-shadow: var(--shadow-md);
     max-height: calc(100vh - var(--header-h));
