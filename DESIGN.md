@@ -72,10 +72,11 @@ danger reuses `--sponsor`.
 | Token | Value | Use |
 |---|---|---|
 | `--glass` | `rgba(255,255,255,.62)` | Default panel/card fill. |
-| `--glass-strong` | `rgba(255,255,255,.78)` | Header, dropdowns, buttons. |
+| `--glass-strong` | `rgba(255,255,255,.90)` | Header and buttons — stays readable even without blur. |
 | `--glass-faint` | `rgba(255,255,255,.40)` | Subtle inset blocks. |
 | `--glass-border` | `rgba(255,255,255,.75)` | Highlight (top) border. |
 | `--hairline` | `rgba(120,133,154,.28)` | Divider / low-contrast border. |
+| `--surface-solid` | `rgba(255,255,255,.98)` | Near-opaque fallback for content-covering overlays. |
 | `--blur` | `saturate(160%) blur(14px)` | `backdrop-filter` for glass. |
 
 ### Shadows, geometry, type
@@ -115,6 +116,27 @@ border-radius: var(--radius);
 
 Interactive cards lift on hover: `transform: translateY(-4px)` +
 `--shadow-lg`. Keep transitions short (`.15s–.2s ease`).
+
+### Overlays that cover content — do not use translucent glass
+
+The glass recipe is for surfaces that sit **over the fixed background**, not over
+other page content. Any overlay that **fully covers page content** — the mobile
+navigation panel, dropdown menus, modals — must use an **opaque** background and
+**must not** rely on `backdrop-filter` blur for legibility:
+
+```css
+/* content-covering overlay */
+background: #ffffff;         /* or var(--surface-solid) */
+-webkit-backdrop-filter: none;
+backdrop-filter: none;
+box-shadow: var(--shadow-md);
+```
+
+Why: when such an overlay is nested inside another element that already has
+`backdrop-filter` (e.g. a blurred sticky header), the child's background paint
+can be **suppressed** in browsers or environments where `backdrop-filter` is
+unsupported or disabled — letting the content behind bleed through. A blur over
+content you are hiding adds nothing anyway, so make these overlays solid.
 
 ---
 
