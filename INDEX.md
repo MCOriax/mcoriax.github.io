@@ -13,6 +13,8 @@ This repository is the **static documentation website** for the MCIdentity Minec
 | [`./`](./) | Repository root directory. |
 | [`INDEX.md`](INDEX.md) | This project structure index. |
 | [`README.md`](README.md) | Human-facing project overview. |
+| [`AGENTS.md`](AGENTS.md) | Agent rules for this site (no internal source code; how to create a change log). |
+| [`DESIGN.md`](DESIGN.md) | Universal "Silver Glass" design system (tokens, components, reuse guide). |
 | [`.nojekyll`](.nojekyll) | Disables Jekyll processing so files are served as-is. |
 | [`docs/`](docs/) | GitHub Pages site root (set the Pages source to this folder). |
 | [`scripts/`](scripts/) | Build tooling used to generate repetitive pages. |
