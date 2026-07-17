@@ -1,0 +1,19 @@
+/* GUI page specifics */
+.slotmap { display: grid; grid-template-columns: repeat(9, 1fr); gap: 0.4rem; margin: 1.2rem 0; max-width: 480px; }
+.slot {
+  aspect-ratio: 1;
+  display: grid; place-items: center;
+  border-radius: 9px;
+  font-size: 1.1rem;
+  background: var(--glass-strong);
+  border: 1px solid var(--hairline);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+}
+.slot small { position: absolute; top: 2px; left: 4px; font-size: 0.55rem; color: var(--ink-400); }
+.slot.is-filled { background: var(--accent-soft); border-color: rgba(91,113,137,0.3); }
+.slot.is-empty { opacity: 0.55; }
+.legend { display: flex; flex-wrap: wrap; gap: 1rem; margin: 0.6rem 0 1.2rem; font-size: 0.85rem; color: var(--ink-500); }
+.legend span::before { content: "■"; margin-right: 0.35rem; }
+.legend .fill::before { color: var(--accent); }
+.legend .empty::before { color: var(--silver-400); }

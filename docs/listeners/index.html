@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Events &amp; Listeners — MCIdentity</title>
+  <meta name="description" content="How MCIdentity's listener system works: the custom Bukkit events you can hook into, and the gameplay listeners that drive profession EXP.">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/shared/layout.css">
+  <link rel="stylesheet" href="../css/shared/components.css">
+  <link rel="stylesheet" href="../css/listeners/listeners.css">
+  <script>window.SITE_ROOT = "../"; window.PAGE_SECTION = "listeners";</script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="../index.html">Home</a><span class="sep">/</span><span>Events &amp; Listeners</span>
+    </nav>
+
+    <span class="eyebrow">Integration &amp; gameplay</span>
+    <h1>Events &amp; Listeners</h1>
+    <p class="lead">MCIdentity has two sides to its listener system: the <strong>custom Bukkit events</strong> your own plugin can hook into, and the <strong>internal gameplay listeners</strong> that translate player actions into profession experience.</p>
+
+    <section class="section panel">
+      <h2>How listeners work</h2>
+      <p>The plugin provides several custom events in the <code>io.github.mcoriax.bukkit.event</code> package. Every one of them supports Folia's asynchronous context and works across all supported platforms — <strong>SpigotMC</strong>, <strong>PaperMC</strong>, and <strong>Folia</strong>. An event marks itself asynchronous whenever it is fired off the primary thread, so third-party handlers must stay thread-safe and schedule back onto the appropriate scheduler before touching main-thread-only Bukkit API.</p>
+      <p>To react to an event, register a normal Bukkit <code>Listener</code> from your own plugin and annotate a handler method — exactly as shown on the <a href="../api/index.html#integration">Developer API</a> page. The reference below documents each event's purpose, the data it carries, and whether it can be cancelled.</p>
+    </section>
+
+    <section class="section">
+      <h2>Custom Bukkit events</h2>
+      <p>Every event extends a common identity-event base and is fired for third-party plugins to observe. Expand each one for its details.</p>
+
+      <div class="accordion">
+        <details class="acc">
+          <summary><code>MCIdentityEvent</code> <span class="badge">base</span></summary>
+          <div class="acc__body">
+            <p>The abstract base type for all identity events. It automatically handles asynchronous state based on whether it is fired on the primary thread, so every event below behaves correctly on Folia as well as Spigot and Paper.</p>
+          </div>
+        </details>
+
+        <details class="acc">
+          <summary><code>IdentityCreationEvent</code></summary>
+          <div class="acc__body">
+            <p>Triggered when a new identity record is created in the database.</p>
+            <div class="event-meta"><span class="data-pill">IdentityKey</span><span class="data-pill">IdentityProperties</span><span class="data-pill">IdentityStats</span></div>
+          </div>
+        </details>
+
+        <details class="acc">
+          <summary><code>IdentityEquipEvent</code> <span class="badge badge--accent">cancellable</span></summary>
+          <div class="acc__body">
+            <p>Triggered when a player equips an identity. Cancelling it vetoes the equip.</p>
+            <div class="event-meta"><span class="data-pill">Player</span><span class="data-pill">UUID identity</span><span class="data-pill">ItemStack</span></div>
+            <p>Accessors: <code>getPlayer()</code>, <code>getIdentityUuid()</code> (bind your data to this), <code>getIdentityItem()</code>, and <code>isCancelled()</code> / <code>setCancelled(boolean)</code>.</p>
+          </div>
+        </details>
+
+        <details class="acc">
+          <summary><code>IdentityUnequipEvent</code> <span class="badge badge--accent">cancellable</span></summary>
+          <div class="acc__body">
+            <p>Triggered when a player unequips an identity. Cancelling it vetoes the unequip.</p>
+            <div class="event-meta"><span class="data-pill">Player</span><span class="data-pill">UUID identity</span></div>
+            <p>Accessors: <code>getPlayer()</code>, <code>getIdentityUuid()</code>, and <code>isCancelled()</code> / <code>setCancelled(boolean)</code>.</p>
+          </div>
+        </details>
+
+        <details class="acc">
+          <summary><code>IdentityDeathEvent</code></summary>
+          <div class="acc__body">
+            <p>Triggered when a player with an active identity dies and drops their identity key. The drop behaviour can be toggled with <code>isDrop()</code> / <code>setDrop(boolean)</code>.</p>
+            <div class="event-meta"><span class="data-pill">Player</span><span class="data-pill">UUID identity</span><span class="data-pill">ItemStack dropped</span><span class="data-pill">boolean drop</span></div>
+          </div>
+        </details>
+
+        <details class="acc">
+          <summary><code>IdentityRuneSetEvent</code> <span class="badge badge--accent">cancellable</span></summary>
+          <div class="acc__body">
+            <p>Triggered when an identity's rune is set or cleared.</p>
+            <div class="event-meta"><span class="data-pill">Player</span><span class="data-pill">UUID identity</span><span class="data-pill">int slot</span><span class="data-pill">String rune code</span></div>
+          </div>
+        </details>
+
+        <details class="acc">
+          <summary><code>IdentityAbilitySetEvent</code> <span class="badge badge--accent">cancellable</span></summary>
+          <div class="acc__body">
+            <p>Triggered when an identity's ability is set or cleared.</p>
+            <div class="event-meta"><span class="data-pill">Player</span><span class="data-pill">UUID identity</span><span class="data-pill">int slot</span><span class="data-pill">String ability code</span></div>
+          </div>
+        </details>
+
+        <details class="acc">
+          <summary><code>IdentitySkinSetEvent</code> <span class="badge badge--accent">cancellable</span></summary>
+          <div class="acc__body">
+            <p>Triggered when an identity's skin cosmetic is set or cleared.</p>
+            <div class="event-meta"><span class="data-pill">Player</span><span class="data-pill">UUID identity</span><span class="data-pill">String skin</span></div>
+          </div>
+        </details>
+
+        <details class="acc">
+          <summary><code>IdentityAuraSetEvent</code> <span class="badge badge--accent">cancellable</span></summary>
+          <div class="acc__body">
+            <p>Triggered when an identity's aura cosmetic is set or cleared.</p>
+            <div class="event-meta"><span class="data-pill">Player</span><span class="data-pill">UUID identity</span><span class="data-pill">String aura</span></div>
+          </div>
+        </details>
+
+        <details class="acc">
+          <summary><code>IdentityStatAddEvent</code> <span class="badge badge--accent">cancellable</span></summary>
+          <div class="acc__body">
+            <p>Triggered when a specific stat is added / incremented for an identity. The player reference may be null for system-driven changes.</p>
+            <div class="event-meta"><span class="data-pill">Player (nullable)</span><span class="data-pill">UUID identity</span><span class="data-pill">String stat key</span><span class="data-pill">int amount</span></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="callout callout--info">
+        <span class="callout__icon" aria-hidden="true">🧩</span>
+        <div class="callout__body"><p>For a complete, copy-ready listener example (loading and unloading data on equip/unequip), see the <a href="../api/index.html#integration">Developer API — Bukkit integration</a> section.</p></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Internal gameplay listeners</h2>
+      <p>Alongside the public events, MCIdentity runs a set of modular gameplay listeners that award profession experience for what players do. They are grouped by category so each stays focused on one kind of action, and every reward respects anti-farm safeguards (location-once rewards, rate limiting, and vanilla gating). The exact EXP values are defined per profession in YAML — see <a href="../profession/index.html">Professions &amp; EXP</a>.</p>
+      <div class="listener-cat">
+        <div class="listener-cat__item"><h3>EXP-gain listeners</h3><p>Modular listeners grouped by category (combat, defense, gathering, crafting, exploration, farming, and more) translate player actions into profession EXP according to each profession's configuration.</p></div>
+        <div class="listener-cat__item"><h3>Identity, inventory &amp; stats listeners</h3><p>Handle equipping and unequipping identities, isolating each identity's inventory and ender chest, and applying stat-driven behaviour.</p></div>
+        <div class="listener-cat__item"><h3>Respawn stat restoration</h3><p>Restores an identity's stats after respawn, keeping health, energy, and food consistent with the active identity.</p></div>
+        <div class="listener-cat__item"><h3>Cold-boot login protection</h3><p>On the async pre-login thread, pings the central server (when <code>database.type</code> is <code>central</code>) and politely turns players away while a cold-started server is still waking up or storage is still initializing.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="../js/site.js" defer></script>
+</body>
+</html>

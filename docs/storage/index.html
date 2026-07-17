@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Storage — MCIdentity</title>
+  <meta name="description" content="Choose between SQLite, MySQL, PostgreSQL, MongoDB, and the MCIdentity central server for identity data storage.">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/shared/layout.css">
+  <link rel="stylesheet" href="../css/shared/components.css">
+  <link rel="stylesheet" href="../css/storage/storage.css">
+  <script>window.SITE_ROOT = "../"; window.PAGE_SECTION = "storage";</script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container narrow">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="../index.html">Home</a><span class="sep">/</span><span>Data Storage</span>
+    </nav>
+
+    <span class="eyebrow">Configuration</span>
+    <h1>Data Storage</h1>
+    <p class="lead">The plugin supports multiple storage backends, selected with <code>database.type</code> in <code>config.yml</code>: <strong>SQLite</strong> (the default), <strong>MySQL</strong>, <strong>PostgreSQL</strong>, <strong>MongoDB</strong>, and the <strong>MCIdentity central server</strong>.</p>
+    <p>Standalone servers can run entirely on the zero-configuration SQLite file, while networks can share one MySQL, PostgreSQL, or MongoDB deployment — or point every node at the central REST server.</p>
+
+    <section class="section">
+      <h2>Choosing a backend</h2>
+      <div class="backend-grid">
+        <div class="backend">
+          <div class="backend__name">SQLite <span class="backend__type">sqlite</span></div>
+          <p>Local file in the plugin data folder. Best for single servers; works out of the box with no setup.</p>
+        </div>
+        <div class="backend">
+          <div class="backend__name">MySQL <span class="backend__type">mysql</span></div>
+          <p>MySQL or MariaDB server. Best for networks that already run a MySQL-compatible database.</p>
+        </div>
+        <div class="backend">
+          <div class="backend__name">PostgreSQL <span class="backend__type">postgresql</span></div>
+          <p>PostgreSQL server. Best for networks that prefer PostgreSQL.</p>
+        </div>
+        <div class="backend">
+          <div class="backend__name">MongoDB <span class="backend__type">mongodb</span></div>
+          <p>MongoDB deployment. Best for document-oriented storage or existing MongoDB infrastructure.</p>
+        </div>
+        <div class="backend">
+          <div class="backend__name">Central server <span class="backend__type">central</span></div>
+          <p>MCIdentity central REST server. Best for whole networks sharing one authenticated API with token roles.</p>
+        </div>
+      </div>
+
+      <p>Each backend has its own connection section in <code>config.yml</code>:</p>
+<pre><code>database:
+  type: sqlite
+  sqlite:
+    file: "mcidentity.db"
+  mysql:
+    host: "localhost"
+    port: 3306
+    database: "mcidentity"
+    username: "root"
+    password: "password"
+  postgresql:
+    host: "localhost"
+    port: 5432
+    database: "mcidentity"
+    username: "postgres"
+    password: "password"
+  mongodb:
+    uri: "mongodb://localhost:27017"
+    database: "mcidentity"</code></pre>
+      <p>The <code>central</code> type reads the existing <code>central_server</code> section (<code>url</code>, <code>token</code>, <code>timeout_seconds</code>).</p>
+    </section>
+
+    <section class="section">
+      <h2>How it works</h2>
+      <ul>
+        <li>All backends implement the same <code>IMCIdentityDB</code> contract, so gameplay code never knows which storage is active.</li>
+        <li>The SQLite, MySQL, and PostgreSQL backends share their query logic and differ only in schema DDL and upsert dialect. MongoDB stores each identity as one document with embedded properties, stats, cosmetics, and equipped slots.</li>
+        <li>The central-server backend implements the same contract by sending asynchronous JSON requests over a single pooled HTTP client, carrying the bearer token configured in <code>config.yml</code> (<code>central_server.token</code>).</li>
+        <li>Every operation runs asynchronously on a dedicated worker pool, so the game thread is never blocked.</li>
+        <li>Reads that fail resolve to safe fallbacks (empty results or zero) so the game server keeps running; failures are logged.</li>
+        <li>Stat identifiers are validated against a fixed allow-list before they are used, on the plugin and (for the central server) on the API as well.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Drivers</h2>
+      <p>The SQLite and MySQL JDBC drivers ship with SpigotMC, PaperMC, and Folia. The PostgreSQL driver and the MongoDB client are packaged inside the plugin JAR, so no backend requires extra downloads.</p>
+    </section>
+
+    <section class="section">
+      <h2>Schema</h2>
+      <p>The relational backends create their tables automatically on first start:</p>
+      <div class="chip-row">
+        <span class="chip">identity_professions</span>
+        <span class="chip">identity_abilities</span>
+        <span class="chip">identity_runes</span>
+        <span class="chip">identity_keys</span>
+        <span class="chip">identity_properties</span>
+        <span class="chip">identity_stats</span>
+        <span class="chip">identity_equipped_abilities</span>
+        <span class="chip">identity_equipped_runes</span>
+        <span class="chip">identity_sessions</span>
+        <span class="chip">identity_equipped_cosmetics</span>
+        <span class="chip">identity_logs</span>
+        <span class="chip">player_base_slots</span>
+      </div>
+      <p>The SQLite schema matches the central server's, so a database file can be moved between a game server and a central server deployment.</p>
+    </section>
+
+    <section class="section">
+      <h2>Data stored</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Resource</th><th>Contents</th></tr></thead>
+          <tbody>
+            <tr><td>Professions, abilities, runes</td><td>The shared registries identities reference.</td></tr>
+            <tr><td>Identity keys</td><td>Each identity's UUID and profession.</td></tr>
+            <tr><td>Properties</td><td>Level, experience, stat points, textures, and serialized inventory / ender chest storage.</td></tr>
+            <tr><td>Stats</td><td>The nine numerical attributes (energy, health, food, strength, defense, wisdom, luck, agility, resilience).</td></tr>
+            <tr><td>Equipped abilities and runes</td><td>Slot assignments per identity.</td></tr>
+            <tr><td>Cosmetics</td><td>Active skin (Base64) and aura (system code) per identity.</td></tr>
+            <tr><td>Sessions</td><td>Which identity each player currently wears, with the serialized identity item.</td></tr>
+            <tr><td>Base identity slots</td><td>How many alternative base "player" identities each player has unlocked.</td></tr>
+            <tr><td>Logs</td><td>The append-only audit trail (EQUIP, UNEQUIP, DEATH_DROP, ADMIN_REMOVE).</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>See the central server repository for the REST API reference, environment configuration, and its storage details.</p>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="../js/site.js" defer></script>
+</body>
+</html>

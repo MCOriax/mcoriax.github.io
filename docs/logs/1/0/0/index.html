@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Change Log 1.0.0 — MCIdentity</title>
+  <meta name="description" content="Release notes for MCIdentity version 1.0.0 — the initial public release.">
+  <link rel="stylesheet" href="../../../../css/main.css">
+  <link rel="stylesheet" href="../../../../css/shared/layout.css">
+  <link rel="stylesheet" href="../../../../css/shared/components.css">
+  <link rel="stylesheet" href="../../../../css/logs/logs.css">
+  <script>window.SITE_ROOT = "../../../../"; window.PAGE_SECTION = "logs";</script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="../../../../index.html">Home</a><span class="sep">/</span>
+      <a href="../../../index.html">Change Logs</a><span class="sep">/</span><span>1.0.0</span>
+    </nav>
+
+    <span class="eyebrow">Release notes</span>
+    <h1>Change Log — 1.0.0</h1>
+    <p class="lead">Permalink for version 1.0.0.</p>
+
+    <div class="logs-layout">
+      <article class="log-entry">
+        <div class="log-entry__head">
+          <span class="log-entry__version">1.0.0</span>
+          <span class="badge badge--ok">Latest</span>
+          <span class="log-entry__date">2026-07-17 · Initial release</span>
+        </div>
+        <p class="lead">The first public release of MCIdentity — a robust, high-performance identity management system for the Bukkit family of servers.</p>
+
+        <div class="log-section">
+          <h3><span class="log-tag log-tag--new">Added</span> Core identity system</h3>
+          <ul>
+            <li>Primary base <code>player</code> identity per player, plus unlockable alternative base identities of any other profession.</li>
+            <li>Profession identity keys as in-game items with custom colored display names; unbound until first used.</li>
+            <li>Per-identity isolated inventory, ender chest, level, and stats — switching identities is a full context switch.</li>
+            <li>Passive base leveling on two tracks (primary 86,400 EXP/level, alternative 3,600 EXP/level), buffered and flushed in bulk.</li>
+          </ul>
+        </div>
+
+        <div class="log-section">
+          <h3><span class="log-tag log-tag--new">Added</span> Platforms &amp; storage</h3>
+          <ul>
+            <li>Full support for <strong>SpigotMC</strong>, <strong>PaperMC</strong>, and <strong>Folia</strong>, including Folia's regionalized scheduling.</li>
+            <li>Selectable storage backends: SQLite (default), MySQL, PostgreSQL, MongoDB, and the MCIdentity central REST server.</li>
+            <li>Fully asynchronous storage access with RAM caching, safe fallbacks, and validated stat identifiers.</li>
+            <li>Cold-boot login protection for the central server backend.</li>
+          </ul>
+        </div>
+
+        <div class="log-section">
+          <h3><span class="log-tag log-tag--new">Added</span> Gameplay &amp; GUIs</h3>
+          <ul>
+            <li>Multi-tier GUI system: Main Identity, paginated Player Identity, Cosmetic, Ability, and Rune menus.</li>
+            <li>21 bundled professions with action-based EXP configuration and anti-farm safeguards.</li>
+            <li>Native MythicMobs ability integration (ability code + skin model).</li>
+            <li>Role-based command permissions with the <code>mcidentity.admin</code> node.</li>
+          </ul>
+        </div>
+
+        <div class="log-section">
+          <h3><span class="log-tag log-tag--improve">Developer</span> Public API &amp; events</h3>
+          <ul>
+            <li><code>MCIdentityProvider</code> published to GitHub Packages (<code>api</code>, <code>common</code>, <code>bukkit</code>, version <code>1.0.0</code>).</li>
+            <li>Custom cancellable Bukkit events for equip, unequip, creation, death, rune/ability/skin/aura set, and stat add.</li>
+          </ul>
+        </div>
+      </article>
+
+      <aside class="logs-nav" aria-label="Log versions">
+        <h4>Versions</h4>
+        <ul>
+          <li><a class="is-current" href="index.html">1.0.0 <span class="latest">Latest</span></a></li>
+        </ul>
+        <p style="margin:0.9rem 0 0;font-size:0.8rem;color:var(--ink-400);"><a href="../../../index.html">← Back to latest</a></p>
+      </aside>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="../../../../js/site.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+/* Platforms pages specifics */
+.platform-hero {
+  display: flex; align-items: center; gap: 1.3rem;
+  flex-wrap: wrap;
+}
+.platform-badge {
+  width: 78px; height: 78px; flex: none;
+  display: grid; place-items: center;
+  border-radius: 20px;
+  font-size: 2.2rem;
+  background: linear-gradient(150deg, rgba(255,255,255,0.9), rgba(210,217,227,0.7));
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-md);
+}
+.platform-switch { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 1.4rem 0; }
+.platform-switch a {
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-size: 0.9rem; font-weight: 600;
+  background: var(--glass); border: 1px solid var(--glass-border);
+  color: var(--ink-700); box-shadow: var(--shadow-sm);
+}
+.platform-switch a:hover { text-decoration: none; background: var(--glass-strong); }
+.platform-switch a.is-current { background: var(--accent-soft); color: var(--accent-strong); border-color: transparent; }

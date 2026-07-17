@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MCIdentity on FoliaMC — Platforms</title>
+  <meta name="description" content="How the MCIdentity plugin works on a Folia server with regionalized multi-threading.">
+  <link rel="stylesheet" href="../../css/main.css">
+  <link rel="stylesheet" href="../../css/shared/layout.css">
+  <link rel="stylesheet" href="../../css/shared/components.css">
+  <link rel="stylesheet" href="../../css/platforms/platforms.css">
+  <script>window.SITE_ROOT = "../../"; window.PAGE_SECTION = "platforms";</script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container narrow">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="../../index.html">Home</a><span class="sep">/</span><span>Platforms</span><span class="sep">/</span><span>FoliaMC</span>
+    </nav>
+
+    <div class="hero platform-hero">
+      <div class="platform-badge" aria-hidden="true">🧵</div>
+      <div>
+        <span class="eyebrow">Platform</span>
+        <h1>MCIdentity on FoliaMC</h1>
+        <p class="lead">Folia introduces regionalized multi-threading. MCIdentity is natively compatible with its region and global schedulers — no single main thread to rely on.</p>
+      </div>
+    </div>
+
+    <nav class="platform-switch" aria-label="Choose platform">
+      <a href="../spigotmc/index.html">SpigotMC</a>
+      <a href="../papermc/index.html">PaperMC</a>
+      <a class="is-current" href="../foliamc/index.html">FoliaMC</a>
+    </nav>
+
+    <section class="section">
+      <h2>How it runs</h2>
+      <p>The <code>platforms:foliamc</code> module supplies a Folia entry point together with a regionized scheduler implementation. Instead of one main thread, Folia runs many region threads, so MCIdentity's <code>PlatformScheduler</code> abstraction maps onto Folia's <code>RegionScheduler</code> and <code>GlobalRegionScheduler</code> to run each task on the correct thread for its region.</p>
+      <ul>
+        <li>GUIs, identity swaps, and stat updates are scheduled onto the region owning the relevant player or location.</li>
+        <li>Storage I/O still runs on the asynchronous worker pool, exactly as on Spigot and Paper.</li>
+        <li>Custom MCIdentity events mark themselves asynchronous whenever they are fired off a primary thread, so third-party handlers must stay thread-safe.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Async safety for integrations</h2>
+      <p>Because events can fire on region threads, any plugin listening to MCIdentity events on Folia should treat handlers as potentially asynchronous. When you must call thread-confined Bukkit API (inventories, entities), schedule back onto the appropriate region or global scheduler rather than calling it directly. The <a href="../../api/index.html#integration">Developer API</a> covers this in detail.</p>
+    </section>
+
+    <section class="section">
+      <h2>Cold-boot login protection</h2>
+      <p>When paired with the central server backend, the pre-login health-check and wake-up ping run on the async login thread — so a cold-started central server delays joins gracefully rather than blocking any region thread. See <a href="../../features/index.html">Key Features</a>.</p>
+    </section>
+
+    <section class="section">
+      <h2>Requirements</h2>
+      <ul>
+        <li><strong>Java 25</strong> or newer.</li>
+        <li>A Folia server on the <code>26.1.x</code> API line.</li>
+      </ul>
+      <div class="callout callout--info">
+        <span class="callout__icon" aria-hidden="true">➡️</span>
+        <div class="callout__body"><p>Ready to deploy? See <a href="../../installation/index.html">Installation &amp; Setup</a> and pick a <a href="../../storage/index.html">storage backend</a>.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="../../js/site.js" defer></script>
+</body>
+</html>

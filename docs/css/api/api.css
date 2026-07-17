@@ -1,0 +1,19 @@
+/* API page specifics */
+.toc {
+  display: flex; flex-wrap: wrap; gap: 0.5rem;
+  margin: 1.2rem 0 1.8rem;
+}
+.toc a {
+  font-size: 0.86rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  color: var(--ink-700);
+  box-shadow: var(--shadow-sm);
+}
+.toc a:hover { text-decoration: none; background: var(--glass-strong); color: var(--ink-900); }
+
+.api-method summary code { color: var(--accent-strong); }
+.ret { font-family: var(--mono); font-size: 0.82rem; color: var(--ink-500); }
+.method-group { margin: 1rem 0 0.4rem; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-400); font-weight: 700; }

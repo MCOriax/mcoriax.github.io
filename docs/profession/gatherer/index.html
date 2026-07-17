@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gatherer — Profession — MCIdentity</title>
+  <meta name="description" content="Max level, starting stats, and how to level up the Gatherer profession in MCIdentity.">
+  <link rel="stylesheet" href="../../css/main.css">
+  <link rel="stylesheet" href="../../css/shared/layout.css">
+  <link rel="stylesheet" href="../../css/shared/components.css">
+  <link rel="stylesheet" href="../../css/profession/profession.css">
+  <script>window.SITE_ROOT = "../../"; window.PAGE_SECTION = "profession";</script>
+</head>
+<body>
+  <div id="site-header"></div>
+  <main class="container narrow">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="../../index.html">Home</a><span class="sep">/</span><a href="../index.html">Professions</a><span class="sep">/</span><span>Gatherer</span>
+    </nav>
+    <div class="hero prof-hero">
+      <div class="prof-hero__emoji" aria-hidden="true">🧺</div>
+      <div>
+        <span class="eyebrow">Profession</span>
+        <h1>Gatherer</h1>
+        <p class="lead">Theme: <strong>Foraging</strong>. System code <code>gatherer</code>.</p>
+      </div>
+    </div>
+    <section class="section">
+      <div class="facts">
+        <div class="fact"><div class="fact__label">Max level</div><div class="fact__value">100</div></div>
+        <div class="fact"><div class="fact__label">EXP per level</div><div class="fact__value">130</div><div class="fact__sub">to advance one level</div></div>
+        <div class="fact"><div class="fact__label">EXP to max</div><div class="fact__value">12,870</div><div class="fact__sub">130 &times; 99 levels</div></div>
+        <div class="fact"><div class="fact__label">Bonus points</div><div class="fact__value">0</div><div class="fact__sub">none for this profession</div></div>
+      </div>
+    </section>
+    <section class="section">
+      <h2>How to level up</h2>
+      <p>Every level takes <strong>130 EXP</strong>, and the class caps at <strong>level 100</strong>. Earn experience by performing the actions below — each is configured in this profession's YAML file. Ranges such as <code>a~b</code> award a random amount between <code>a</code> and <code>b</code>; numeric conditions such as <code>1-10</code> match the amount involved (for example damage dealt or survived).</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Action</th><th>How it triggers</th><th>EXP</th></tr></thead>
+          <tbody>
+        <tr><td><span class="action-key">strip_log</span></td><td>Strip a log with an axe (once per location)</td><td class="exp-val">2~3 EXP</td></tr>
+        <tr><td><span class="action-key">collect_honey</span></td><td>Bottle honey from a full beehive or nest</td><td class="exp-val">5~10 EXP</td></tr>
+        <tr><td><span class="action-key">harvest_sweet_berries</span></td><td>Gather berries from a ripe sweet berry bush</td><td class="exp-val">3~5 EXP</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--info"><span class="callout__icon" aria-hidden="true">💡</span><div class="callout__body"><p>These values come from the bundled <code>professions/gatherer.yml</code>. Server owners can edit them or add entirely new professions — see <a href="../index.html#custom">Professions &amp; EXP</a>.</p></div></div>
+    </section>
+    <section class="section">
+      <h2>Starting stats</h2>
+      <p>A freshly created Gatherer identity starts with these attributes:</p>
+  <div class="stats-grid">
+    <div class="stat-bar">
+      <div class="stat-bar__top"><span class="stat-bar__name">energy</span><span class="stat-bar__val">200</span></div>
+      <div class="stat-bar__track"><div class="stat-bar__fill" style="width:100%"></div></div>
+    </div>
+    <div class="stat-bar">
+      <div class="stat-bar__top"><span class="stat-bar__name">health</span><span class="stat-bar__val">100</span></div>
+      <div class="stat-bar__track"><div class="stat-bar__fill" style="width:50%"></div></div>
+    </div>
+    <div class="stat-bar">
+      <div class="stat-bar__top"><span class="stat-bar__name">food</span><span class="stat-bar__val">150</span></div>
+      <div class="stat-bar__track"><div class="stat-bar__fill" style="width:75%"></div></div>
+    </div>
+    <div class="stat-bar">
+      <div class="stat-bar__top"><span class="stat-bar__name">strength</span><span class="stat-bar__val">40</span></div>
+      <div class="stat-bar__track"><div class="stat-bar__fill" style="width:20%"></div></div>
+    </div>
+    <div class="stat-bar">
+      <div class="stat-bar__top"><span class="stat-bar__name">defense</span><span class="stat-bar__val">20</span></div>
+      <div class="stat-bar__track"><div class="stat-bar__fill" style="width:10%"></div></div>
+    </div>
+    <div class="stat-bar">
+      <div class="stat-bar__top"><span class="stat-bar__name">wisdom</span><span class="stat-bar__val">0</span></div>
+      <div class="stat-bar__track"><div class="stat-bar__fill" style="width:0%"></div></div>
+    </div>
+    <div class="stat-bar">
+      <div class="stat-bar__top"><span class="stat-bar__name">luck</span><span class="stat-bar__val">10</span></div>
+      <div class="stat-bar__track"><div class="stat-bar__fill" style="width:5%"></div></div>
+    </div>
+    <div class="stat-bar">
+      <div class="stat-bar__top"><span class="stat-bar__name">agility</span><span class="stat-bar__val">20</span></div>
+      <div class="stat-bar__track"><div class="stat-bar__fill" style="width:10%"></div></div>
+    </div>
+    <div class="stat-bar">
+      <div class="stat-bar__top"><span class="stat-bar__name">resilience</span><span class="stat-bar__val">30</span></div>
+      <div class="stat-bar__track"><div class="stat-bar__fill" style="width:15%"></div></div>
+    </div>
+  </div>
+      <p class="fact__sub">Health regenerates automatically by 1% of maximum health every 5 seconds. Food governs the hunger bar only.</p>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+  <script src="../../js/site.js" defer></script>
+</body>
+</html>

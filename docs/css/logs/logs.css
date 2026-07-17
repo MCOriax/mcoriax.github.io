@@ -1,0 +1,55 @@
+/* Logs page specifics — main content + right-side version nav */
+.logs-layout {
+  display: grid;
+  grid-template-columns: 1fr 250px;
+  gap: 2rem;
+  align-items: start;
+}
+
+.log-entry { }
+.log-entry__head { display: flex; flex-wrap: wrap; align-items: center; gap: 0.7rem; margin-bottom: 0.3rem; }
+.log-entry__version { font-size: 1.6rem; font-weight: 800; color: var(--ink-900); letter-spacing: -0.02em; }
+.log-entry__date { color: var(--ink-400); font-size: 0.9rem; }
+
+.log-section { margin-top: 1.6rem; }
+.log-section h3 { display: flex; align-items: center; gap: 0.5rem; }
+.log-tag {
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em;
+  padding: 0.16rem 0.55rem; border-radius: 999px;
+}
+.log-tag--new { color: #1f7a54; background: rgba(31,122,84,0.12); }
+.log-tag--improve { color: var(--accent-strong); background: var(--accent-soft); }
+.log-tag--note { color: #9a6b16; background: rgba(154,107,22,0.12); }
+
+/* Right-side version navigation */
+.logs-nav {
+  position: sticky;
+  top: calc(var(--header-h) + 16px);
+  padding: 1.1rem 1.2rem;
+  border-radius: var(--radius);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-sm);
+  -webkit-backdrop-filter: var(--blur);
+  backdrop-filter: var(--blur);
+}
+.logs-nav h4 {
+  margin: 0 0 0.8rem;
+  font-size: 0.74rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-400);
+}
+.logs-nav ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.3rem; }
+.logs-nav a {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.55rem 0.75rem;
+  border-radius: 10px;
+  color: var(--ink-700);
+  font-weight: 600; font-size: 0.92rem;
+}
+.logs-nav a:hover { text-decoration: none; background: var(--glass-strong); color: var(--ink-900); }
+.logs-nav a.is-current { background: var(--accent-soft); color: var(--accent-strong); }
+.logs-nav a .latest { font-size: 0.66rem; font-weight: 700; color: #1f7a54; background: rgba(31,122,84,0.12); padding: 0.1rem 0.4rem; border-radius: 999px; }
+
+@media (max-width: 860px) {
+  .logs-layout { grid-template-columns: 1fr; }
+  .logs-nav { position: static; order: -1; }
+}

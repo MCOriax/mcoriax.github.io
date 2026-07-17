@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Commands &amp; Permissions — MCIdentity</title>
+  <meta name="description" content="Every /identity command available in MCIdentity and the permission nodes required to use them.">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/shared/layout.css">
+  <link rel="stylesheet" href="../css/shared/components.css">
+  <link rel="stylesheet" href="../css/commands/commands.css">
+  <script>window.SITE_ROOT = "../"; window.PAGE_SECTION = "commands";</script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container narrow">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="../index.html">Home</a><span class="sep">/</span><span>Commands</span>
+    </nav>
+
+    <span class="eyebrow">Reference</span>
+    <h1>Commands &amp; Permissions</h1>
+    <p class="lead">Every <code>/identity</code> command, what it does, and the permission it needs.</p>
+
+    <section class="section">
+      <h2>Player commands</h2>
+      <div class="cmd-list">
+        <div class="cmd">
+          <div class="cmd__sig">/identity</div>
+          <p>Open the main Identity GUI (1-row compact menu).</p>
+        </div>
+        <div class="cmd">
+          <div class="cmd__sig">/identity help</div>
+          <p>Show the help message with all available commands.</p>
+        </div>
+        <div class="cmd">
+          <div class="cmd__sig">/identity wiki</div>
+          <p>Send clickable links to the project wiki, one per line (<code>https://mcoriax.github.io</code> and <code>https://mcoriax.gitlab.io</code>); clicking a line opens it in your browser.</p>
+        </div>
+        <div class="cmd">
+          <div class="cmd__sig">/identity check</div>
+          <p>Inspect the identity key in your hand or your currently equipped identity.</p>
+        </div>
+        <div class="cmd">
+          <div class="cmd__sig">/identity unuse</div>
+          <p>Unequip your current identity.</p>
+        </div>
+        <div class="cmd">
+          <div class="cmd__sig">/identity stats</div>
+          <p>View your remaining unspent stat points. A shortcut that behaves exactly like <code>/identity stats get</code>.</p>
+        </div>
+        <div class="cmd">
+          <div class="cmd__sig">/identity stats get</div>
+          <p>View your remaining unspent stat points.</p>
+        </div>
+        <div class="cmd">
+          <div class="cmd__sig">/identity stats add &lt;stat_type&gt; &lt;amount&gt;</div>
+          <p>Spend your stat points to upgrade specific attributes. Available stats are <code>energy</code>, <code>health</code>, <code>food</code>, <code>strength</code>, <code>defense</code>, <code>wisdom</code>, <code>luck</code>, <code>agility</code>, and <code>resilience</code> (e.g. <code>/identity stats add food 5</code>). Tab completion suggests every stat, including <code>food</code>.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Admin commands <span class="badge badge--warn">mcidentity.admin</span></h2>
+      <div class="cmd-list">
+        <div class="cmd">
+          <div class="cmd__sig">/identity ability get &lt;system code&gt;</div>
+          <p>Admin tool to get an ability item. You can then give this to a player.</p>
+        </div>
+        <div class="cmd">
+          <div class="cmd__sig">/identity ability create &lt;ability_code_id&gt; &lt;ability_skin_id&gt; &lt;head_texture_base64&gt; [custom_model_id]</div>
+          <p>Admin tool to create an equippable ability item.</p>
+          <ul>
+            <li><code>ability_code_id</code> — the MythicMobs ability (skill) ID the item represents.</li>
+            <li><code>ability_skin_id</code> — the model ID rendered for the ability. Players equipping the item store this skin alongside the ability code.</li>
+            <li><code>head_texture_base64</code> — the Base64 profile-property texture applied to the player-head item.</li>
+            <li><code>custom_model_id</code> (optional) — a numeric <code>CustomModelData</code> value for resource-pack models. Omit it or pass <code>null</code> to keep the default model.</li>
+            <li>Both IDs are saved in the item's persistent data (NBT), so equipping the item through the Ability GUI records exactly which MythicMobs ability and skin to use.</li>
+          </ul>
+        </div>
+        <div class="cmd">
+          <div class="cmd__sig">/identity rune get &lt;system code&gt;</div>
+          <p>Admin tool to get a rune item.</p>
+        </div>
+        <div class="cmd">
+          <div class="cmd__sig">/identity get &lt;profession|random&gt; [texture]</div>
+          <p>Admin tool to give a new identity key. Provide a profession code or <code>random</code> to have one assigned upon first use. You can optionally provide a Base64 texture string.</p>
+        </div>
+        <div class="cmd">
+          <div class="cmd__sig">/identity base add &lt;player&gt; &lt;amount&gt;</div>
+          <p>Grant a player additional <strong>alternative base identities</strong>, assigning each new slot a <strong>random non-player profession</strong>. For example, <code>/identity base add MCOriax 2</code> adds 2 alternative identity slots, each a random class.</p>
+        </div>
+        <div class="cmd">
+          <div class="cmd__sig">/identity base add &lt;player&gt; &lt;profession&gt; &lt;amount&gt;</div>
+          <p>The same grant, but every new slot is assigned the specific <code>&lt;profession&gt;</code> you name (e.g. <code>/identity base add MCOriax warrior 3</code>). The <code>player</code> profession <strong>cannot</strong> be added as a sub-identity — it is reserved for the primary identity, so the command is rejected and the sender is notified. The slot count is stored in the database and the new identities are registered immediately under deterministic UUIDs, so they appear in the <a href="../gui/index.html">Player Identity GUI</a> right away.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Permissions</h2>
+      <div class="deflist">
+        <div class="deflist__row">
+          <div class="deflist__term">Standard player commands</div>
+          <div>Commands like <code>/identity</code>, <code>/identity stats</code>, and <code>/identity unuse</code> are available to <strong>all players by default</strong>. They do not require any permission nodes.</div>
+        </div>
+        <div class="deflist__row">
+          <div class="deflist__term"><code>mcidentity.admin</code></div>
+          <div>Required for all administrative sub-commands, including <code>/identity ability get</code>, <code>/identity ability create</code>, and <code>/identity base</code>.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="../js/site.js" defer></script>
+</body>
+</html>

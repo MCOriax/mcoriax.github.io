@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crafter — Profession — MCIdentity</title>
+  <meta name="description" content="Max level, starting stats, and how to level up the Crafter profession in MCIdentity.">
+  <link rel="stylesheet" href="../../css/main.css">
+  <link rel="stylesheet" href="../../css/shared/layout.css">
+  <link rel="stylesheet" href="../../css/shared/components.css">
+  <link rel="stylesheet" href="../../css/profession/profession.css">
+  <script>window.SITE_ROOT = "../../"; window.PAGE_SECTION = "profession";</script>
+</head>
+<body>
+  <div id="site-header"></div>
+  <main class="container narrow">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="../../index.html">Home</a><span class="sep">/</span><a href="../index.html">Professions</a><span class="sep">/</span><span>Crafter</span>
+    </nav>
+    <div class="hero prof-hero">
+      <div class="prof-hero__emoji" aria-hidden="true">🛠️</div>
+      <div>
+        <span class="eyebrow">Profession</span>
+        <h1>Crafter</h1>
+        <p class="lead">Theme: <strong>Crafting &amp; processing</strong>. System code <code>crafter</code>.</p>
+      </div>
+    </div>
+    <section class="section">
+      <div class="facts">
+        <div class="fact"><div class="fact__label">Max level</div><div class="fact__value">100</div></div>
+        <div class="fact"><div class="fact__label">EXP per level</div><div class="fact__value">120</div><div class="fact__sub">to advance one level</div></div>
+        <div class="fact"><div class="fact__label">EXP to max</div><div class="fact__value">11,880</div><div class="fact__sub">120 &times; 99 levels</div></div>
+        <div class="fact"><div class="fact__label">Bonus points</div><div class="fact__value">0</div><div class="fact__sub">none for this profession</div></div>
+      </div>
+    </section>
+    <section class="section">
+      <h2>How to level up</h2>
+      <p>Every level takes <strong>120 EXP</strong>, and the class caps at <strong>level 100</strong>. Earn experience by performing the actions below — each is configured in this profession's YAML file. Ranges such as <code>a~b</code> award a random amount between <code>a</code> and <code>b</code>; numeric conditions such as <code>1-10</code> match the amount involved (for example damage dealt or survived).</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Action</th><th>How it triggers</th><th>EXP</th></tr></thead>
+          <tbody>
+        <tr><td><span class="action-key">craft_item</span></td><td>Craft an item</td><td class="exp-val">2 EXP</td></tr>
+        <tr><td><span class="action-key">smelt_furnace</span></td><td>Extract a smelted item from a furnace</td><td class="exp-val">3 EXP</td></tr>
+        <tr><td><span class="action-key">brew_potion</span></td><td>Collect a brewed potion from a brewing stand</td><td class="exp-val">12 EXP</td></tr>
+        <tr><td><span class="action-key">sculpt_chiseled_block</span></td><td>Cut a chiseled block variant on a stonecutter</td><td class="exp-val">4~6 EXP</td></tr>
+        <tr><td><span class="action-key">use_smithing_template</span></td><td>Take a result out of a smithing table</td><td class="exp-val">10~15 EXP</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout--info"><span class="callout__icon" aria-hidden="true">💡</span><div class="callout__body"><p>These values come from the bundled <code>professions/crafter.yml</code>. Server owners can edit them or add entirely new professions — see <a href="../index.html#custom">Professions &amp; EXP</a>.</p></div></div>
+    </section>
+    <section class="section">
+      <h2>Starting stats</h2>
+      <p>A freshly created Crafter identity starts with these attributes:</p>
+  <div class="stats-grid">
+    <div class="stat-bar">
+      <div class="stat-bar__top"><span class="stat-bar__name">energy</span><span class="stat-bar__val">150</span></div>
+      <div class="stat-bar__track"><div class="stat-bar__fill" style="width:100%"></div></div>
+    </div>
+    <div class="stat-bar">
+      <div class="stat-bar__top"><span class="stat-bar__name">health</span><span class="stat-bar__val">80</span></div>
+      <div class="stat-bar__track"><div class="stat-bar__fill" style="width:53%"></div></div>
+    </div>
+    <div class="stat-bar">
+      <div class="stat-bar__top"><span class="stat-bar__name">food</span><span class="stat-bar__val">100</span></div>
+      <div class="stat-bar__track"><div class="stat-bar__fill" style="width:67%"></div></div>
+    </div>
+    <div class="stat-bar">
+      <div class="stat-bar__top"><span class="stat-bar__name">strength</span><span class="stat-bar__val">10</span></div>
+      <div class="stat-bar__track"><div class="stat-bar__fill" style="width:7%"></div></div>
+    </div>
+    <div class="stat-bar">
+      <div class="stat-bar__top"><span class="stat-bar__name">defense</span><span class="stat-bar__val">10</span></div>
+      <div class="stat-bar__track"><div class="stat-bar__fill" style="width:7%"></div></div>
+    </div>
+    <div class="stat-bar">
+      <div class="stat-bar__top"><span class="stat-bar__name">wisdom</span><span class="stat-bar__val">50</span></div>
+      <div class="stat-bar__track"><div class="stat-bar__fill" style="width:33%"></div></div>
+    </div>
+    <div class="stat-bar">
+      <div class="stat-bar__top"><span class="stat-bar__name">luck</span><span class="stat-bar__val">20</span></div>
+      <div class="stat-bar__track"><div class="stat-bar__fill" style="width:13%"></div></div>
+    </div>
+    <div class="stat-bar">
+      <div class="stat-bar__top"><span class="stat-bar__name">agility</span><span class="stat-bar__val">10</span></div>
+      <div class="stat-bar__track"><div class="stat-bar__fill" style="width:7%"></div></div>
+    </div>
+    <div class="stat-bar">
+      <div class="stat-bar__top"><span class="stat-bar__name">resilience</span><span class="stat-bar__val">10</span></div>
+      <div class="stat-bar__track"><div class="stat-bar__fill" style="width:7%"></div></div>
+    </div>
+  </div>
+      <p class="fact__sub">Health regenerates automatically by 1% of maximum health every 5 seconds. Food governs the hunger bar only.</p>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+  <script src="../../js/site.js" defer></script>
+</body>
+</html>

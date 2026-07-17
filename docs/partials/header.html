@@ -1,0 +1,37 @@
+<!-- Shared site header. {{ROOT}} is replaced with the page's relative root by js/site.js -->
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="nav__brand" href="{{ROOT}}index.html">
+      <span class="nav__logo" aria-hidden="true">MC</span>
+      <span>MCIdentity</span>
+    </a>
+
+    <button class="nav__toggle" type="button" aria-label="Toggle navigation" aria-controls="nav-links">
+      <span></span>
+    </button>
+
+    <ul class="nav__links" id="nav-links">
+      <li><a class="nav__link" data-section="home" href="{{ROOT}}index.html">Home</a></li>
+      <li><a class="nav__link" data-section="features" href="{{ROOT}}features/index.html">Features</a></li>
+      <li><a class="nav__link" data-section="installation" href="{{ROOT}}installation/index.html">Install</a></li>
+      <li><a class="nav__link" data-section="profession" href="{{ROOT}}profession/index.html">Professions</a></li>
+      <li><a class="nav__link" data-section="commands" href="{{ROOT}}commands/index.html">Commands</a></li>
+      <li><a class="nav__link" data-section="gui" href="{{ROOT}}gui/index.html">GUI</a></li>
+      <li><a class="nav__link" data-section="storage" href="{{ROOT}}storage/index.html">Storage</a></li>
+      <li><a class="nav__link" data-section="api" href="{{ROOT}}api/index.html">API</a></li>
+      <li><a class="nav__link" data-section="listeners" href="{{ROOT}}listeners/index.html">Listeners</a></li>
+      <li class="nav__dd">
+        <a class="nav__link nav__dd-toggle" data-section="platforms" href="{{ROOT}}platforms/spigotmc/index.html" aria-haspopup="true">Platforms</a>
+        <ul class="nav__dd-menu">
+          <li><a href="{{ROOT}}platforms/spigotmc/index.html">SpigotMC</a></li>
+          <li><a href="{{ROOT}}platforms/papermc/index.html">PaperMC</a></li>
+          <li><a href="{{ROOT}}platforms/foliamc/index.html">FoliaMC</a></li>
+        </ul>
+      </li>
+      <li><a class="nav__link" data-section="logs" href="{{ROOT}}logs/index.html">Logs</a></li>
+
+      <!-- Donation link, pushed to the far right (very end) -->
+      <li class="nav__spacer"><a class="nav__link nav__link--donate" data-section="donation" href="{{ROOT}}donation/index.html">Donation</a></li>
+    </ul>
+  </nav>
+</header>
