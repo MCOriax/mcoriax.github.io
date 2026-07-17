@@ -1,0 +1,23 @@
+/* Commands page specifics */
+.cmd-list { display: grid; gap: 0.7rem; margin: 1.3rem 0; }
+.cmd {
+  padding: 1rem 1.2rem;
+  border-radius: var(--radius);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-sm);
+  -webkit-backdrop-filter: var(--blur);
+  backdrop-filter: var(--blur);
+}
+.cmd__sig {
+  font-family: var(--mono);
+  font-size: 0.92rem;
+  color: var(--accent-strong);
+  font-weight: 600;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem;
+  margin-bottom: 0.35rem;
+}
+.cmd__sig .badge { font-family: var(--font); }
+.cmd p { margin: 0.2rem 0 0; font-size: 0.94rem; color: var(--ink-500); }
+.cmd ul { margin: 0.5rem 0 0; }
+.cmd ul li { font-size: 0.9rem; color: var(--ink-500); }

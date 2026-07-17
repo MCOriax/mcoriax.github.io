@@ -1,0 +1,62 @@
+/* Profession pages specifics */
+
+/* Index / listing grid */
+.prof-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 1rem; margin: 1.6rem 0; }
+.prof-card {
+  display: flex; align-items: center; gap: 0.8rem;
+  padding: 1rem 1.1rem;
+  border-radius: var(--radius);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-sm);
+  -webkit-backdrop-filter: var(--blur);
+  backdrop-filter: var(--blur);
+  color: inherit;
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+}
+.prof-card:hover { text-decoration: none; transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.prof-card__emoji {
+  width: 44px; height: 44px; flex: none;
+  display: grid; place-items: center;
+  border-radius: 12px; font-size: 1.35rem;
+  background: linear-gradient(150deg, #fff, #dfe4ec);
+  border: 1px solid var(--glass-border);
+}
+.prof-card__name { font-weight: 700; color: var(--ink-900); }
+.prof-card__theme { font-size: 0.8rem; color: var(--ink-500); }
+
+/* Detail page hero */
+.prof-hero { display: flex; align-items: center; gap: 1.3rem; flex-wrap: wrap; }
+.prof-hero__emoji {
+  width: 84px; height: 84px; flex: none;
+  display: grid; place-items: center; font-size: 2.6rem;
+  border-radius: 22px;
+  background: linear-gradient(150deg, rgba(255,255,255,0.9), rgba(210,217,227,0.7));
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-md);
+}
+
+/* Level & stat facts */
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 1.6rem 0; }
+.fact {
+  padding: 1.1rem 1.2rem; border-radius: var(--radius);
+  background: var(--glass); border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-sm);
+}
+.fact__label { font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-400); font-weight: 700; }
+.fact__value { font-size: 1.5rem; font-weight: 800; color: var(--ink-900); letter-spacing: -0.02em; }
+.fact__sub { font-size: 0.82rem; color: var(--ink-500); }
+
+/* Stat bars */
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 0.7rem 1.4rem; margin: 1.2rem 0; }
+.stat-bar { }
+.stat-bar__top { display: flex; justify-content: space-between; font-size: 0.86rem; margin-bottom: 0.25rem; }
+.stat-bar__name { color: var(--ink-700); font-weight: 600; text-transform: capitalize; }
+.stat-bar__val { color: var(--ink-500); font-family: var(--mono); font-size: 0.8rem; }
+.stat-bar__track { height: 8px; border-radius: 999px; background: rgba(120,133,154,0.16); overflow: hidden; }
+.stat-bar__fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--silver-500), var(--accent)); }
+
+/* Level-up action table */
+.action-key { font-family: var(--mono); font-size: 0.85rem; color: var(--accent-strong); }
+.exp-val { font-family: var(--mono); font-size: 0.85rem; white-space: nowrap; }
+.sub-key { font-family: var(--mono); font-size: 0.8rem; color: var(--ink-500); }

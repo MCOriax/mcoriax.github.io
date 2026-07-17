@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MCIdentity — Identity system for Minecraft servers</title>
+  <meta name="description" content="MCIdentity is a robust, high-performance identity management system for Minecraft servers, supporting SpigotMC, PaperMC, and Folia.">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/shared/layout.css">
+  <link rel="stylesheet" href="css/shared/components.css">
+  <link rel="stylesheet" href="css/home/home.css">
+  <script>window.SITE_ROOT = ""; window.PAGE_SECTION = "home";</script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container">
+    <!-- Hero -->
+    <section class="hero home-hero">
+      <div>
+        <span class="eyebrow">Minecraft · Bukkit family</span>
+        <h1>One player, many identities.</h1>
+        <p class="lead">
+          MCIdentity is a robust, high-performance identity management system for Minecraft
+          servers. Players equip and manage separate personas — each with its own
+          <strong>profession</strong>, <strong>stats</strong>, inventory, and progression —
+          across <strong>SpigotMC</strong>, <strong>PaperMC</strong>, and <strong>Folia</strong>.
+        </p>
+        <div class="home-hero__badges">
+          <span class="badge badge--ok">SpigotMC</span>
+          <span class="badge badge--ok">PaperMC</span>
+          <span class="badge badge--ok">Folia</span>
+          <span class="badge badge--accent">Fully asynchronous</span>
+          <span class="badge">SQLite · MySQL · PostgreSQL · MongoDB · Central</span>
+        </div>
+        <div class="btn-row">
+          <a class="btn btn--primary" href="installation/index.html">Get started →</a>
+          <a class="btn" href="api/index.html">Developer API</a>
+          <a class="btn btn--sponsor" href="donation/index.html">♥ Support</a>
+        </div>
+      </div>
+      <div class="home-hero__art">
+        <div class="home-hero__glyph" aria-hidden="true">ID</div>
+      </div>
+    </section>
+
+    <!-- Quick stats -->
+    <section class="stat-row" aria-label="At a glance">
+      <div class="stat"><div class="stat__num">21</div><div class="stat__label">Bundled professions</div></div>
+      <div class="stat"><div class="stat__num">3</div><div class="stat__label">Supported platforms</div></div>
+      <div class="stat"><div class="stat__num">5</div><div class="stat__label">Storage backends</div></div>
+      <div class="stat"><div class="stat__num">70+</div><div class="stat__label">EXP-gain actions</div></div>
+    </section>
+
+    <!-- Overview cards -->
+    <section class="section">
+      <h2>Explore the documentation</h2>
+      <p class="lead">Everything you need to install, configure, play, and build on top of MCIdentity.</p>
+
+      <div class="card-grid">
+        <a class="card" href="features/index.html">
+          <div class="card__icon" aria-hidden="true">✨</div>
+          <div class="card__title">Key Features</div>
+          <p class="card__desc">Multi-platform support, GUIs, cosmetics, base identities, and passive leveling.</p>
+          <span class="card__more">Read more →</span>
+        </a>
+        <a class="card" href="installation/index.html">
+          <div class="card__icon" aria-hidden="true">📦</div>
+          <div class="card__title">Installation &amp; Setup</div>
+          <p class="card__desc">Drop in the JAR, pick a storage backend, and start your server.</p>
+          <span class="card__more">Read more →</span>
+        </a>
+        <a class="card" href="profession/index.html">
+          <div class="card__icon" aria-hidden="true">🎭</div>
+          <div class="card__title">Professions &amp; EXP</div>
+          <p class="card__desc">How professions gain experience and the 21 bundled classes.</p>
+          <span class="card__more">Read more →</span>
+        </a>
+        <a class="card" href="commands/index.html">
+          <div class="card__icon" aria-hidden="true">⌨️</div>
+          <div class="card__title">Commands &amp; Permissions</div>
+          <p class="card__desc">Every <code>/identity</code> command and the permission nodes behind them.</p>
+          <span class="card__more">Read more →</span>
+        </a>
+        <a class="card" href="gui/index.html">
+          <div class="card__icon" aria-hidden="true">🗂️</div>
+          <div class="card__title">GUI System</div>
+          <p class="card__desc">The multi-tier menus for identities, abilities, runes, and cosmetics.</p>
+          <span class="card__more">Read more →</span>
+        </a>
+        <a class="card" href="storage/index.html">
+          <div class="card__icon" aria-hidden="true">🗄️</div>
+          <div class="card__title">Data Storage</div>
+          <p class="card__desc">SQLite, MySQL, PostgreSQL, MongoDB, or the shared central server.</p>
+          <span class="card__more">Read more →</span>
+        </a>
+        <a class="card" href="api/index.html">
+          <div class="card__icon" aria-hidden="true">🧩</div>
+          <div class="card__title">Developer API</div>
+          <p class="card__desc">Integrate through <code>MCIdentityProvider</code> — one identity is one account.</p>
+          <span class="card__more">Read more →</span>
+        </a>
+        <a class="card" href="listeners/index.html">
+          <div class="card__icon" aria-hidden="true">📡</div>
+          <div class="card__title">Events &amp; Listeners</div>
+          <p class="card__desc">The custom Bukkit events you can hook into and how EXP listeners work.</p>
+          <span class="card__more">Read more →</span>
+        </a>
+        <a class="card" href="platforms/spigotmc/index.html">
+          <div class="card__icon" aria-hidden="true">🧱</div>
+          <div class="card__title">Platforms</div>
+          <p class="card__desc">How the plugin runs on SpigotMC, PaperMC, and Folia.</p>
+          <span class="card__more">Read more →</span>
+        </a>
+        <a class="card" href="logs/index.html">
+          <div class="card__icon" aria-hidden="true">📝</div>
+          <div class="card__title">Change Logs</div>
+          <p class="card__desc">Release notes, versioned for every published build.</p>
+          <span class="card__more">Read more →</span>
+        </a>
+        <a class="card" href="donation/index.html">
+          <div class="card__icon" aria-hidden="true">♥</div>
+          <div class="card__title">Support the Project</div>
+          <p class="card__desc">Become a GitHub Sponsor and help keep MCIdentity growing.</p>
+          <span class="card__more">Donate →</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- What it does -->
+    <section class="section panel">
+      <h2>What MCIdentity does</h2>
+      <p>
+        Every player has exactly <strong>one primary identity</strong> — their permanent base
+        <code>player</code> profession, keyed by their own UUID. Beyond it, players can unlock
+        <strong>multiple alternative base identities</strong>, each of any other profession, plus
+        equip profession identity keys found in-game. Each identity keeps its own isolated
+        inventory, ender chest, level, and stats, and switching is a full context switch — as if
+        logging into a completely different account.
+      </p>
+      <p>
+        The whole system is built for performance and safety: identity data can live in SQLite
+        (the zero-configuration default), MySQL, PostgreSQL, or MongoDB, or be owned by the
+        MCIdentity central server and accessed through asynchronous REST calls. Every backend is
+        combined with RAM caching and fully asynchronous access for a lag-free experience on
+        high-population servers.
+      </p>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="js/site.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MCIdentity on SpigotMC — Platforms</title>
+  <meta name="description" content="How the MCIdentity plugin works on a SpigotMC server.">
+  <link rel="stylesheet" href="../../css/main.css">
+  <link rel="stylesheet" href="../../css/shared/layout.css">
+  <link rel="stylesheet" href="../../css/shared/components.css">
+  <link rel="stylesheet" href="../../css/platforms/platforms.css">
+  <script>window.SITE_ROOT = "../../"; window.PAGE_SECTION = "platforms";</script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container narrow">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="../../index.html">Home</a><span class="sep">/</span><span>Platforms</span><span class="sep">/</span><span>SpigotMC</span>
+    </nav>
+
+    <div class="hero platform-hero">
+      <div class="platform-badge" aria-hidden="true">🧱</div>
+      <div>
+        <span class="eyebrow">Platform</span>
+        <h1>MCIdentity on SpigotMC</h1>
+        <p class="lead">The reference platform. SpigotMC provides the classic Bukkit API and the single-main-thread model MCIdentity's scheduler abstraction targets.</p>
+      </div>
+    </div>
+
+    <nav class="platform-switch" aria-label="Choose platform">
+      <a class="is-current" href="../spigotmc/index.html">SpigotMC</a>
+      <a href="../papermc/index.html">PaperMC</a>
+      <a href="../foliamc/index.html">FoliaMC</a>
+    </nav>
+
+    <section class="section">
+      <h2>How it runs</h2>
+      <p>The <code>platforms:spigotmc</code> module supplies a concrete plugin entry point that extends MCIdentity's shared Bukkit core. On Spigot, all gameplay code runs on the single main server thread, and the plugin's <code>PlatformScheduler</code> abstraction maps directly onto the standard <code>BukkitScheduler</code>.</p>
+      <ul>
+        <li>Commands (<code>/identity</code>), tab completion, GUIs, and the EXP-gain listeners all use the standard Bukkit event and scheduling model.</li>
+        <li>Every database operation still runs asynchronously on a dedicated worker pool, so the main thread is never blocked by storage I/O.</li>
+        <li>Custom MCIdentity events are fired on the main thread and behave as ordinary synchronous Bukkit events.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Storage on Spigot</h2>
+      <p>The SQLite and MySQL JDBC drivers ship with SpigotMC, so those backends work with no extra downloads. The PostgreSQL driver and the MongoDB client are packaged inside the plugin JAR. See <a href="../../storage/index.html">Data Storage</a> for configuration.</p>
+    </section>
+
+    <section class="section">
+      <h2>Requirements</h2>
+      <ul>
+        <li><strong>Java 25</strong> or newer.</li>
+        <li>A SpigotMC server on the <code>26.1.x</code> API line.</li>
+      </ul>
+      <div class="callout callout--info">
+        <span class="callout__icon" aria-hidden="true">➡️</span>
+        <div class="callout__body"><p>Follow the <a href="../../installation/index.html">Installation &amp; Setup</a> steps to get running, then browse the <a href="../../commands/index.html">commands</a>.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="../../js/site.js" defer></script>
+</body>
+</html>

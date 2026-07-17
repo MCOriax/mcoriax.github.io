@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MCIdentity on PaperMC — Platforms</title>
+  <meta name="description" content="How the MCIdentity plugin works on a PaperMC server.">
+  <link rel="stylesheet" href="../../css/main.css">
+  <link rel="stylesheet" href="../../css/shared/layout.css">
+  <link rel="stylesheet" href="../../css/shared/components.css">
+  <link rel="stylesheet" href="../../css/platforms/platforms.css">
+  <script>window.SITE_ROOT = "../../"; window.PAGE_SECTION = "platforms";</script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container narrow">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="../../index.html">Home</a><span class="sep">/</span><span>Platforms</span><span class="sep">/</span><span>PaperMC</span>
+    </nav>
+
+    <div class="hero platform-hero">
+      <div class="platform-badge" aria-hidden="true">📄</div>
+      <div>
+        <span class="eyebrow">Platform</span>
+        <h1>MCIdentity on PaperMC</h1>
+        <p class="lead">Paper is a high-performance fork of Spigot. MCIdentity runs on it out of the box, with the same behaviour as Spigot plus Paper's performance improvements.</p>
+      </div>
+    </div>
+
+    <nav class="platform-switch" aria-label="Choose platform">
+      <a href="../spigotmc/index.html">SpigotMC</a>
+      <a class="is-current" href="../papermc/index.html">PaperMC</a>
+      <a href="../foliamc/index.html">FoliaMC</a>
+    </nav>
+
+    <section class="section">
+      <h2>How it runs</h2>
+      <p>The <code>platforms:papermc</code> module supplies a dedicated PaperMC entry point extending MCIdentity's shared Bukkit core. Because Paper is Bukkit-compatible and keeps the single main-thread model, the plugin's <code>PlatformScheduler</code> abstraction behaves just as it does on Spigot — while your server benefits from Paper's optimizations.</p>
+      <ul>
+        <li>Commands, tab completion, GUIs, and the modular EXP-gain listeners all use the standard Bukkit event and scheduling model.</li>
+        <li>All storage I/O runs asynchronously on a dedicated worker pool, keeping the main thread free.</li>
+        <li>Custom MCIdentity events are fired on the main thread and observed like ordinary Bukkit events.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Storage on Paper</h2>
+      <p>As on Spigot, the SQLite and MySQL JDBC drivers ship with the server; the PostgreSQL driver and MongoDB client are bundled in the plugin JAR. Configure your backend in <a href="../../storage/index.html">Data Storage</a>.</p>
+    </section>
+
+    <section class="section">
+      <h2>Requirements</h2>
+      <ul>
+        <li><strong>Java 25</strong> or newer.</li>
+        <li>A PaperMC server on the <code>26.1.x</code> API line.</li>
+      </ul>
+      <div class="callout callout--info">
+        <span class="callout__icon" aria-hidden="true">➡️</span>
+        <div class="callout__body"><p>New here? Start with <a href="../../installation/index.html">Installation &amp; Setup</a> and the <a href="../../features/index.html">feature overview</a>.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="../../js/site.js" defer></script>
+</body>
+</html>

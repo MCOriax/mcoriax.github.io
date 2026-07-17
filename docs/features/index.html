@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Key Features — MCIdentity</title>
+  <meta name="description" content="An overview of what the MCIdentity plugin offers: multi-platform support, GUIs, base identities, passive leveling, and more.">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/shared/layout.css">
+  <link rel="stylesheet" href="../css/shared/components.css">
+  <link rel="stylesheet" href="../css/features/features.css">
+  <script>window.SITE_ROOT = "../"; window.PAGE_SECTION = "features";</script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container narrow">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="../index.html">Home</a><span class="sep">/</span><span>Features</span>
+    </nav>
+
+    <span class="eyebrow">Overview</span>
+    <h1>Key Features</h1>
+    <p class="lead">A high-level tour of what MCIdentity brings to your server.</p>
+
+    <div class="features-grid">
+      <div class="feature-item">
+        <h3><span class="ic" aria-hidden="true">🧱</span> Multi-Platform Support</h3>
+        <p>Fully supports <strong>SpigotMC</strong>, <strong>PaperMC</strong>, and <strong>Folia</strong>, including native compatibility with Folia's regionalized multi-threading architecture.</p>
+      </div>
+      <div class="feature-item">
+        <h3><span class="ic" aria-hidden="true">🗂️</span> Interactive GUI System</h3>
+        <p>Multi-tier virtual menus for managing identities, runes, and abilities. See the <a href="../gui/index.html">GUI System</a> page for the full layout.</p>
+      </div>
+      <div class="feature-item">
+        <h3><span class="ic" aria-hidden="true">⚔️</span> Native MythicMobs Integration</h3>
+        <p>Abilities map directly onto MythicMobs — each ability stores an ability code (the MythicMobs ability/skill ID) and an ability skin (the model ID, with a default-skin fallback). Equipping an ability records exactly which MythicMobs ability runs and which skin renders.</p>
+      </div>
+      <div class="feature-item">
+        <h3><span class="ic" aria-hidden="true">🔄</span> Dynamic Data Binding</h3>
+        <p>Ability and Rune GUIs fetch real-time data from the database, showing equipped items or placeholders.</p>
+      </div>
+      <div class="feature-item">
+        <h3><span class="ic" aria-hidden="true">🧵</span> Regionalized Threading</h3>
+        <p>Fully compatible with Folia's <code>RegionScheduler</code> and <code>GlobalRegionScheduler</code>.</p>
+      </div>
+      <div class="feature-item">
+        <h3><span class="ic" aria-hidden="true">🗄️</span> Multi-Database Storage</h3>
+        <p>Identity data can live in SQLite (the zero-configuration default), MySQL, PostgreSQL, or MongoDB, selected with <code>database.type</code> in <code>config.yml</code>. All backends run fully asynchronously behind the same contract. See <a href="../storage/index.html">Data Storage</a>.</p>
+      </div>
+      <div class="feature-item">
+        <h3><span class="ic" aria-hidden="true">🌐</span> Central Server Storage</h3>
+        <p>Alternatively, all identity data can live on the MCIdentity central server, accessed through an authenticated REST API over a pooled HTTP client — so every game server on the network shares one consistent data set.</p>
+      </div>
+      <div class="feature-item">
+        <h3><span class="ic" aria-hidden="true">🧩</span> Extensible API</h3>
+        <p>Provides a central <code>MCIdentityProvider</code> for third-party plugins to interact with the identity system. See the <a href="../api/index.html">Developer API</a>.</p>
+      </div>
+      <div class="feature-item">
+        <h3><span class="ic" aria-hidden="true">🔐</span> Secure Commands</h3>
+        <p>Role-based permissions for administrative actions.</p>
+      </div>
+      <div class="feature-item">
+        <h3><span class="ic" aria-hidden="true">🪪</span> Visual Identity Keys</h3>
+        <p>Identities are represented as physical items in the game with custom colored display names.</p>
+      </div>
+      <div class="feature-item">
+        <h3><span class="ic" aria-hidden="true">🔓</span> Unbound Identities</h3>
+        <p>Identity items created via <code>/identity get</code> are initially "unbound" — they lack a unique ID and database entry. Both the unique ID and the identity's initial stats are generated and registered in the database only when the item is first used.</p>
+      </div>
+      <div class="feature-item">
+        <h3><span class="ic" aria-hidden="true">👤</span> Base "Player" Profession</h3>
+        <p>Every player permanently owns a built-in <code>player</code> profession, created automatically on first join and keyed by the player's own UUID. It is the fallback state whenever an identity is unequipped, dropped on death (only when <code>drop_on_death</code> is enabled — <code>false</code> by default), or fails to equip, so a player is never without a profession. It can never be deleted or turned into an identity key item.</p>
+        <p><strong>Note:</strong> the base profession is strictly hardcoded in memory. It does <strong>not</strong> generate a <code>professions/player.yml</code> file and cannot be modified via YAML.</p>
+      </div>
+      <div class="feature-item">
+        <h3><span class="ic" aria-hidden="true">🎭</span> Alternative Base Identities</h3>
+        <p>On top of the <strong>Primary</strong> base identity — the one <code>player</code> profession, which keeps the player's own UUID — players can unlock additional, fully independent identities of any other profession (random or chosen). They are indexed 1…n and keyed by deterministic UUIDs derived from the player UUID and index. Admins grant slots with <code>/identity base add</code>; all owned base identities appear in the paginated Player Identity GUI and can be equipped by clicking their heads.</p>
+      </div>
+      <div class="feature-item">
+        <h3><span class="ic" aria-hidden="true">❄️</span> Cold-Boot Login Protection</h3>
+        <p>When <code>database.type</code> is <code>central</code>, the plugin pings the central server's <code>/health</code> endpoint during the async pre-login phase — the ping doubles as the wake-up signal for a cold-started server. Players are politely refused while storage initialization has not finished, or while the server is offline, so nobody joins with unreachable data. Initialization retries automatically every 10 seconds. All checks run off the main game thread.</p>
+      </div>
+      <div class="feature-item">
+        <h3><span class="ic" aria-hidden="true">📈</span> Passive Base Leveling</h3>
+        <p>Base identities level without limit from passive playtime EXP on two tracks. The <strong>Primary</strong> identity gains 1 EXP per second for every online player — even while another identity is equipped — and levels at 86,400 EXP per level (one level per day of play). An <strong>Alternative</strong> identity gains its 1 EXP per second only while equipped, and levels at 3,600 EXP per level (one level per hour of active play). Gains are buffered in memory and flushed in bulk every five minutes and on quit.</p>
+      </div>
+      <div class="feature-item">
+        <h3><span class="ic" aria-hidden="true">🚫</span> Base Profession Restrictions</h3>
+        <p>The base profession may equip skins and auras but is blocked from using runes and abilities.</p>
+      </div>
+      <div class="feature-item">
+        <h3><span class="ic" aria-hidden="true">🎒</span> Always-On Storage Isolation</h3>
+        <p>Each identity's inventory and ender chest are always isolated and stored with the identity; the previous <code>features.inventory</code> / <code>features.enderchest</code> config toggles have been removed.</p>
+      </div>
+    </div>
+
+    <div class="callout callout--info">
+      <span class="callout__icon" aria-hidden="true">➡️</span>
+      <div class="callout__body">
+        <p>Ready to try it? Head to <a href="../installation/index.html">Installation &amp; Setup</a>, or browse the <a href="../profession/index.html">bundled professions</a>.</p>
+      </div>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="../js/site.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GUI System — MCIdentity</title>
+  <meta name="description" content="The multi-tier interactive menu system for managing identities, abilities, runes, and cosmetics.">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/shared/layout.css">
+  <link rel="stylesheet" href="../css/shared/components.css">
+  <link rel="stylesheet" href="../css/gui/gui.css">
+  <script>window.SITE_ROOT = "../"; window.PAGE_SECTION = "gui";</script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container narrow">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="../index.html">Home</a><span class="sep">/</span><span>GUI System</span>
+    </nav>
+
+    <span class="eyebrow">Player experience</span>
+    <h1>GUI System</h1>
+    <p class="lead">The plugin features a robust, multi-tier GUI system for a seamless player experience.</p>
+
+    <section class="section">
+      <h2>Main Identity GUI <span class="badge">1-row</span></h2>
+      <p>Accessed via <code>/identity</code> without arguments. It provides:</p>
+      <div class="slotmap" aria-hidden="true">
+        <div class="slot is-filled"><small>0</small>🧑</div>
+        <div class="slot is-empty"><small>1</small></div>
+        <div class="slot is-filled"><small>2</small>⚔️</div>
+        <div class="slot is-empty"><small>3</small></div>
+        <div class="slot is-filled"><small>4</small>🪪</div>
+        <div class="slot is-empty"><small>5</small></div>
+        <div class="slot is-filled"><small>6</small>🔮</div>
+        <div class="slot is-empty"><small>7</small></div>
+        <div class="slot is-filled"><small>8</small>✨</div>
+      </div>
+      <ul>
+        <li><strong>Slot 0</strong> — a button rendered as your own player head, named <em>"Player Identity"</em>. Opens the <strong>Player Identity GUI</strong>.</li>
+        <li><strong>Slot 2</strong> — opens the <strong>Ability GUI</strong>.</li>
+        <li><strong>Slot 4</strong> — interactive slot to equip / unequip your <strong>Identity Key</strong>.</li>
+        <li><strong>Slot 6</strong> — opens the <strong>Rune GUI</strong>.</li>
+        <li><strong>Slot 8</strong> — opens the <strong>Cosmetic GUI</strong>.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Player Identity GUI <span class="badge">dynamic · paginated</span></h2>
+      <p>Opened from Slot 0 of the Main Identity GUI. It lists every base "player" identity you own — the always-available <strong>Primary</strong> identity plus every unlocked <strong>Alternative</strong> identity (see <a href="../features/index.html">Key Features</a>) — and lets you switch between them.</p>
+      <ul>
+        <li><strong>Title:</strong> <code>Player Identity - Page {page number}</code>.</li>
+        <li><strong>Alternative identities:</strong> listed from <strong>Slot 0</strong> upward (index 1…n), up to 45 per page across the content rows. Each is shown as a head textured with a texture picked at random from its own profession's available textures (stable per identity). Clicking an alternative identity head equips that identity.</li>
+        <li><strong>Dynamic sizing:</strong> the content area scales with your unlocked identities — 9 alternatives need one content row, 10 need two, and so on. A bottom control row is always appended below the content.</li>
+        <li><strong>Primary identity:</strong> shown as your own player head at the center of the control row. On any multi-page view the GUI uses the full six rows, placing the primary identity permanently at <strong>Slot 49</strong>. Clicking it equips the Primary identity.</li>
+        <li><strong>Equipped marker:</strong> the currently equipped base identity shows <em>"Currently equipped."</em> in its lore; every other head shows <em>"Click to equip."</em></li>
+        <li><strong>Back button:</strong> the first slot of the control row (Slot 45 on six-row views) returns to the Main Identity GUI.</li>
+        <li><strong>Pagination:</strong> on six-row views, <strong>Slot 48</strong> is "Previous Page" and <strong>Slot 50</strong> is "Next Page". Each button appears only when the corresponding page exists.</li>
+        <li><strong>Switching rules:</strong> switching here works between base identities only — a regular profession identity must be unequipped first so its key item is handed back. Each identity keeps its own isolated inventory and ender chest, saved and restored on every switch, and the identity swap cooldown applies.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Cosmetic GUI <span class="badge">1-row</span></h2>
+      <p>Provides a menu to manage visual aspects of the identity:</p>
+      <ul>
+        <li><strong>Slot 5</strong> — displays a <strong>Skin</strong> placeholder.</li>
+        <li><strong>Slot 7</strong> — displays an <strong>Aura</strong> placeholder.</li>
+        <li><strong>Security:</strong> this menu is only accessible if the player has an active identity equipped.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Ability &amp; Rune GUIs <span class="badge">6-rows</span></h2>
+      <p>These GUIs are dynamically bound to the database:</p>
+      <div class="legend"><span class="fill">Equipped (Lime Stained Glass)</span><span class="empty">Empty (Red Stained Glass)</span></div>
+      <ul>
+        <li><strong>Fetching:</strong> upon opening, the plugin fetches the currently equipped abilities / runes for the active identity.</li>
+        <li><strong>Placeholders:</strong> empty slots are shown as <strong>Red Stained Glass Panes</strong>.</li>
+        <li><strong>Equipped items:</strong> equipped abilities / runes are shown as <strong>Lime Stained Glass Panes</strong> with their respective display names.</li>
+        <li><strong>Security:</strong> these menus are only accessible if the player has an active identity equipped.</li>
+      </ul>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="../js/site.js" defer></script>
+</body>
+</html>

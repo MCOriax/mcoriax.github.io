@@ -1,0 +1,27 @@
+/* Installation page specifics */
+.steps { list-style: none; counter-reset: step; padding: 0; margin: 1.4rem 0; display: grid; gap: 0.9rem; }
+.steps > li {
+  position: relative;
+  counter-increment: step;
+  padding: 1.1rem 1.2rem 1.1rem 3.4rem;
+  border-radius: var(--radius);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-sm);
+  -webkit-backdrop-filter: var(--blur);
+  backdrop-filter: var(--blur);
+}
+.steps > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 1rem; top: 1rem;
+  width: 30px; height: 30px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  font-weight: 800; font-size: 0.9rem;
+  color: #fff;
+  background: linear-gradient(150deg, var(--accent), var(--accent-strong));
+  box-shadow: var(--shadow-sm);
+}
+.steps > li > :first-child { margin-top: 0; }
+.steps > li > :last-child { margin-bottom: 0; }
