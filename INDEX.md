@@ -93,6 +93,7 @@ The site is plain, self-contained static HTML — no build step and no external 
 | [`docs/logs/index.html`](docs/logs/index.html) | Latest change log with a right-side version navigation bar. |
 | [`docs/logs/1/0/0/index.html`](docs/logs/1/0/0/index.html) | Permalink for version 1.0.0 (versioned `major/minor/patch` structure). |
 | [`docs/logs/1/1/0/index.html`](docs/logs/1/1/0/index.html) | Permalink for version 1.1.0 (universal JAR architecture). |
+| [`docs/logs/2/0/0/index.html`](docs/logs/2/0/0/index.html) | Permalink for version 2.0.0 (developer API namespace move). |
 
 ## Tooling
 
