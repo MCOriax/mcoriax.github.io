@@ -25,7 +25,7 @@
 
     <section class="section panel">
       <h2>How listeners work</h2>
-      <p>The plugin provides several custom events in the <code>io.github.mcoriax.bukkit.event</code> package. Every one of them supports Folia's asynchronous context and works across all supported platforms — <strong>SpigotMC</strong>, <strong>PaperMC</strong>, and <strong>Folia</strong>. An event marks itself asynchronous whenever it is fired off the primary thread, so third-party handlers must stay thread-safe and schedule back onto the appropriate scheduler before touching main-thread-only Bukkit API.</p>
+      <p>The plugin provides several custom events in the <code>io.github.mcoriax.mcidentity.bukkit.event</code> package. Every one of them supports Folia's asynchronous context and works across all supported platforms — <strong>SpigotMC</strong>, <strong>PaperMC</strong>, and <strong>Folia</strong>. An event marks itself asynchronous whenever it is fired off the primary thread, so third-party handlers must stay thread-safe and schedule back onto the appropriate scheduler before touching main-thread-only Bukkit API.</p>
       <p>To react to an event, register a normal Bukkit <code>Listener</code> from your own plugin and annotate a handler method — exactly as shown on the <a href="../api/index.html#integration">Developer API</a> page. The reference below documents each event's purpose, the data it carries, and whether it can be cancelled.</p>
     </section>
 

@@ -61,21 +61,21 @@ gpr.key=ghp_your_personal_access_token_with_read_packages</code></pre>
     }
 }</code></pre>
 
-      <h3>1.2 · Declare the three dependencies <span class="badge">compileOnly · 1.0.0</span></h3>
-      <p>MCIdentity is present on the server at runtime, so you compile against it but do <strong>not</strong> bundle/shade it — use the <code>compileOnly</code> configuration for all three artifacts. The published coordinates are group <code>io.github.mcoriax</code>, version <code>1.0.0</code>:</p>
+      <h3>1.2 · Declare the three dependencies <span class="badge">compileOnly · 2.0.0</span></h3>
+      <p>MCIdentity is present on the server at runtime, so you compile against it but do <strong>not</strong> bundle/shade it — use the <code>compileOnly</code> configuration for all three artifacts. The published coordinates are group <code>io.github.mcoriax</code>, version <code>2.0.0</code>:</p>
       <span class="code-label">build.gradle</span>
 <pre><code>dependencies {
     // MCIdentity — provided by the server at runtime, so compileOnly only.
-    compileOnly 'io.github.mcoriax:api:1.0.0'      // interfaces &amp; models
-    compileOnly 'io.github.mcoriax:common:1.0.0'   // MCIdentityProvider + data layer
-    compileOnly 'io.github.mcoriax:bukkit:1.0.0'   // Bukkit events &amp; helpers
+    compileOnly 'io.github.mcoriax:api:2.0.0'      // interfaces &amp; models
+    compileOnly 'io.github.mcoriax:common:2.0.0'   // MCIdentityProvider + data layer
+    compileOnly 'io.github.mcoriax:bukkit:2.0.0'   // Bukkit events &amp; helpers
 
     // Your own server platform API (example)
     compileOnly 'org.spigotmc:spigot-api:1.20.1-R0.1-SNAPSHOT'
 }</code></pre>
       <div class="callout">
         <span class="callout__icon" aria-hidden="true">ℹ️</span>
-        <div class="callout__body"><p>The jar file names are <code>mcidentity-api-1.0.0.jar</code>, <code>mcidentity-common-1.0.0.jar</code>, and <code>mcidentity-bukkit-1.0.0.jar</code>, but the resolvable Maven artifactIds are <code>api</code>, <code>common</code>, and <code>bukkit</code> as shown above.</p></div>
+        <div class="callout__body"><p>The jar file names are <code>mcidentity-api-2.0.0.jar</code>, <code>mcidentity-common-2.0.0.jar</code>, and <code>mcidentity-bukkit-2.0.0.jar</code>, but the resolvable Maven artifactIds are <code>api</code>, <code>common</code>, and <code>bukkit</code> as shown above.</p></div>
       </div>
 
       <h3>1.3 · Load order</h3>
@@ -91,8 +91,8 @@ depend: [MCIdentity]        # use softdepend if MCIdentity is optional</code></p
     <!-- 2. API usage -->
     <section class="section panel" id="usage">
       <h2>2 · API usage</h2>
-      <p>All identity data flows through <code>io.github.mcoriax.common.MCIdentityProvider</code>, a singleton exposed as a public static field and initialized by MCIdentity when its database comes up.</p>
-<pre><code>import io.github.mcoriax.common.MCIdentityProvider;
+      <p>All identity data flows through <code>io.github.mcoriax.mcidentity.common.MCIdentityProvider</code>, a singleton exposed as a public static field and initialized by MCIdentity when its database comes up.</p>
+<pre><code>import io.github.mcoriax.mcidentity.common.MCIdentityProvider;
 
 if (!MCIdentityProvider.hasDatabase()) {
     // MCIdentity has no database configured yet — do not touch the API.
@@ -106,7 +106,7 @@ MCIdentityProvider provider = MCIdentityProvider.instance;</code></pre>
 
       <h3>2.1 · Fetch — read the active identity's data</h3>
       <p><code>getActiveIdentity(playerUuid)</code> resolves the <strong>identity UUID</strong> the player is currently playing as; the per-identity data is then keyed by that identity UUID.</p>
-<pre><code>import io.github.mcoriax.api.model.IdentityProperties;
+<pre><code>import io.github.mcoriax.mcidentity.api.model.IdentityProperties;
 import java.util.UUID;
 
 UUID playerUuid = player.getUniqueId();
@@ -129,7 +129,7 @@ provider.getActiveIdentity(playerUuid).thenAccept(optIdentity -> {
             .thenAccept(strength -> { /* ... */ });
 });</code></pre>
       <p>The full session (player UUID, active identity UUID, serialized key item) is available via <code>getSession(playerUuid)</code>:</p>
-<pre><code>import io.github.mcoriax.api.model.IdentitySession;
+<pre><code>import io.github.mcoriax.mcidentity.api.model.IdentitySession;
 
 provider.getSession(playerUuid).thenAccept(optSession -&gt;
     optSession.ifPresent(session -&gt; {
@@ -139,7 +139,7 @@ provider.getSession(playerUuid).thenAccept(optSession -&gt;
 
       <h3>2.2 · Modify — persist changes to an identity</h3>
       <p><code>IdentityProperties</code> values are snapshots. For cosmetic/storage fields use <code>MutableIdentityProperties.copyOf(...)</code> and its setters; for <code>level</code>, <code>exp</code>, or <code>statPoints</code>, build a fresh value and call <code>updateProperties</code>:</p>
-<pre><code>import io.github.mcoriax.common.model.MutableIdentityProperties;
+<pre><code>import io.github.mcoriax.mcidentity.common.model.MutableIdentityProperties;
 
 provider.getProperties(identityUuid).thenCompose(optProps -&gt; {
     if (optProps.isEmpty()) {
@@ -175,7 +175,7 @@ provider.getIdentityInventory(identityUuid).thenAccept(base64 -&gt; { /* restore
 provider.getIdentityEnderchest(identityUuid).thenAccept(base64 -&gt; { /* restore ender chest */ });</code></pre>
 
       <h3>2.3 · Manage — active identity, actions, and cooldowns</h3>
-<pre><code>import io.github.mcoriax.api.model.ActionType;
+<pre><code>import io.github.mcoriax.mcidentity.api.model.ActionType;
 
 // Set (or clear, with null) the player's active identity + serialized key item.
 provider.setActiveIdentity(playerUuid, identityUuid, base64KeyItem);
@@ -220,14 +220,14 @@ boolean isBlocked(UUID playerUuid) {
     <!-- 3. Bukkit integration -->
     <section class="section panel" id="integration">
       <h2>3 · Bukkit integration</h2>
-      <p>MCIdentity fires custom Bukkit events from the <code>io.github.mcoriax.bukkit.event</code> package. Every event works across <strong>SpigotMC</strong>, <strong>PaperMC</strong>, and <strong>Folia</strong>. The two events most relevant to an economy/membership plugin are <code>MCIdentityEquipEvent</code> and <code>MCIdentityUnequipEvent</code> — the exact moments to load and unload the data bound to an identity.</p>
+      <p>MCIdentity fires custom Bukkit events from the <code>io.github.mcoriax.mcidentity.bukkit.event</code> package. Every event works across <strong>SpigotMC</strong>, <strong>PaperMC</strong>, and <strong>Folia</strong>. The two events most relevant to an economy/membership plugin are <code>MCIdentityEquipEvent</code> and <code>MCIdentityUnequipEvent</code> — the exact moments to load and unload the data bound to an identity.</p>
 
       <h3>3.1 · Implement a listener</h3>
       <span class="code-label">Your own plugin</span>
 <pre><code>package com.example.bank;
 
-import io.github.mcoriax.bukkit.event.MCIdentityEquipEvent;
-import io.github.mcoriax.bukkit.event.MCIdentityUnequipEvent;
+import io.github.mcoriax.mcidentity.bukkit.event.MCIdentityEquipEvent;
+import io.github.mcoriax.mcidentity.bukkit.event.MCIdentityUnequipEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
