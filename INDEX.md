@@ -14,6 +14,7 @@ This repository is the **static documentation website** for the MCIdentity Minec
 | [`INDEX.md`](INDEX.md) | This project structure index. |
 | [`README.md`](README.md) | Human-facing project overview. |
 | [`AGENTS.md`](AGENTS.md) | Agent rules for this site (no internal source code; how to create a change log). |
+| [`DESIGN.md`](DESIGN.md) | This repository's copy of the shared "Silver Glass" design system (tokens, components, reuse guide). |
 | [`.nojekyll`](.nojekyll) | Disables Jekyll processing so files are served as-is. |
 | [`docs/`](docs/) | GitHub Pages site root (set the Pages source to this folder). |
 | [`scripts/`](scripts/) | Build tooling used to generate repetitive pages. |
@@ -37,20 +38,17 @@ The site is plain, self-contained static HTML — no build step and no external 
 
 ### Stylesheets
 
-The shared "Silver Glass" theme (root tokens, layout, components) is **not**
-stored here. Every page imports it over the network from the single source of
-truth, `MCEngine/mcengine.github.io`:
-
-- `https://mcengine.github.io/css/main.css` — root theme tokens and base styles.
-- `https://mcengine.github.io/css/shared/layout.css` — header, nav, footer, breadcrumbs.
-- `https://mcengine.github.io/css/shared/components.css` — cards, accordions, tables, badges, buttons, callouts.
-
-The stylesheets below are this repository's **own custom** styles only.
+The shared "Silver Glass" theme is vendored locally in this repository (no
+runtime dependency on another site); the design system is documented in
+[`DESIGN.md`](DESIGN.md).
 
 | Directory / File | Purpose |
 |---|---|
-| [`docs/css/`](docs/css/) | Local (custom-only) CSS directory. |
-| [`docs/css/custom/custom.css`](docs/css/custom/custom.css) | Site-specific header/footer extras (brand logo, donation link, Platforms dropdown, footer bar) that are not part of the shared theme. |
+| [`docs/css/`](docs/css/) | Root CSS directory. |
+| [`docs/css/main.css`](docs/css/main.css) | Root theme tokens (white / silver / transparent) and base styles. |
+| [`docs/css/shared/`](docs/css/shared/) | Shared CSS used across multiple pages. |
+| [`docs/css/shared/layout.css`](docs/css/shared/layout.css) | Header, navigation, footer, breadcrumbs, and this site's header/footer extras (brand logo, donation link, Platforms dropdown, footer bar). |
+| [`docs/css/shared/components.css`](docs/css/shared/components.css) | Cards, accordions, tables, code, badges, buttons, callouts. |
 | [`docs/css/home/`](docs/css/home/) | Home page styles. |
 | [`docs/css/features/`](docs/css/features/) | Features page styles. |
 | [`docs/css/installation/`](docs/css/installation/) | Installation page styles. |

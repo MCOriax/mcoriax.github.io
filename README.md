@@ -28,7 +28,7 @@ full structure. In short:
 |---|---|
 | [`docs/index.html`](docs/index.html) | Central landing page with overview cards. |
 | [`docs/partials/`](docs/partials/) | Shared header and footer, included by every page. |
-| [`docs/css/`](docs/css/) | This site's own custom, per-section stylesheets (the shared theme is imported from `mcengine.github.io`). |
+| [`docs/css/`](docs/css/) | Root, shared, and per-section stylesheets (this repository's own copy of the theme). |
 | [`docs/js/site.js`](docs/js/site.js) | Client-side include loader and navigation behaviour. |
 | [`docs/profession/`](docs/profession/) | One page per bundled profession. |
 | [`docs/api/`](docs/api/) | Developer API usage. |
@@ -48,10 +48,10 @@ python3 scripts/generate_professions.py
 ## Theme
 
 A modern, glassmorphism-inspired theme built around **white**, **silver**, and
-**transparent** surfaces. The theme is the shared "Silver Glass" design system,
-maintained once in `MCEngine/mcengine.github.io` (the single source of truth for
-the whole ecosystem) and imported over the network from
-`https://mcengine.github.io/css/` — this repository does not keep its own copy.
-Only this site's custom header/footer extras live locally in
-[`docs/css/custom/custom.css`](docs/css/custom/custom.css). Aside from that shared
-theme, the site uses no external fonts, scripts, or stylesheets.
+**transparent** surfaces. The theme is this repository's own copy of the shared
+"Silver Glass" design system, documented in [`DESIGN.md`](DESIGN.md) and kept in
+sync with the canonical copy in `MCEngine/mcengine.github.io`. The design tokens
+live in [`docs/css/main.css`](docs/css/main.css); shared layout and components
+live under [`docs/css/shared/`](docs/css/shared/). The site is fully
+self-contained — no external fonts, scripts, or stylesheets, and no runtime
+dependency on another repository.
