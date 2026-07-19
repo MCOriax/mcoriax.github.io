@@ -341,8 +341,12 @@ def esc(s):
 
 
 def head(title, desc, root, section, css):
+    # Absolute URLs (the shared MCEngine theme) are used as-is; repo-local
+    # stylesheets are resolved relative to the page via `root`.
     links = "\n".join(
-        '  <link rel="stylesheet" href="%s%s">' % (root, c) for c in css)
+        '  <link rel="stylesheet" href="%s">' % c if c.startswith("http")
+        else '  <link rel="stylesheet" href="%s%s">' % (root, c)
+        for c in css)
     return (
         "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n"
         "  <meta charset=\"UTF-8\">\n"
@@ -397,7 +401,10 @@ def action_rows(actions):
 
 def detail_page(code, p):
     root = "../../"
-    css = ["css/main.css", "css/shared/layout.css", "css/shared/components.css",
+    css = ["https://mcengine.github.io/css/main.css",
+           "https://mcengine.github.io/css/shared/layout.css",
+           "https://mcengine.github.io/css/shared/components.css",
+           "css/custom/custom.css",
            "css/profession/profession.css"]
     total = p["exp_up"] * (p["max"] - 1)
     random_note = ("randomly distributed across the six primary attributes"
@@ -482,7 +489,10 @@ def detail_page(code, p):
 
 def index_page():
     root = "../"
-    css = ["css/main.css", "css/shared/layout.css", "css/shared/components.css",
+    css = ["https://mcengine.github.io/css/main.css",
+           "https://mcengine.github.io/css/shared/layout.css",
+           "https://mcengine.github.io/css/shared/components.css",
+           "css/custom/custom.css",
            "css/profession/profession.css"]
     cards = []
     for code in ORDER:
