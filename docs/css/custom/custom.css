@@ -1,0 +1,112 @@
+/* ==========================================================================
+   MCIdentity — repository-local custom styles.
+
+   The shared "Silver Glass" theme (root tokens, layout, and components) is the
+   single source of truth in MCEngine/mcengine.github.io and is imported over
+   the network from https://mcengine.github.io/css/. This file holds ONLY the
+   pieces that are specific to this site's header and footer and are not part of
+   the shared theme: the brand logo chip, the donation nav link, the Platforms
+   dropdown menu, and the footer bottom bar. Load it after the shared stylesheets
+   so these additions layer on top. All design tokens (--accent, --ink-*,
+   --glass, --shadow-*, --hairline, --radius-sm, --maxw, --header-h, …) come from
+   the shared theme.
+   ========================================================================== */
+
+/* Brand logo chip in the header ------------------------------------------- */
+.nav__logo {
+  width: 30px; height: 30px;
+  display: grid; place-items: center;
+  border-radius: 9px;
+  background: linear-gradient(150deg, #ffffff, #d7dde6);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-sm);
+  font-weight: 800;
+  color: var(--accent-strong);
+  font-size: 0.9rem;
+}
+
+/* Donation link, pushed to the far right of the nav ----------------------- */
+.nav__links .nav__spacer { margin-left: auto; }
+
+.nav__link--donate {
+  color: var(--sponsor);
+  font-weight: 650;
+  border: 1px solid rgba(214, 51, 108, 0.28);
+  background: var(--sponsor-soft);
+}
+.nav__link--donate:hover {
+  background: rgba(214, 51, 108, 0.16);
+  color: var(--sponsor);
+}
+.nav__link--donate::before { content: "\2665"; margin-right: 0.35rem; }
+
+/* Platforms dropdown ------------------------------------------------------ */
+.nav__dd { position: relative; }
+.nav__dd-toggle { cursor: pointer; }
+.nav__dd-toggle::after {
+  content: "\25BE";
+  font-size: 0.7rem;
+  margin-left: 0.28rem;
+  opacity: 0.7;
+}
+.nav__dd-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 178px;
+  padding: 0.4rem;
+  list-style: none;
+  margin: 0;
+  background: #ffffff;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: opacity 0.16s ease, transform 0.16s ease, visibility 0.16s;
+}
+.nav__dd:hover .nav__dd-menu,
+.nav__dd:focus-within .nav__dd-menu,
+.nav__dd-menu:hover {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.nav__dd-menu a {
+  display: block;
+  padding: 0.5rem 0.7rem;
+  border-radius: 8px;
+  color: var(--ink-600, var(--ink-500));
+  font-size: 0.9rem;
+}
+.nav__dd-menu a:hover { background: var(--glass); color: var(--ink-900); text-decoration: none; }
+
+/* Footer bottom bar ------------------------------------------------------- */
+.site-footer__bar {
+  border-top: 1px solid var(--hairline);
+  padding: 1rem 1.4rem;
+  text-align: center;
+  color: var(--ink-400);
+  font-size: 0.84rem;
+}
+
+/* Mobile: collapse the dropdown into the stacked menu --------------------- */
+@media (max-width: 900px) {
+  .nav__links .nav__spacer { margin-left: 0; }
+  .nav__dd-menu {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    box-shadow: none;
+    border: none;
+    background: transparent;
+    padding: 0.1rem 0 0.1rem 0.9rem;
+  }
+}
+
+/* Mobile: let the footer brand column span the full width ----------------- */
+@media (max-width: 720px) {
+  .site-footer__brand-col { grid-column: 1 / -1; }
+}
