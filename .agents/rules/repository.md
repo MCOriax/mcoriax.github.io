@@ -61,13 +61,13 @@ the site fast, private, and CSP-friendly.
 ## Companion repositories
 
 When working on this repository, the session must always have both of these
-github.com repositories checked out:
+github.com companion repositories checked out:
 
+* `MCOriax/mcidentity` (`https://github.com/MCOriax/mcidentity.git`)
 * `MCOriax/server-expressjs` (`https://github.com/MCOriax/server-expressjs.git`)
-* `MCOriax/mcoriax.github.io` (`https://github.com/MCOriax/mcoriax.github.io.git`)
 
 If either repository is not already present in the session, clone it before
-starting work, so the documentation site and its backend server stay in sync
-during development. This is a development-time requirement only and adds no
-runtime dependency; the published site remains fully self-contained (see
-Iron Rule 2).
+starting work, so the documentation site stays in sync with the plugin it
+documents and the backend server it describes. This is a development-time
+requirement only and adds no runtime dependency; the published site remains
+fully self-contained (see Iron Rule 2).
