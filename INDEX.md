@@ -17,6 +17,7 @@ This repository is the **static documentation website** for the MCIdentity Minec
 | [`.agents/`](.agents/) | Portable agent instruction set (rules, git workflow, architecture). See [`.agents/INDEX.md`](.agents/INDEX.md). |
 | [`DESIGN.md`](DESIGN.md) | This repository's copy of the shared "Silver Glass" design system (tokens, components, reuse guide). |
 | [`.nojekyll`](.nojekyll) | Disables Jekyll processing so files are served as-is. |
+| [`.gitignore`](.gitignore) | Keeps the build scripts' `__pycache__/` out of the repository. |
 | [`docs/`](docs/) | GitHub Pages site root (set the Pages source to this folder). |
 | [`scripts/`](scripts/) | Build tooling used to generate repetitive pages. |
 
@@ -80,7 +81,7 @@ runtime dependency on another site); the design system is documented in
 
 | Directory / File | Purpose |
 |---|---|
-| [`docs/profession/index.html`](docs/profession/index.html) | Professions overview, EXP syntax, and the full profession table. |
+| [`docs/profession/index.html`](docs/profession/index.html) | Professions overview, the per-action EXP gain reference (one accordion with a worked example per action key), and the full profession table. |
 | [`docs/profession/{profession_name}/index.html`](docs/profession/) | Detail page per bundled profession (max level, stats, how to level up). Covers `acrobat`, `archaeologist`, `archer`, `builder`, `chef`, `crafter`, `enchanter`, `engineer`, `explorer`, `farmer`, `fighter`, `fisher`, `gatherer`, `guard`, `lumberjack`, `mariner`, `merchant`, `miner`, `supporter`, `tamer`, and `tanker`. |
 
 ### Platform pages
@@ -106,3 +107,4 @@ runtime dependency on another site); the design system is documented in
 |---|---|
 | [`scripts/`](scripts/) | Build scripts (not served by the site). |
 | [`scripts/generate_professions.py`](scripts/generate_professions.py) | Generates the profession listing and detail pages from embedded profession data. |
+| [`scripts/exp_actions.py`](scripts/exp_actions.py) | Catalog of every EXP gain action key with its trigger, accepted value shapes, and YAML examples; rendered onto the profession listing page. |

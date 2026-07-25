@@ -6,13 +6,16 @@ This script renders the profession listing page and one detail page per
 bundled profession into ``docs/profession/``. The profession data below is a
 normalised copy of the plugin's default ``professions/*.yml`` resources
 (max level, EXP per level, starting stats, and the action-based EXP rules that
-tell players how to level up). Re-run it whenever the bundled professions
-change:
+tell players how to level up). The per-action EXP reference rendered onto the
+listing page comes from the catalog in ``exp_actions.py``. Re-run it whenever
+the bundled professions or the action catalog change:
 
     python3 scripts/generate_professions.py
 """
 
 import os
+
+import exp_actions
 
 DOCS = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "docs")
 STAT_ORDER = ["energy", "health", "food", "strength", "defense",
@@ -395,6 +398,35 @@ def action_rows(actions):
     return "\n".join(rows)
 
 
+def action_accordions():
+    """Renders the per-action EXP reference as grouped accordions.
+
+    The ``desc`` and shape-note strings from :mod:`exp_actions` are trusted
+    fragments that may carry inline ``<code>`` markup, so they are emitted
+    as-is; every other value is escaped.
+
+    :return: The HTML for the whole action reference.
+    """
+    out = []
+    for group, actions in exp_actions.actions_by_group():
+        out.append('      <h3>%s</h3>' % esc(group))
+        out.append('      <div class="accordion">')
+        for a in actions:
+            out.append('        <details class="acc">'
+                       '<summary><code>%s</code> &middot; %s</summary>'
+                       % (esc(a["key"]), esc(a["title"])))
+            out.append('          <div class="acc__body">')
+            out.append('            <p>%s</p>' % a["desc"])
+            out.append('            <p>%s</p>' % exp_actions.shape_note(a))
+            for caption, snippet in a["examples"]:
+                out.append('            <span class="code-label">%s</span>' % esc(caption))
+                out.append('<pre><code>%s</code></pre>' % esc(snippet))
+            out.append('          </div>')
+            out.append('        </details>')
+        out.append('      </div>')
+    return "\n".join(out)
+
+
 def detail_page(code, p):
     root = "../../"
     css = ["css/main.css", "css/shared/layout.css", "css/shared/components.css",
@@ -530,36 +562,28 @@ def index_page():
     body.append('      <ul>'
                 '<li><code>system_code</code> — must be unique and provided in <strong>lowercase</strong>.</li>'
                 '<li><code>display_name</code> — the human-readable name for the profession.</li></ul>')
-    body.append('      <h3>EXP gain syntax</h3>')
-    body.append('      <div class="accordion">')
-    body.append('        <details class="acc"><summary>Simple value</summary><div class="acc__body">'
-                '<p>Award a specific amount or random range of EXP.</p>'
-                '<pre><code>receive_damage: 10 # Fixed\n'
-                'deal_damage: 10~20 # Random range</code></pre></div></details>')
-    body.append('        <details class="acc"><summary>Condition-based (numerical)</summary><div class="acc__body">'
-                '<p>Award EXP based on numerical thresholds (e.g. damage amount). '
-                'Supports range keys (<code>min-max</code> or <code>min~max</code>).</p>'
-                '<pre><code>deal_damage:\n'
-                '  "1-10": 5       # 1 to 10 damage awards 5 EXP\n'
-                '  "11-50": 10~20  # 11 to 50 damage awards random 10-20 EXP\n'
-                '  "51-100": 50    # 51 to 100 damage awards 50 EXP</code></pre></div></details>')
-    body.append('        <details class="acc"><summary>Condition-based (string)</summary><div class="acc__body">'
-                '<p>Award EXP based on specific targets (e.g. mob types).</p>'
-                '<pre><code>kill_mob:\n'
-                '  zombie: 20      # Killing a zombie awards 20 EXP\n'
-                '  skeleton: 25    # Killing a skeleton awards 25 EXP\n'
-                '  ender_dragon: 1000~2000 # Boss kill awards random large EXP</code></pre></div></details>')
-    body.append('        <details class="acc"><summary>Configuration keys</summary><div class="acc__body">'
-                '<ul>'
+    body.append('      <h3>Configuration keys</h3>')
+    body.append('      <ul>'
                 '<li><code>level.max</code> / <code>level.exp_up</code> — the max level and EXP required per level.</li>'
                 '<li><code>stats</code> — starting attributes (energy, health, food, strength, defense, wisdom, luck, agility, resilience).</li>'
                 '<li><code>stats_random</code> — bonus points randomly distributed across the six primary attributes on creation.</li>'
                 '<li><code>skins</code> — available Base64 skin textures; one is chosen at random per new identity.</li>'
-                '</ul></div></details>')
-    body.append('      </div>')
+                '</ul>')
     body.append('      <div class="callout"><span class="callout__icon" aria-hidden="true">ℹ️</span>'
                 '<div class="callout__body"><p>Editing or deleting a default file does not bring it back '
                 'automatically; defaults are only written when the file is missing.</p></div></div>')
+    body.append('    </section>')
+
+    # Per-action EXP reference
+    body.append('    <section class="section" id="actions">')
+    body.append('      <h2>EXP gain actions</h2>')
+    body.append('      <p>Every key below is a top-level entry in a profession file. Open one to '
+                'see what triggers it, which value shapes it accepts, and a ready-to-paste '
+                'example. A value is either a fixed amount such as <code>10</code> or a random '
+                'range such as <code>10~20</code>, which rolls a fresh amount between the two '
+                'bounds on every gain. All <strong>%d actions</strong> are listed.</p>'
+                % len(exp_actions.ACTIONS))
+    body.append(action_accordions())
     body.append('    </section>')
 
     # Summary table
@@ -576,7 +600,9 @@ def index_page():
     body.append('  </main>')
 
     return (head("Professions & EXP — MCIdentity",
-                 "Browse MCIdentity's 21 bundled professions and learn how profession experience works.",
+                 "Browse MCIdentity's %d bundled professions and configure profession experience "
+                 "with a worked example for every one of the %d EXP gain actions."
+                 % (len(ORDER), len(exp_actions.ACTIONS)),
                  root, "profession", css)
             + "\n".join(body) + foot(root))
 
