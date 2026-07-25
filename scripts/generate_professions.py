@@ -326,7 +326,7 @@ PROFESSIONS = {
     },
     "tanker": {
         "name": "Tanker", "emoji": "\U0001FAA8", "theme": "Defense & mitigation",
-        "max": 120, "exp_up": 100, "random": "100~120",
+        "max": 100, "exp_up": 100, "random": "100~120",
         "stats": {"energy": 100, "health": 250, "food": 120, "strength": 0, "defense": 50, "wisdom": 0, "luck": 0, "agility": 0, "resilience": 50},
         "actions": [
             ("receive_damage", [("1-10", "5~10"), ("11-50", "20~40"), ("51-100", "60~100")]),
