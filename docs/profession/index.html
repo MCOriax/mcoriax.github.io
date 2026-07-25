@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Professions &amp; EXP — MCIdentity</title>
-  <meta name="description" content="Browse MCIdentity's 21 bundled professions and learn how profession experience works.">
+  <meta name="description" content="Browse MCIdentity's 21 bundled professions and configure profession experience with a worked example for every one of the 73 EXP gain actions.">
   <link rel="stylesheet" href="../css/main.css">
   <link rel="stylesheet" href="../css/shared/layout.css">
   <link rel="stylesheet" href="../css/shared/components.css">
@@ -111,21 +111,900 @@
       <p>Server owners customise how professions gain experience by defining action-based EXP configurations in YAML files within the <code>professions/</code> folder. New professions are registered into the database automatically on first run.</p>
       <h3>Key requirements</h3>
       <ul><li><code>system_code</code> — must be unique and provided in <strong>lowercase</strong>.</li><li><code>display_name</code> — the human-readable name for the profession.</li></ul>
-      <h3>EXP gain syntax</h3>
-      <div class="accordion">
-        <details class="acc"><summary>Simple value</summary><div class="acc__body"><p>Award a specific amount or random range of EXP.</p><pre><code>receive_damage: 10 # Fixed
-deal_damage: 10~20 # Random range</code></pre></div></details>
-        <details class="acc"><summary>Condition-based (numerical)</summary><div class="acc__body"><p>Award EXP based on numerical thresholds (e.g. damage amount). Supports range keys (<code>min-max</code> or <code>min~max</code>).</p><pre><code>deal_damage:
-  "1-10": 5       # 1 to 10 damage awards 5 EXP
-  "11-50": 10~20  # 11 to 50 damage awards random 10-20 EXP
-  "51-100": 50    # 51 to 100 damage awards 50 EXP</code></pre></div></details>
-        <details class="acc"><summary>Condition-based (string)</summary><div class="acc__body"><p>Award EXP based on specific targets (e.g. mob types).</p><pre><code>kill_mob:
-  zombie: 20      # Killing a zombie awards 20 EXP
-  skeleton: 25    # Killing a skeleton awards 25 EXP
-  ender_dragon: 1000~2000 # Boss kill awards random large EXP</code></pre></div></details>
-        <details class="acc"><summary>Configuration keys</summary><div class="acc__body"><ul><li><code>level.max</code> / <code>level.exp_up</code> — the max level and EXP required per level.</li><li><code>stats</code> — starting attributes (energy, health, food, strength, defense, wisdom, luck, agility, resilience).</li><li><code>stats_random</code> — bonus points randomly distributed across the six primary attributes on creation.</li><li><code>skins</code> — available Base64 skin textures; one is chosen at random per new identity.</li></ul></div></details>
-      </div>
+      <h3>Configuration keys</h3>
+      <ul><li><code>level.max</code> / <code>level.exp_up</code> — the max level and EXP required per level.</li><li><code>stats</code> — starting attributes (energy, health, food, strength, defense, wisdom, luck, agility, resilience).</li><li><code>stats_random</code> — bonus points randomly distributed across the six primary attributes on creation.</li><li><code>skins</code> — available Base64 skin textures; one is chosen at random per new identity.</li></ul>
       <div class="callout"><span class="callout__icon" aria-hidden="true">ℹ️</span><div class="callout__body"><p>Editing or deleting a default file does not bring it back automatically; defaults are only written when the file is missing.</p></div></div>
+    </section>
+    <section class="section" id="actions">
+      <h2>EXP gain actions</h2>
+      <p>Every key below is a top-level entry in a profession file. Open one to see what triggers it, which value shapes it accepts, and a ready-to-paste example. A value is either a fixed amount such as <code>10</code> or a random range such as <code>10~20</code>, which rolls a fresh amount between the two bounds on every gain. All <strong>73 actions</strong> are listed.</p>
+      <h3>Combat</h3>
+      <div class="accordion">
+        <details class="acc"><summary><code>deal_damage</code> &middot; Deal melee damage</summary>
+          <div class="acc__body">
+            <p>Triggered when the player deals melee damage to another entity.</p>
+            <p>Takes a single value, or a map of range keys written <code>"min-max"</code> or <code>"min~max"</code> and matched against the final damage dealt. An amount outside every range awards nothing.</p>
+            <span class="code-label">Same EXP for any hit</span>
+<pre><code>deal_damage: 5</code></pre>
+            <span class="code-label">Bigger hits award more</span>
+<pre><code>deal_damage:
+  "1-10": 2~5      # a 1 to 10 damage hit awards a random 2 to 5 EXP
+  "11-50": 10~20
+  "51-100": 30~50</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>kill_mob</code> &middot; Kill an entity</summary>
+          <div class="acc__body">
+            <p>Triggered when the player kills an entity.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the entity type in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for any kill</span>
+<pre><code>kill_mob: 15</code></pre>
+            <span class="code-label">Per entity type</span>
+<pre><code>kill_mob:
+  zombie: 20~30
+  skeleton: 25~35
+  creeper: 40~60
+  enderman: 100~150
+  ender_dragon: 1000~2000</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>deal_ranged_damage</code> &middot; Deal projectile damage</summary>
+          <div class="acc__body">
+            <p>Triggered when the player deals damage with a projectile, for example a bow.</p>
+            <p>Takes a single value, or a map of range keys written <code>"min-max"</code> or <code>"min~max"</code> and matched against the final damage dealt. An amount outside every range awards nothing.</p>
+            <span class="code-label">Same EXP for any shot</span>
+<pre><code>deal_ranged_damage: 8</code></pre>
+            <span class="code-label">Rewarding accurate, fully drawn shots</span>
+<pre><code>deal_ranged_damage:
+  "1-10": 3~6
+  "11-50": 12~22
+  "51-100": 35~55</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>critical_hit</code> &middot; Land a critical melee hit</summary>
+          <div class="acc__body">
+            <p>Triggered when the player lands a critical melee hit.</p>
+            <p>Takes a single value, or a map of range keys written <code>"min-max"</code> or <code>"min~max"</code> and matched against the final damage dealt. An amount outside every range awards nothing.</p>
+            <span class="code-label">Same EXP for any critical hit</span>
+<pre><code>critical_hit: 15~25</code></pre>
+            <span class="code-label">Scaled by the damage of the critical hit</span>
+<pre><code>critical_hit:
+  "1-10": 5~10
+  "11-50": 15~25
+  "51-100": 40~60</code></pre>
+          </div>
+        </details>
+      </div>
+      <h3>Defense</h3>
+      <div class="accordion">
+        <details class="acc"><summary><code>receive_damage</code> &middot; Take damage</summary>
+          <div class="acc__body">
+            <p>Triggered when the player takes damage.</p>
+            <p>Takes a single value, or a map of range keys written <code>"min-max"</code> or <code>"min~max"</code> and matched against the damage taken. An amount outside every range awards nothing.</p>
+            <span class="code-label">Same EXP for any hit taken</span>
+<pre><code>receive_damage: 10</code></pre>
+            <span class="code-label">Surviving heavier hits pays more</span>
+<pre><code>receive_damage:
+  "1-10": 5~10
+  "11-50": 20~40
+  "51-100": 60~100
+  "101-1000": 150~300</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>shield_block</code> &middot; Block damage with a shield</summary>
+          <div class="acc__body">
+            <p>Triggered when the player blocks incoming damage with a shield.</p>
+            <p>Takes a single value, or a map of range keys written <code>"min-max"</code> or <code>"min~max"</code> and matched against the blocked damage. An amount outside every range awards nothing.</p>
+            <span class="code-label">Same EXP for any block</span>
+<pre><code>shield_block: 10~18</code></pre>
+            <span class="code-label">Scaled by the damage absorbed</span>
+<pre><code>shield_block:
+  "1-10": 5
+  "11-50": 15~30
+  "51-100": 40~70</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>dodge_action</code> &middot; Evade incoming damage</summary>
+          <div class="acc__body">
+            <p>Triggered when the player evades incoming damage. The dodge chance scales with the identity's <code>agility</code> stat, and a successful dodge fully negates the damage.</p>
+            <p>Takes a single value. The action reports neither a target nor an amount, so a nested map is ignored.</p>
+            <span class="code-label">Fixed reward per dodge</span>
+<pre><code>dodge_action: 20</code></pre>
+          </div>
+        </details>
+      </div>
+      <h3>Gathering</h3>
+      <div class="accordion">
+        <details class="acc"><summary><code>break_ore</code> &middot; Break an ore block</summary>
+          <div class="acc__body">
+            <p>Triggered when the player breaks an ore block.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the ore material in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every ore</span>
+<pre><code>break_ore: 3</code></pre>
+            <span class="code-label">Rarer ores pay more</span>
+<pre><code>break_ore:
+  coal_ore: 2
+  iron_ore: 4
+  gold_ore: 6
+  diamond_ore: 20
+  emerald_ore: 25
+  ancient_debris: 50</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>chop_tree</code> &middot; Break a log block</summary>
+          <div class="acc__body">
+            <p>Triggered when the player breaks a log block.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the log material in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every log</span>
+<pre><code>chop_tree: 2~4</code></pre>
+            <span class="code-label">Per wood type</span>
+<pre><code>chop_tree:
+  oak_log: 2
+  birch_log: 2
+  dark_oak_log: 3
+  warped_stem: 5</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>harvest_crop</code> &middot; Break a fully grown crop</summary>
+          <div class="acc__body">
+            <p>Triggered when the player breaks a fully grown crop.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the crop material in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every crop</span>
+<pre><code>harvest_crop: 1~3</code></pre>
+            <span class="code-label">Per crop</span>
+<pre><code>harvest_crop:
+  wheat: 2
+  carrots: 2
+  potatoes: 2
+  beetroots: 3
+  nether_wart: 4</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>fish_caught</code> &middot; Reel in a fish</summary>
+          <div class="acc__body">
+            <p>Triggered when the player reels in a fish.</p>
+            <p>Takes a single value. The action reports neither a target nor an amount, so a nested map is ignored.</p>
+            <span class="code-label">Random reward per catch</span>
+<pre><code>fish_caught: 4~8</code></pre>
+          </div>
+        </details>
+      </div>
+      <h3>Crafting &amp; Processing</h3>
+      <div class="accordion">
+        <details class="acc"><summary><code>craft_item</code> &middot; Craft an item</summary>
+          <div class="acc__body">
+            <p>Triggered when the player crafts an item.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the result material in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every recipe</span>
+<pre><code>craft_item: 2</code></pre>
+            <span class="code-label">Valuable recipes pay more</span>
+<pre><code>craft_item:
+  stick: 1
+  iron_pickaxe: 8
+  diamond_sword: 30
+  enchanting_table: 50</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>smelt_furnace</code> &middot; Take a smelted item from a furnace</summary>
+          <div class="acc__body">
+            <p>Triggered when the player extracts a smelted item from a furnace.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the result material in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every smelt</span>
+<pre><code>smelt_furnace: 3</code></pre>
+            <span class="code-label">Per smelted result</span>
+<pre><code>smelt_furnace:
+  cooked_beef: 3
+  iron_ingot: 5
+  gold_ingot: 6
+  netherite_scrap: 40</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>brew_potion</code> &middot; Collect a brewed potion</summary>
+          <div class="acc__body">
+            <p>Triggered when the player collects a brewed potion from a brewing stand.</p>
+            <p>Takes a single value. The action reports neither a target nor an amount, so a nested map is ignored.</p>
+            <span class="code-label">Fixed reward per potion</span>
+<pre><code>brew_potion: 12</code></pre>
+          </div>
+        </details>
+      </div>
+      <h3>Interaction &amp; Exploration</h3>
+      <div class="accordion">
+        <details class="acc"><summary><code>tame_animal</code> &middot; Tame an animal</summary>
+          <div class="acc__body">
+            <p>Triggered when the player tames an animal.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the entity type in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every tame</span>
+<pre><code>tame_animal: 25~40</code></pre>
+            <span class="code-label">Per animal</span>
+<pre><code>tame_animal:
+  wolf: 25
+  cat: 30
+  llama: 30
+  parrot: 35
+  horse: 40</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>breed_animal</code> &middot; Breed two animals</summary>
+          <div class="acc__body">
+            <p>Triggered when the player breeds two animals.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the entity type in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every pairing</span>
+<pre><code>breed_animal: 8~12</code></pre>
+            <span class="code-label">Harder animals pay more</span>
+<pre><code>breed_animal:
+  cow: 8
+  sheep: 8
+  turtle: 30
+  panda: 40</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>explore_biome</code> &middot; Enter a new biome</summary>
+          <div class="acc__body">
+            <p>Triggered the first time the player enters a given biome during the current server session.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the biome name in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every new biome</span>
+<pre><code>explore_biome: 30</code></pre>
+            <span class="code-label">Remote biomes pay more</span>
+<pre><code>explore_biome:
+  plains: 10
+  desert: 15
+  jungle: 30
+  deep_dark: 80
+  end_highlands: 120</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>heal_target</code> &middot; Heal another entity</summary>
+          <div class="acc__body">
+            <p>Triggered when the player heals another entity with a splash potion.</p>
+            <p>Takes a single value. The action reports neither a target nor an amount, so a nested map is ignored.</p>
+            <span class="code-label">Fixed reward per heal</span>
+<pre><code>heal_target: 20</code></pre>
+          </div>
+        </details>
+      </div>
+      <h3>Magic &amp; Economy</h3>
+      <div class="accordion">
+        <details class="acc"><summary><code>enchant_item</code> &middot; Enchant an item</summary>
+          <div class="acc__body">
+            <p>Triggered when the player enchants an item at an enchanting table.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the item material in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every enchant</span>
+<pre><code>enchant_item: 20~35</code></pre>
+            <span class="code-label">Per enchanted item</span>
+<pre><code>enchant_item:
+  book: 15
+  diamond_sword: 35
+  netherite_chestplate: 60</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>villager_trade</code> &middot; Complete a villager trade</summary>
+          <div class="acc__body">
+            <p>Triggered when the player collects the result of a villager trade.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the result material in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every trade</span>
+<pre><code>villager_trade: 5</code></pre>
+            <span class="code-label">Per traded result</span>
+<pre><code>villager_trade:
+  emerald: 4
+  experience_bottle: 12
+  enchanted_book: 30</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>repair_item</code> &middot; Repair or combine an item on an anvil</summary>
+          <div class="acc__body">
+            <p>Triggered when the player takes a repaired or combined item out of an anvil. Only durability-bearing items qualify.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the result material in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every repair</span>
+<pre><code>repair_item: 8~15</code></pre>
+            <span class="code-label">Per repaired item</span>
+<pre><code>repair_item:
+  iron_pickaxe: 8
+  diamond_chestplate: 20
+  elytra: 40</code></pre>
+          </div>
+        </details>
+      </div>
+      <h3>Building &amp; Survival</h3>
+      <div class="accordion">
+        <details class="acc"><summary><code>place_block</code> &middot; Place a block</summary>
+          <div class="acc__body">
+            <p>Triggered when the player places a block. A location is rewarded only once, preventing the place / break / replace EXP farm.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the block material in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every block</span>
+<pre><code>place_block: 1~2</code></pre>
+            <span class="code-label">Decorative blocks pay more</span>
+<pre><code>place_block:
+  stone: 1
+  oak_planks: 1
+  quartz_block: 3
+  sea_lantern: 5</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>consume_food</code> &middot; Eat a food item</summary>
+          <div class="acc__body">
+            <p>Triggered when the player eats a food item. Non-food consumables such as potions and milk are ignored.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the food material in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every meal</span>
+<pre><code>consume_food: 2~4</code></pre>
+            <span class="code-label">Per dish</span>
+<pre><code>consume_food:
+  bread: 2
+  cooked_beef: 4
+  golden_carrot: 10
+  enchanted_golden_apple: 50</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>shear_entity</code> &middot; Shear an entity</summary>
+          <div class="acc__body">
+            <p>Triggered when the player shears an entity such as a sheep.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the entity type in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every shear</span>
+<pre><code>shear_entity: 4</code></pre>
+            <span class="code-label">Per entity</span>
+<pre><code>shear_entity:
+  sheep: 4
+  snow_golem: 6
+  mooshroom: 8</code></pre>
+          </div>
+        </details>
+      </div>
+      <h3>Advanced Exploration &amp; Movement</h3>
+      <div class="accordion">
+        <details class="acc"><summary><code>open_loot_chest</code> &middot; Open a generated loot container</summary>
+          <div class="acc__body">
+            <p>Triggered when the player opens a naturally generated loot container. A vanilla loot table only generates once, so the reward cannot be farmed.</p>
+            <p>Takes a single value. The action reports neither a target nor an amount, so a nested map is ignored.</p>
+            <span class="code-label">Random reward per container</span>
+<pre><code>open_loot_chest: 50~80</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>glide_elytra</code> &middot; Start gliding with an elytra</summary>
+          <div class="acc__body">
+            <p>Triggered when the player starts gliding with an elytra. Rate-limited per player to prevent rapid toggle farming.</p>
+            <p>Takes a single value. The action reports neither a target nor an amount, so a nested map is ignored.</p>
+            <span class="code-label">Random reward per launch</span>
+<pre><code>glide_elytra: 10~15</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>survive_fall</code> &middot; Survive fall damage</summary>
+          <div class="acc__body">
+            <p>Triggered when the player takes fall damage but survives it.</p>
+            <p>Takes a single value, or a map of range keys written <code>"min-max"</code> or <code>"min~max"</code> and matched against the survived damage amount. An amount outside every range awards nothing.</p>
+            <span class="code-label">Same EXP for any fall</span>
+<pre><code>survive_fall: 20</code></pre>
+            <span class="code-label">Longer falls pay more</span>
+<pre><code>survive_fall:
+  "1-5": 5
+  "6-15": 20
+  "16-100": 40~70</code></pre>
+          </div>
+        </details>
+      </div>
+      <h3>Team &amp; Support</h3>
+      <div class="accordion">
+        <details class="acc"><summary><code>apply_buff</code> &middot; Buff another player</summary>
+          <div class="acc__body">
+            <p>Triggered when the player lands a beneficial (non-healing) potion on another player. Kept distinct from <code>heal_target</code>, which covers instant healing.</p>
+            <p>Takes a single value. The action reports neither a target nor an amount, so a nested map is ignored.</p>
+            <span class="code-label">Random reward per buff</span>
+<pre><code>apply_buff: 15~25</code></pre>
+          </div>
+        </details>
+      </div>
+      <h3>Farming &amp; Ranching</h3>
+      <div class="accordion">
+        <details class="acc"><summary><code>plant_crop</code> &middot; Plant a crop seed</summary>
+          <div class="acc__body">
+            <p>Triggered when the player plants a crop seed.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the planted crop material in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every seed</span>
+<pre><code>plant_crop: 1~2</code></pre>
+            <span class="code-label">Per crop</span>
+<pre><code>plant_crop:
+  wheat: 1
+  carrots: 1
+  potatoes: 1
+  nether_wart: 3
+  torchflower_crop: 8</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>strip_log</code> &middot; Strip a log with an axe</summary>
+          <div class="acc__body">
+            <p>Triggered when the player strips a log with an axe. A location is rewarded only once, preventing the place / strip / break / replace farm.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the log material in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every log</span>
+<pre><code>strip_log: 2~3</code></pre>
+            <span class="code-label">Per wood type</span>
+<pre><code>strip_log:
+  oak_log: 2
+  spruce_log: 2
+  crimson_stem: 4</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>milk_entity</code> &middot; Milk an entity with a bucket</summary>
+          <div class="acc__body">
+            <p>Triggered when the player milks a cow, mushroom cow or goat with a bucket.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the entity type in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every bucket</span>
+<pre><code>milk_entity: 3~5</code></pre>
+            <span class="code-label">Per animal</span>
+<pre><code>milk_entity:
+  cow: 3
+  mooshroom: 5
+  goat: 8</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>catch_entity_bucket</code> &middot; Capture an entity in a bucket</summary>
+          <div class="acc__body">
+            <p>Triggered when the player captures an entity in a bucket, such as a fish or an axolotl.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the entity type in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every capture</span>
+<pre><code>catch_entity_bucket: 5</code></pre>
+            <span class="code-label">Rarer catches pay more</span>
+<pre><code>catch_entity_bucket:
+  cod: 5
+  salmon: 5
+  pufferfish: 8
+  tadpole: 8
+  tropical_fish: 12
+  axolotl: 25</code></pre>
+          </div>
+        </details>
+      </div>
+      <h3>Exploration &amp; Travel</h3>
+      <div class="accordion">
+        <details class="acc"><summary><code>discover_structure</code> &middot; Discover a major structure</summary>
+          <div class="acc__body">
+            <p>Triggered when the player discovers a major structure, detected through the vanilla advancement granted on entry (stronghold, nether fortress, bastion remnant).</p>
+            <p>Takes a single value. The action reports neither a target nor an amount, so a nested map is ignored.</p>
+            <span class="code-label">Random reward per discovery</span>
+<pre><code>discover_structure: 80~150</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>ride_vehicle</code> &middot; Start riding a vehicle</summary>
+          <div class="acc__body">
+            <p>Triggered when the player starts riding a vehicle such as a boat or a minecart. Rate-limited per player.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the vehicle entity type in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every vehicle</span>
+<pre><code>ride_vehicle: 3~5</code></pre>
+            <span class="code-label">Per vehicle</span>
+<pre><code>ride_vehicle:
+  boat: 3
+  minecart: 4
+  chest_boat: 6</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>leash_entity</code> &middot; Leash an entity</summary>
+          <div class="acc__body">
+            <p>Triggered when the player leashes an entity. Rate-limited per player.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the entity type in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every leash</span>
+<pre><code>leash_entity: 5~8</code></pre>
+            <span class="code-label">Per animal</span>
+<pre><code>leash_entity:
+  cow: 4
+  sheep: 4
+  llama: 8
+  allay: 15</code></pre>
+          </div>
+        </details>
+      </div>
+      <h3>Interaction &amp; Art</h3>
+      <div class="accordion">
+        <details class="acc"><summary><code>play_music_disc</code> &middot; Play a music disc</summary>
+          <div class="acc__body">
+            <p>Triggered when the player inserts a music disc into an empty jukebox. Ejecting a disc is not rewarded.</p>
+            <p>Takes a single value. The action reports neither a target nor an amount, so a nested map is ignored.</p>
+            <span class="code-label">Random reward per disc</span>
+<pre><code>play_music_disc: 10~15</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>dye_item</code> &middot; Dye a sheep</summary>
+          <div class="acc__body">
+            <p>Triggered when the player dyes a sheep. Rate-limited per player.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the dye material in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every dye</span>
+<pre><code>dye_item: 2~4</code></pre>
+            <span class="code-label">Per dye</span>
+<pre><code>dye_item:
+  black_dye: 2
+  cyan_dye: 4
+  pink_dye: 4</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>carve_pumpkin</code> &middot; Carve a pumpkin</summary>
+          <div class="acc__body">
+            <p>Triggered when the player carves a pumpkin with shears. A location is rewarded only once.</p>
+            <p>Takes a single value. The action reports neither a target nor an amount, so a nested map is ignored.</p>
+            <span class="code-label">Random reward per pumpkin</span>
+<pre><code>carve_pumpkin: 5~8</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>ring_bell</code> &middot; Ring a bell</summary>
+          <div class="acc__body">
+            <p>Triggered when the player rings a bell. Rate-limited per player.</p>
+            <p>Takes a single value. The action reports neither a target nor an amount, so a nested map is ignored.</p>
+            <span class="code-label">Random reward per ring</span>
+<pre><code>ring_bell: 3~5</code></pre>
+          </div>
+        </details>
+      </div>
+      <h3>Magic, Utility &amp; Combat</h3>
+      <div class="accordion">
+        <details class="acc"><summary><code>ignite_fire</code> &middot; Ignite a fire</summary>
+          <div class="acc__body">
+            <p>Triggered when the player ignites a fire with flint and steel. Rate-limited per player.</p>
+            <p>Takes a single value. The action reports neither a target nor an amount, so a nested map is ignored.</p>
+            <span class="code-label">Random reward per fire</span>
+<pre><code>ignite_fire: 2~4</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>consume_potion</code> &middot; Drink a potion</summary>
+          <div class="acc__body">
+            <p>Triggered when the player drinks a potion.</p>
+            <p>Takes a single value. The action reports neither a target nor an amount, so a nested map is ignored.</p>
+            <span class="code-label">Random reward per potion</span>
+<pre><code>consume_potion: 5~10</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>apply_debuff</code> &middot; Debuff another entity</summary>
+          <div class="acc__body">
+            <p>Triggered when the player lands a harmful potion on another entity.</p>
+            <p>Takes a single value. The action reports neither a target nor an amount, so a nested map is ignored.</p>
+            <span class="code-label">Random reward per debuff</span>
+<pre><code>apply_debuff: 10~18</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>cure_zombie_villager</code> &middot; Cure a zombie villager</summary>
+          <div class="acc__body">
+            <p>Triggered when the player feeds a golden apple to a weakened zombie villager, starting the cure.</p>
+            <p>Takes a single value. The action reports neither a target nor an amount, so a nested map is ignored.</p>
+            <span class="code-label">Random reward per cure</span>
+<pre><code>cure_zombie_villager: 100~150</code></pre>
+          </div>
+        </details>
+      </div>
+      <h3>Engineering &amp; Mechanics</h3>
+      <div class="accordion">
+        <details class="acc"><summary><code>place_redstone</code> &middot; Place a redstone component</summary>
+          <div class="acc__body">
+            <p>Triggered when the player places a redstone component such as dust, a repeater, a piston, an observer, a button or a pressure plate. A location is rewarded only once, preventing the place / break / replace farm.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the block material in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every component</span>
+<pre><code>place_redstone: 1~3</code></pre>
+            <span class="code-label">Per component</span>
+<pre><code>place_redstone:
+  redstone_wire: 1
+  repeater: 3
+  observer: 5
+  piston: 6</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>create_golem</code> &middot; Build a utility golem</summary>
+          <div class="acc__body">
+            <p>Triggered when a player builds a utility golem. The Bukkit API does not attribute the build to a player, so the reward is credited to the nearest player around the spawn.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the entity type in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every golem</span>
+<pre><code>create_golem: 30</code></pre>
+            <span class="code-label">Per golem</span>
+<pre><code>create_golem:
+  snow_golem: 15~25
+  iron_golem: 40~60</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>activate_conduit</code> &middot; Activate a conduit</summary>
+          <div class="acc__body">
+            <p>Triggered when the player places (activates) a conduit. A location is rewarded only once.</p>
+            <p>Takes a single value. The action reports neither a target nor an amount, so a nested map is ignored.</p>
+            <span class="code-label">Random reward per conduit</span>
+<pre><code>activate_conduit: 30~50</code></pre>
+          </div>
+        </details>
+      </div>
+      <h3>Dimensions &amp; Aquatic</h3>
+      <div class="accordion">
+        <details class="acc"><summary><code>swim_distance</code> &middot; Swim 10 blocks</summary>
+          <div class="acc__body">
+            <p>Triggered for every 10 blocks the player swims (sprint-swimming in water). Distance is accumulated per player so the reward scales with genuine travel rather than firing on every move.</p>
+            <p>Takes a single value. The action reports neither a target nor an amount, so a nested map is ignored.</p>
+            <span class="code-label">Random reward per 10 blocks</span>
+<pre><code>swim_distance: 2~4</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>enter_portal</code> &middot; Travel through a portal</summary>
+          <div class="acc__body">
+            <p>Triggered when the player travels through a nether or end portal. Rate-limited per player to stop back-and-forth farming.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the destination environment in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every portal</span>
+<pre><code>enter_portal: 20</code></pre>
+            <span class="code-label">Per destination</span>
+<pre><code>enter_portal:
+  nether: 15~25
+  the_end: 40~60</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>use_totem</code> &middot; Be saved by a totem of undying</summary>
+          <div class="acc__body">
+            <p>Triggered when a totem of undying saves the player from death.</p>
+            <p>Takes a single value. The action reports neither a target nor an amount, so a nested map is ignored.</p>
+            <span class="code-label">Random reward per totem</span>
+<pre><code>use_totem: 50~100</code></pre>
+          </div>
+        </details>
+      </div>
+      <h3>Survival &amp; Resilience</h3>
+      <div class="accordion">
+        <details class="acc"><summary><code>sleep_in_bed</code> &middot; Sleep in a bed</summary>
+          <div class="acc__body">
+            <p>Triggered when the player successfully lies down to sleep in a bed. Rate-limited per player.</p>
+            <p>Takes a single value. The action reports neither a target nor an amount, so a nested map is ignored.</p>
+            <span class="code-label">Random reward per night</span>
+<pre><code>sleep_in_bed: 5~10</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>extinguish_fire</code> &middot; Extinguish a fire block</summary>
+          <div class="acc__body">
+            <p>Triggered when the player extinguishes a fire block. Rate-limited per player to defeat the ignite / extinguish farm.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the fire material in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every fire</span>
+<pre><code>extinguish_fire: 3~6</code></pre>
+            <span class="code-label">Per fire type</span>
+<pre><code>extinguish_fire:
+  fire: 3
+  soul_fire: 6</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>survive_explosion</code> &middot; Survive an explosion</summary>
+          <div class="acc__body">
+            <p>Triggered when the player takes block or entity explosion damage but survives it.</p>
+            <p>Takes a single value, or a map of range keys written <code>"min-max"</code> or <code>"min~max"</code> and matched against the survived damage amount. An amount outside every range awards nothing.</p>
+            <span class="code-label">Same EXP for any explosion</span>
+<pre><code>survive_explosion: 30</code></pre>
+            <span class="code-label">Bigger blasts pay more</span>
+<pre><code>survive_explosion:
+  "1-5": 10
+  "6-15": 30
+  "16-100": 60~100</code></pre>
+          </div>
+        </details>
+      </div>
+      <h3>Special Events &amp; Bosses</h3>
+      <div class="accordion">
+        <details class="acc"><summary><code>trigger_raid</code> &middot; Trigger a village raid</summary>
+          <div class="acc__body">
+            <p>Triggered when the player triggers a village raid, for example by entering a village while carrying Bad Omen.</p>
+            <p>Takes a single value. The action reports neither a target nor an amount, so a nested map is ignored.</p>
+            <span class="code-label">Random reward per raid</span>
+<pre><code>trigger_raid: 20~40</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>win_raid</code> &middot; Win a village raid</summary>
+          <div class="acc__body">
+            <p>Triggered for every player credited with winning a village raid.</p>
+            <p>Takes a single value. The action reports neither a target nor an amount, so a nested map is ignored.</p>
+            <span class="code-label">Random reward per victory</span>
+<pre><code>win_raid: 150~300</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>summon_boss</code> &middot; Summon a boss</summary>
+          <div class="acc__body">
+            <p>Triggered when a player summons a boss such as the Wither. The reward is credited to the nearest player around the spawn.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the entity type in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every boss</span>
+<pre><code>summon_boss: 200~400</code></pre>
+            <span class="code-label">Per boss</span>
+<pre><code>summon_boss:
+  wither: 200~400</code></pre>
+          </div>
+        </details>
+      </div>
+      <h3>Specialty Farming &amp; Pets</h3>
+      <div class="accordion">
+        <details class="acc"><summary><code>feed_pet</code> &middot; Feed one of your own pets</summary>
+          <div class="acc__body">
+            <p>Triggered when the player feeds one of their own tamed pets an actual food item. Rate-limited per player.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the entity type in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every pet</span>
+<pre><code>feed_pet: 2~4</code></pre>
+            <span class="code-label">Per pet</span>
+<pre><code>feed_pet:
+  wolf: 2
+  cat: 3
+  parrot: 4</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>hatch_egg</code> &middot; Hatch a chick from a thrown egg</summary>
+          <div class="acc__body">
+            <p>Triggered when a thrown egg hatches into a chick.</p>
+            <p>Takes a single value. The action reports neither a target nor an amount, so a nested map is ignored.</p>
+            <span class="code-label">Random reward per chick</span>
+<pre><code>hatch_egg: 5~10</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>collect_honey</code> &middot; Bottle honey from a full hive</summary>
+          <div class="acc__body">
+            <p>Triggered when the player bottles honey from a full beehive or bee nest with a glass bottle. Only a full hive yields honey, which the bees take real time to refill.</p>
+            <p>Takes a single value. The action reports neither a target nor an amount, so a nested map is ignored.</p>
+            <span class="code-label">Random reward per bottle</span>
+<pre><code>collect_honey: 5~10</code></pre>
+          </div>
+        </details>
+      </div>
+      <h3>Ranching &amp; Wildlife</h3>
+      <div class="accordion">
+        <details class="acc"><summary><code>shear_sheep_color</code> &middot; Shear a sheep of a given color</summary>
+          <div class="acc__body">
+            <p>Triggered when the player shears a sheep. Fires alongside <code>shear_entity</code>, so configs can reward rare colors specifically. Re-shearing is gated by vanilla wool regrowth.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the sheep's wool color in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every color</span>
+<pre><code>shear_sheep_color: 10</code></pre>
+            <span class="code-label">Rare colors pay more</span>
+<pre><code>shear_sheep_color:
+  white: 5
+  brown: 15
+  light_blue: 18
+  pink: 25</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>shear_mushroom_cow</code> &middot; Shear a mooshroom</summary>
+          <div class="acc__body">
+            <p>Triggered when the player shears a mooshroom. A mooshroom is sheared only once before it reverts to a cow, so it cannot be farmed.</p>
+            <p>Takes a single value. The action reports neither a target nor an amount, so a nested map is ignored.</p>
+            <span class="code-label">Random reward per mooshroom</span>
+<pre><code>shear_mushroom_cow: 20~30</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>spawn_axolotl_bucket</code> &middot; Release an axolotl from a bucket</summary>
+          <div class="acc__body">
+            <p>Triggered when the player releases an axolotl from a bucket into the world. The companion action to <code>catch_entity_bucket</code>.</p>
+            <p>Takes a single value. The action reports neither a target nor an amount, so a nested map is ignored.</p>
+            <span class="code-label">Random reward per release</span>
+<pre><code>spawn_axolotl_bucket: 15~25</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>sniff_sniffer_egg</code> &middot; A sniffer unearths an ancient seed</summary>
+          <div class="acc__body">
+            <p>Triggered when a sniffer unearths an ancient seed. The dig is not attributed by the Bukkit API, so the reward is credited to the nearest player around the sniffer.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the unearthed seed item in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every seed</span>
+<pre><code>sniff_sniffer_egg: 80</code></pre>
+            <span class="code-label">Per seed</span>
+<pre><code>sniff_sniffer_egg:
+  torchflower_seeds: 80
+  pitcher_pod: 90</code></pre>
+          </div>
+        </details>
+      </div>
+      <h3>Workstations &amp; Economy</h3>
+      <div class="accordion">
+        <details class="acc"><summary><code>sculpt_chiseled_block</code> &middot; Cut a chiseled block on a stonecutter</summary>
+          <div class="acc__body">
+            <p>Triggered when the player cuts a chiseled block variant on a stonecutter.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the result material in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every cut</span>
+<pre><code>sculpt_chiseled_block: 4~6</code></pre>
+            <span class="code-label">Per variant</span>
+<pre><code>sculpt_chiseled_block:
+  chiseled_stone_bricks: 4
+  chiseled_deepslate: 5
+  chiseled_quartz_block: 6</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>use_smithing_template</code> &middot; Take a result out of a smithing table</summary>
+          <div class="acc__body">
+            <p>Triggered when the player takes a result out of a smithing table, which always consumes a smithing template.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the result material in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every upgrade</span>
+<pre><code>use_smithing_template: 10~15</code></pre>
+            <span class="code-label">Per result</span>
+<pre><code>use_smithing_template:
+  diamond_helmet: 10
+  netherite_sword: 25
+  netherite_chestplate: 30</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>repair_trident</code> &middot; Repair a trident on an anvil</summary>
+          <div class="acc__body">
+            <p>Triggered when the player takes a repaired trident out of an anvil. Kept separate from the general <code>repair_item</code> so tridents can be rewarded specifically.</p>
+            <p>Takes a single value. The action reports neither a target nor an amount, so a nested map is ignored.</p>
+            <span class="code-label">Random reward per repair</span>
+<pre><code>repair_trident: 12~20</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>complete_map_fill</code> &middot; Lock a map at a cartography table</summary>
+          <div class="acc__body">
+            <p>Triggered when the player finalizes a map by locking it at a cartography table. Locking captures a permanent snapshot of the explored map, and the glass-pane cost is the natural gate.</p>
+            <p>Takes a single value. The action reports neither a target nor an amount, so a nested map is ignored.</p>
+            <span class="code-label">Random reward per locked map</span>
+<pre><code>complete_map_fill: 25~40</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>trade_special_wandering</code> &middot; Trade with a wandering trader</summary>
+          <div class="acc__body">
+            <p>Triggered when the player completes a trade with a wandering trader specifically. Fires alongside <code>villager_trade</code>.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the result material in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every trade</span>
+<pre><code>trade_special_wandering: 10</code></pre>
+            <span class="code-label">Per traded result</span>
+<pre><code>trade_special_wandering:
+  emerald: 8
+  experience_bottle: 20
+  enchanted_book: 40</code></pre>
+          </div>
+        </details>
+      </div>
+      <h3>World Interaction</h3>
+      <div class="accordion">
+        <details class="acc"><summary><code>ignite_campfire</code> &middot; Light an unlit campfire</summary>
+          <div class="acc__body">
+            <p>Triggered when the player lights an unlit campfire with flint and steel or a fire charge. Rate-limited per player to defeat the light / extinguish farm.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the campfire material in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every campfire</span>
+<pre><code>ignite_campfire: 5</code></pre>
+            <span class="code-label">Per campfire type</span>
+<pre><code>ignite_campfire:
+  campfire: 5
+  soul_campfire: 8</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>harvest_sweet_berries</code> &middot; Gather sweet berries</summary>
+          <div class="acc__body">
+            <p>Triggered when the player gathers berries from a ripe sweet berry bush. Gated by the vanilla bush growth stage, so it cannot be farmed by re-clicking an empty bush.</p>
+            <p>Takes a single value. The action reports neither a target nor an amount, so a nested map is ignored.</p>
+            <span class="code-label">Random reward per bush</span>
+<pre><code>harvest_sweet_berries: 3~5</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>brush_archaeology</code> &middot; Brush a suspicious block</summary>
+          <div class="acc__body">
+            <p>Triggered when the player brushes a suspicious block. A suspicious block holds a single loot and is rewarded only once.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the brushed block material in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every brush</span>
+<pre><code>brush_archaeology: 40~60</code></pre>
+            <span class="code-label">Per block</span>
+<pre><code>brush_archaeology:
+  suspicious_sand: 40~60
+  suspicious_gravel: 50~70</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>use_ender_eye_portal</code> &middot; Place an eye of ender in a portal frame</summary>
+          <div class="acc__body">
+            <p>Triggered when the player places an eye of ender into an empty end portal frame. A frame is rewarded only once.</p>
+            <p>Takes a single value. The action reports neither a target nor an amount, so a nested map is ignored.</p>
+            <span class="code-label">Random reward per frame</span>
+<pre><code>use_ender_eye_portal: 30~50</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>plant_flower</code> &middot; Plant a flower</summary>
+          <div class="acc__body">
+            <p>Triggered when the player plants a flower on the ground or into a flower pot. A location is rewarded only once, preventing the place / break / replace farm.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the flower material in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every flower</span>
+<pre><code>plant_flower: 2~4</code></pre>
+            <span class="code-label">Rare flowers pay more</span>
+<pre><code>plant_flower:
+  dandelion: 2
+  poppy: 2
+  lily_of_the_valley: 5
+  wither_rose: 12</code></pre>
+          </div>
+        </details>
+        <details class="acc"><summary><code>clean_armor_trim</code> &middot; Wash a trimmed armor piece</summary>
+          <div class="acc__body">
+            <p>Triggered when the player washes a trimmed armor piece in a cauldron. Rate-limited per player.</p>
+            <p>Takes a single value that rewards every case equally, or a map keyed by the trim pattern in lowercase. Keys you leave out award nothing.</p>
+            <span class="code-label">Same EXP for every trim</span>
+<pre><code>clean_armor_trim: 8~12</code></pre>
+            <span class="code-label">Per pattern</span>
+<pre><code>clean_armor_trim:
+  dune: 8
+  sentry: 8
+  eye: 15
+  silence: 20</code></pre>
+          </div>
+        </details>
+      </div>
     </section>
     <section class="section">
       <h2>All bundled professions</h2>
