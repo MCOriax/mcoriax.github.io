@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Change Log 0.0.0 — MCIdentitySkill</title>
+  <meta name="description" content="Release notes for MCIdentitySkill version 0.0.0 — the first release of the profession restricted, PDC based skill add-on for MCIdentity.">
+  <link rel="stylesheet" href="../../../../../css/main.css">
+  <link rel="stylesheet" href="../../../../../css/shared/layout.css">
+  <link rel="stylesheet" href="../../../../../css/shared/components.css">
+  <link rel="stylesheet" href="../../../../../css/logs/logs.css">
+  <script>window.SITE_ROOT = "../../../../../"; window.PAGE_SECTION = "logs";</script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="../../../../../index.html">Home</a><span class="sep">/</span>
+      <a href="../../../../index.html">Change Logs</a><span class="sep">/</span>
+      <a href="../../../index.html">MCIdentitySkill</a><span class="sep">/</span><span>0.0.0</span>
+    </nav>
+
+    <span class="eyebrow">Release notes · MCIdentitySkill</span>
+    <h1>Change Log — 0.0.0</h1>
+    <p class="lead">Permalink for MCIdentitySkill version 0.0.0.</p>
+
+    <div class="logs-layout">
+      <article class="log-entry">
+        <div class="log-entry__head">
+          <span class="log-entry__version">0.0.0</span>
+          <span class="badge badge--ok">Latest</span>
+          <span class="log-entry__date">2026-07-28 · Initial release</span>
+        </div>
+        <p class="lead">The first release of <a href="../../../../../skill/index.html">MCIdentitySkill</a>, the standalone skill add-on for MCIdentity. Skill items store their data on the item itself, are restricted to a single profession, and are cast through MythicMobs.</p>
+
+        <div class="log-section">
+          <h3><span class="log-tag log-tag--new">Added</span> Skill items stored on the item (PDC)</h3>
+          <ul>
+            <li>Every skill item carries its data in the Minecraft <code>ItemStack</code> <strong>Persistent Data Container</strong>. There is no database, no schema, and no migration — the item <em>is</em> the record.</li>
+            <li>Keys, all namespaced to this plugin: <code>skill_code</code> and <code>profession</code> (both required), plus optional <code>display_name</code>, <code>skill_skin</code>, and <code>cooldown_seconds</code>.</li>
+            <li>Item data is treated as untrusted input: values are trimmed, length-capped, and range-clamped, and an item missing a required key is denied rather than partially honoured.</li>
+          </ul>
+        </div>
+
+        <div class="log-section">
+          <h3><span class="log-tag log-tag--new">Added</span> Profession restriction</h3>
+          <ul>
+            <li>A player may equip or use a skill item only while their active MCIdentity profession matches the item's <code>profession</code>.</li>
+            <li>Matching is case-insensitive and ignores whitespace, but is otherwise exact — no wildcard, no prefix match, no alternates.</li>
+            <li>Enforced on inventory click, drag, hotbar selection, and right-click use. Every denial names the profession the item requires.</li>
+            <li>The check <strong>fails closed</strong>: a malformed item, no active identity, or an unreachable core plugin all deny. There is no setting that turns it off.</li>
+            <li>Skill items are built on player heads and can <strong>never be placed</strong> as a block — they are equipment, not building material.</li>
+          </ul>
+        </div>
+
+        <div class="log-section">
+          <h3><span class="log-tag log-tag--new">Added</span> MythicMobs casting</h3>
+          <ul>
+            <li>A skill item's <code>skill_code</code> is a MythicMobs skill ID. Using an allowed item asks MythicMobs to cast it with the player as caster.</li>
+            <li>The profession check runs first, so MythicMobs is never consulted for a player in the wrong profession.</li>
+            <li>An unknown skill ID logs a warning and tells the player, never throwing onto the game thread. <code>/skill give</code> warns at creation time when MythicMobs cannot resolve the ID.</li>
+          </ul>
+        </div>
+
+        <div class="log-section">
+          <h3><span class="log-tag log-tag--new">Added</span> Commands and developer API</h3>
+          <ul>
+            <li><code>/skill info</code> shows what the held item stores and whether you can use it. <code>/skill give &lt;player&gt; &lt;skill&gt; &lt;profession&gt; [cooldown]</code> and <code>/skill clear</code> require <code>mcidentityskill.admin</code>.</li>
+            <li>Cancellable <code>MCIdentitySkillEquipEvent</code> and <code>MCIdentitySkillUseEvent</code>, both fired after the profession check has already passed.</li>
+            <li>Published library modules: <code>mcidentity-skill-api</code>, <code>mcidentity-skill-common</code>, and <code>mcidentity-skill-bukkit</code>.</li>
+          </ul>
+        </div>
+
+        <div class="log-section">
+          <h3><span class="log-tag log-tag--note">Note</span> Requirements</h3>
+          <ul>
+            <li>One universal jar for <strong>SpigotMC</strong>, <strong>PaperMC</strong>, and <strong>Folia</strong>; the server type is detected at enable time.</li>
+            <li><strong>MCIdentity 3.0.0</strong> and <strong>MythicMobs</strong> are hard dependencies. Without either, the plugin logs a severe message and refuses to enable rather than leaving skills unrestricted or inert.</li>
+            <li>No database is required. The whole configuration file is a single <code>enable</code> switch, which defaults to <code>false</code>.</li>
+          </ul>
+        </div>
+      </article>
+
+      <aside class="logs-nav" aria-label="Log versions">
+        <h4>MCIdentitySkill</h4>
+        <ul>
+          <li><a class="is-current" href="index.html">0.0.0 <span class="latest">Latest</span></a></li>
+        </ul>
+        <h4 style="margin-top:1.2rem;">MCIdentity</h4>
+        <ul>
+          <li><a href="../../../../3/0/0/index.html">3.0.0</a></li>
+          <li><a href="../../../../2/0/0/index.html">2.0.0</a></li>
+          <li><a href="../../../../1/1/0/index.html">1.1.0</a></li>
+          <li><a href="../../../../1/0/0/index.html">1.0.0</a></li>
+        </ul>
+        <p style="margin:0.9rem 0 0;font-size:0.8rem;color:var(--ink-400);"><a href="../../../index.html">← MCIdentitySkill logs</a></p>
+      </aside>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="../../../../../js/site.js" defer></script>
+</body>
+</html>

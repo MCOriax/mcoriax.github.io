@@ -4,7 +4,7 @@ This file is the entry point for understanding the project structure. Agents MUS
 
 Agent rules are not kept in this repository. They live in the portable `.agents` instruction set used alongside it.
 
-This repository is the **static documentation website** for the MCIdentity Minecraft plugin, published with GitHub Pages from the [`docs/`](docs/) directory.
+This repository is the **static documentation website** for the MCIdentity Minecraft plugin and its **MCIdentitySkill** add-on, published with GitHub Pages from the [`docs/`](docs/) directory.
 
 ## Root Files
 
@@ -63,6 +63,7 @@ runtime dependency on another site); the design system is documented in
 | [`docs/css/platforms/`](docs/css/platforms/) | Platform pages styles. |
 | [`docs/css/donation/`](docs/css/donation/) | Donation page styles. |
 | [`docs/css/logs/`](docs/css/logs/) | Change logs page styles. |
+| [`docs/css/skill/`](docs/css/skill/) | Skill add-on page styles. |
 
 ### Content pages
 
@@ -74,6 +75,7 @@ runtime dependency on another site); the design system is documented in
 | [`docs/gui/index.html`](docs/gui/index.html) | The multi-tier GUI system. |
 | [`docs/commands/index.html`](docs/commands/index.html) | All command usages and permissions. |
 | [`docs/api/index.html`](docs/api/index.html) | Developer API usage of the provider class (accordion reference). |
+| [`docs/skill/index.html`](docs/skill/index.html) | The MCIdentitySkill add-on: the PDC based architecture, the profession restriction, MythicMobs casting, commands, and its developer API. |
 | [`docs/listeners/index.html`](docs/listeners/index.html) | Custom Bukkit events and gameplay listeners. |
 | [`docs/donation/index.html`](docs/donation/index.html) | Donation page with the GitHub sponsor block. |
 
@@ -96,10 +98,13 @@ runtime dependency on another site); the design system is documented in
 
 | Directory / File | Purpose |
 |---|---|
-| [`docs/logs/index.html`](docs/logs/index.html) | Latest change log with a right-side version navigation bar. |
+| [`docs/logs/index.html`](docs/logs/index.html) | Latest MCIdentity change log with a right-side version navigation bar. The add-on keeps its own version tree under `logs/skill/` so the two products' versions never collide. |
 | [`docs/logs/1/0/0/index.html`](docs/logs/1/0/0/index.html) | Permalink for version 1.0.0 (versioned `major/minor/patch` structure). |
 | [`docs/logs/1/1/0/index.html`](docs/logs/1/1/0/index.html) | Permalink for version 1.1.0 (universal JAR architecture). |
 | [`docs/logs/2/0/0/index.html`](docs/logs/2/0/0/index.html) | Permalink for version 2.0.0 (developer API namespace move). |
+| [`docs/logs/3/0/0/index.html`](docs/logs/3/0/0/index.html) | Permalink for version 3.0.0 (skill decoupling; the ability tables are dropped). |
+| [`docs/logs/skill/index.html`](docs/logs/skill/index.html) | Latest MCIdentitySkill change log, with its own version navigation. |
+| [`docs/logs/skill/0/0/0/index.html`](docs/logs/skill/0/0/0/index.html) | Permalink for MCIdentitySkill version 0.0.0 (initial release). |
 
 ## Tooling
 
