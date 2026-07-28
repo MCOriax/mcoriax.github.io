@@ -65,21 +65,6 @@
       <h2>Admin commands <span class="badge badge--warn">mcidentity.admin</span></h2>
       <div class="cmd-list">
         <div class="cmd">
-          <div class="cmd__sig">/identity ability get &lt;system code&gt;</div>
-          <p>Admin tool to get an ability item. You can then give this to a player.</p>
-        </div>
-        <div class="cmd">
-          <div class="cmd__sig">/identity ability create &lt;ability_code_id&gt; &lt;ability_skin_id&gt; &lt;head_texture_base64&gt; [custom_model_id]</div>
-          <p>Admin tool to create an equippable ability item.</p>
-          <ul>
-            <li><code>ability_code_id</code> — the MythicMobs ability (skill) ID the item represents.</li>
-            <li><code>ability_skin_id</code> — the model ID rendered for the ability. Players equipping the item store this skin alongside the ability code.</li>
-            <li><code>head_texture_base64</code> — the Base64 profile-property texture applied to the player-head item.</li>
-            <li><code>custom_model_id</code> (optional) — a numeric <code>CustomModelData</code> value for resource-pack models. Omit it or pass <code>null</code> to keep the default model.</li>
-            <li>Both IDs are saved in the item's persistent data (NBT), so equipping the item through the Ability GUI records exactly which MythicMobs ability and skin to use.</li>
-          </ul>
-        </div>
-        <div class="cmd">
           <div class="cmd__sig">/identity rune get &lt;system code&gt;</div>
           <p>Admin tool to get a rune item.</p>
         </div>
@@ -107,7 +92,7 @@
         </div>
         <div class="deflist__row">
           <div class="deflist__term"><code>mcidentity.admin</code></div>
-          <div>Required for all administrative sub-commands, including <code>/identity ability get</code>, <code>/identity ability create</code>, and <code>/identity base</code>.</div>
+          <div>Required for all administrative sub-commands, including <code>/identity get</code>, <code>/identity rune get</code>, and <code>/identity base</code>.</div>
         </div>
       </div>
     </section>

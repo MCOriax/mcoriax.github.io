@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MCIdentitySkill — Profession restricted skill items</title>
+  <meta name="description" content="MCIdentitySkill is a standalone add-on for MCIdentity. Skill items store their data on the item itself with the Persistent Data Container, are restricted by profession, and are cast through MythicMobs.">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/shared/layout.css">
+  <link rel="stylesheet" href="../css/shared/components.css">
+  <link rel="stylesheet" href="../css/skill/skill.css">
+  <script>window.SITE_ROOT = "../"; window.PAGE_SECTION = "skill";</script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="../index.html">Home</a><span class="sep">/</span><span>Skill Add-on</span>
+    </nav>
+
+    <section class="hero">
+      <span class="eyebrow">Add-on plugin · MCIdentitySkill</span>
+      <h1>Skills live on the item.</h1>
+      <p class="lead">
+        <strong>MCIdentitySkill</strong> is a standalone add-on that adds <strong>skill items</strong>
+        to MCIdentity: items that cast a MythicMobs skill, and that only one profession
+        may hold and use. It ships as its own jar, on its own version line, and installs
+        alongside the core plugin.
+      </p>
+      <div class="skill-hero__badges">
+        <span class="badge badge--ok">SpigotMC</span>
+        <span class="badge badge--ok">PaperMC</span>
+        <span class="badge badge--ok">Folia</span>
+        <span class="badge badge--accent">No database</span>
+        <span class="badge">Requires MCIdentity + MythicMobs</span>
+      </div>
+    </section>
+
+    <!-- The architectural change -->
+    <section class="section">
+      <h2>What changed: abilities are no longer stored in the database</h2>
+      <p class="lead">
+        The skill system used to live inside the core plugin, with an abilities table in its
+        database. It has been split into this add-on — and the storage did not come with it.
+        Skill data now lives in the Minecraft item's <strong>Persistent Data Container (PDC)</strong>.
+      </p>
+
+      <div class="skill-split">
+        <div class="skill-split__card">
+          <span class="skill-split__tag skill-split__tag--was">Previously</span>
+          <h3>Abilities in the database</h3>
+          <ul>
+            <li>An <code>identity_abilities</code> registry and an <code>identity_equipped_abilities</code> slot table, both removed in MCIdentity <code>3.0.0</code>.</li>
+            <li>An ability item pointed at a row; the row was the truth.</li>
+            <li>Every ability read meant a lookup keyed by identity UUID.</li>
+            <li>Duplicating or destroying an item could disagree with the stored rows.</li>
+          </ul>
+        </div>
+        <div class="skill-split__card">
+          <span class="skill-split__tag skill-split__tag--now">Now</span>
+          <h3>Skills on the item (PDC)</h3>
+          <ul>
+            <li>No skills table, no schema, no migration — the add-on has no database at all.</li>
+            <li>The item <em>is</em> the record. Trade it, drop it, or chest it and its data goes with it.</li>
+            <li>Reads are in-memory: the data is already in the item you are holding.</li>
+            <li>Nothing can be orphaned, and no lookup can disagree with what the player holds.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout callout--info">
+        <span class="callout__icon" aria-hidden="true">💡</span>
+        <div class="callout__body">
+          <p>
+            The core <a href="../storage/index.html">MCIdentity storage</a> is unchanged for
+            everything else — identities, professions, stats, cosmetics, and sessions are still
+            stored in your chosen backend. Only skills moved onto the item.
+          </p>
+        </div>
+      </div>
+
+      <div class="callout callout--warn">
+        <span class="callout__icon" aria-hidden="true">⚠️</span>
+        <div class="callout__body">
+          <p>
+            One consequence is worth stating plainly: there is <strong>no way to list which skills
+            a player owns</strong>, and no command that could answer it. A player owns exactly the
+            skill items in their inventory, and the only way to see them is to look at the items.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- What a skill item stores -->
+    <section class="section">
+      <h2>What a skill item stores</h2>
+      <p>
+        An item is a skill item exactly when its persistent data container says so — there is no
+        registry to add it to. Every key is namespaced to the add-on, so it reads as
+        <code>mcidentityskill:&lt;key&gt;</code> and can never be confused with another plugin's
+        data or a vanilla tag.
+      </p>
+
+      <div class="skill-item-card">
+        <div class="skill-item-card__head">
+          <span class="skill-item-card__glyph" aria-hidden="true">📜</span>
+          <span>Any ItemStack → ItemMeta → PersistentDataContainer</span>
+        </div>
+        <ul class="skill-item-card__keys">
+          <li><code>skill_code</code> <span class="skill-item-card__req">required</span> <span>The MythicMobs skill ID cast when the item is used.</span></li>
+          <li><code>profession</code> <span class="skill-item-card__req">required</span> <span>The MCIdentity profession allowed to hold and cast the item.</span></li>
+          <li><code>display_name</code> <span>Human facing name shown in messages; falls back to the skill code.</span></li>
+          <li><code>skill_skin</code> <span>Model ID used for the item's visual; falls back to <code>default</code>.</span></li>
+          <li><code>cooldown_seconds</code> <span>Light re-use guard; absent or <code>0</code> leaves cooldown entirely to MythicMobs.</span></li>
+        </ul>
+      </div>
+
+      <p>
+        <code>profession</code> is stored lower-cased and trimmed, so an item created for
+        <code>Miner</code> still matches a player playing <code>miner</code>. Text values are capped
+        at 128 characters and the cooldown is clamped between 0 and 86400 seconds.
+      </p>
+
+      <h3>Malformed items</h3>
+      <p>
+        An item carrying <strong>some</strong> of these keys but missing <code>skill_code</code> or
+        <code>profession</code> is malformed, and malformed items are always denied — never repaired,
+        and never treated as usable by everyone. A missing profession meaning "anyone may use this"
+        would invert the restriction the add-on exists to enforce.
+      </p>
+      <p>
+        An item carrying <strong>none</strong> of these keys is an ordinary item. The add-on has no
+        opinion about it and never blocks it.
+      </p>
+    </section>
+
+    <!-- Profession restriction -->
+    <section class="section">
+      <h2>Profession restriction</h2>
+      <p class="lead">
+        A player may equip or use a skill item only while the profession of their currently active
+        MCIdentity identity matches the profession stored on the item.
+      </p>
+      <p>
+        Matching is <strong>case-insensitive</strong> and ignores surrounding whitespace, because
+        profession codes are typed by hand in both places. It is otherwise <strong>exact</strong>:
+        there is no wildcard, no <code>any</code>, no prefix match, and no list of alternates. A skill
+        item belongs to exactly one profession.
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Item profession</th><th>Active profession</th><th>Result</th></tr></thead>
+          <tbody>
+            <tr><td><code>miner</code></td><td><code>miner</code></td><td><span class="skill-verdict skill-verdict--allow">allowed</span></td></tr>
+            <tr><td><code>Miner</code></td><td><code>&nbsp;&nbsp;MINER&nbsp;</code></td><td><span class="skill-verdict skill-verdict--allow">allowed</span></td></tr>
+            <tr><td><code>miner</code></td><td><code>archer</code></td><td><span class="skill-verdict skill-verdict--deny">denied</span></td></tr>
+            <tr><td><code>miner</code></td><td><code>mine</code></td><td><span class="skill-verdict skill-verdict--deny">denied</span> — no prefix match</td></tr>
+            <tr><td><code>*</code></td><td><code>miner</code></td><td><span class="skill-verdict skill-verdict--deny">denied</span> — no wildcard</td></tr>
+            <tr><td><em>(blank)</em></td><td><code>miner</code></td><td><span class="skill-verdict skill-verdict--deny">denied</span> — malformed item</td></tr>
+            <tr><td><code>miner</code></td><td><em>(no active identity)</em></td><td><span class="skill-verdict skill-verdict--deny">denied</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>When the check runs</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Action</th><th>Trigger</th></tr></thead>
+          <tbody>
+            <tr><td>Equip</td><td>Moving or dragging the item into a slot, or selecting the hotbar slot it already sits in.</td></tr>
+            <tr><td>Use</td><td>Right-clicking with the item in the main hand.</td></tr>
+            <tr><td>Place</td><td>Always refused — a skill item is equipment, never a block.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        The hotbar-selection case matters because an item can reach a player's hand without ever
+        passing through the add-on — dropped by a mob, moved by a hopper, or simply still held
+        after an identity swap.
+      </p>
+
+      <h3>Denials name the profession</h3>
+      <p>So a player can tell an item they will never be able to use from one they only need to swap identity for:</p>
+      <pre><code>[Skill] This skill belongs to the miner profession, but you are playing as archer.</code></pre>
+
+      <h3>Skill items are never placeable</h3>
+      <p>
+        A skill item is built on a <strong>player head</strong>, which vanilla treats as a placeable
+        block. Placing one would strip the item into a block state and leave a head anyone could
+        break and pick up, so <strong>every</strong> attempt to place a skill item is cancelled —
+        regardless of profession, and even for a malformed item. Skill items are equipment: they are
+        held and right-clicked, never set down.
+      </p>
+
+      <div class="callout callout--warn">
+        <span class="callout__icon" aria-hidden="true">🔒</span>
+        <div class="callout__body">
+          <p>
+            The restriction <strong>fails closed and cannot be switched off</strong>. Anything that
+            stops the add-on proving a player is allowed — unreadable item data, no active identity,
+            or an unreachable core plugin — denies the action. There is no config setting that makes
+            skill items work regardless of profession.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- MythicMobs -->
+    <section class="section">
+      <h2>MythicMobs owns the behaviour</h2>
+      <p>
+        <strong>MythicMobs is a hard dependency.</strong> The <code>skill_code</code> stored on an item
+        <em>is</em> a MythicMobs skill ID, and casting an item means asking MythicMobs to run that skill
+        with the player as caster. Damage, targeting, particles, and effect timing are all authored in
+        your MythicMobs configuration — if a change is about how a skill behaves, it belongs there and
+        not in this add-on.
+      </p>
+
+      <h3>Order of operations</h3>
+      <ol class="skill-flow">
+        <li><strong>Read the item</strong> from the player's hand — one persistent data container read per action.</li>
+        <li class="is-stop"><strong>Check the profession.</strong> A denial stops here; MythicMobs is never consulted for a player in the wrong profession.</li>
+        <li><strong>Check any local cooldown</strong> declared by <code>cooldown_seconds</code>.</li>
+        <li><strong>Fire a cancellable event</strong> so other plugins can add restrictions of their own.</li>
+        <li><strong>Hand the skill to MythicMobs</strong> — and only now does anything actually happen.</li>
+      </ol>
+
+      <h3>Failure behaviour</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Situation</th><th>Behaviour</th></tr></thead>
+          <tbody>
+            <tr><td>MythicMobs or MCIdentity missing at startup</td><td>The add-on logs a severe message and disables itself. Loading with unrestricted skills, or skills that silently do nothing, would be worse than not loading.</td></tr>
+            <tr><td>Unknown skill ID at cast time</td><td>Logged as a warning; the player is told the skill could not be cast. Nothing is thrown onto the game thread.</td></tr>
+            <tr><td>Skill ID unknown when the item is created</td><td><code>/skill give</code> warns immediately, but still creates the item — the skill may live in a MythicMobs pack that loads later.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Commands -->
+    <section class="section">
+      <h2>Commands &amp; permissions</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Command</th><th>Description</th><th>Permission</th></tr></thead>
+          <tbody>
+            <tr><td><code>/skill</code></td><td>Show the usage summary.</td><td>—</td></tr>
+            <tr><td><code>/skill info</code></td><td>Show what the item in your main hand stores, and whether you can use it.</td><td>—</td></tr>
+            <tr><td><code>/skill give &lt;player&gt; &lt;skill&gt; &lt;profession&gt; [cooldown]</code></td><td>Create a skill item and give it to a player.</td><td><code>mcidentityskill.admin</code></td></tr>
+            <tr><td><code>/skill clear</code></td><td>Strip skill data from the held item, turning it back into an ordinary item.</td><td><code>mcidentityskill.admin</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Creating a skill item</h3>
+      <pre><code>/skill give Steve quarry_sense miner 45</code></pre>
+      <p>
+        Gives Steve an item that casts the MythicMobs skill <code>quarry_sense</code>, usable only
+        while playing a <code>miner</code> identity, with a 45 second local re-use guard. Pass no
+        cooldown (or <code>0</code>) to leave cooldown entirely to MythicMobs.
+      </p>
+
+      <h3>Reading a skill item back</h3>
+      <p>Because there is no database, reading the item is the only way to see a skill's data — and <code>/skill info</code> is that read, made visible:</p>
+      <pre><code>[Skill] Skill item stored on this player_head:
+  Skill code: quarry_sense
+  Profession: miner
+  Cooldown: 45s
+  Usable by you: no (profession_mismatch)</code></pre>
+    </section>
+
+    <!-- Install -->
+    <section class="section">
+      <h2>Installing</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Requirement</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td>Java 25 or newer</td><td>Matches the core plugin's toolchain.</td></tr>
+            <tr><td>SpigotMC, PaperMC, or Folia</td><td>One universal jar; the server type is detected at enable time.</td></tr>
+            <tr><td><strong>MCIdentity</strong></td><td>Hard dependency. It owns the active profession every skill item is checked against.</td></tr>
+            <tr><td><strong>MythicMobs</strong></td><td>Hard dependency. It owns and executes every skill behaviour.</td></tr>
+            <tr><td>A database</td><td>Not required. The add-on stores nothing outside the item.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <ol class="skill-flow">
+        <li>Drop <code>MCIdentitySkill-&lt;version&gt;.jar</code> into <code>plugins/</code>, alongside MCIdentity and MythicMobs.</li>
+        <li>Start the server once. It writes <code>plugins/MCIdentitySkill/config.yml</code> and then disables itself, because <code>enable</code> defaults to <code>false</code>.</li>
+        <li>Set <code>enable: true</code> in that file.</li>
+        <li>Restart the server.</li>
+      </ol>
+
+      <p>The whole configuration file is one switch — there is no storage section, because there is no storage:</p>
+      <pre><code># Master switch. The plugin generates no data files and registers
+# nothing until this is turned on.
+enable: false</code></pre>
+    </section>
+
+    <!-- Developer API -->
+    <section class="section">
+      <h2>For developers</h2>
+      <p>
+        The add-on publishes its own library modules under the <code>io.github.mcoriax</code> group:
+        <code>mcidentity-skill-api</code>, <code>mcidentity-skill-common</code>, and
+        <code>mcidentity-skill-bukkit</code>. Declare them <code>compileOnly</code> and add
+        <code>MCIdentitySkill</code> to your <code>plugin.yml</code>:
+      </p>
+      <pre><code>depend:
+  - MCIdentitySkill</code></pre>
+
+      <p>Two cancellable events are fired, both <strong>after</strong> the profession check has already passed — a listener never has to repeat it:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Event</th><th>Fired when</th></tr></thead>
+          <tbody>
+            <tr><td><code>MCIdentitySkillEquipEvent</code></td><td>A player is about to equip an allowed skill item.</td></tr>
+            <tr><td><code>MCIdentitySkillUseEvent</code></td><td>A player is about to cast an allowed skill item, before MythicMobs is consulted.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        Cancelling either one adds a restriction of your own; set a cancel reason and the player is
+        told it. An access check reports <em>why</em> it denied — the profession the item requires and
+        the one the player has — rather than a bare boolean, so you can write your own message.
+      </p>
+
+      <div class="callout callout--info">
+        <span class="callout__icon" aria-hidden="true">📖</span>
+        <div class="callout__body">
+          <p>
+            The core plugin's own integration surface is unchanged — see the
+            <a href="../api/index.html">Developer API</a> and <a href="../listeners/index.html">Events &amp; Listeners</a>
+            pages. For this add-on's release history, see the
+            <a href="../logs/skill/index.html">MCIdentitySkill change logs</a>.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="../js/site.js" defer></script>
+</body>
+</html>

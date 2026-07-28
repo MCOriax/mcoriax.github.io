@@ -267,7 +267,7 @@ public class IdentityBankListener implements Listener {
         new IdentityBankListener(bankService), this);</code></pre>
       <p><strong>Cancelling.</strong> Both events implement <code>Cancellable</code>. Calling <code>event.setCancelled(true)</code> vetoes the equip/unequip — useful if, for example, a membership must be active before an identity can be worn.</p>
       <p><strong>Folia / async safety.</strong> MCIdentity events mark themselves asynchronous whenever fired off the primary thread. Keep your handlers thread-safe and, when you must call main-thread-only Bukkit API, schedule back onto the appropriate scheduler instead of calling it directly.</p>
-      <p>The complete catalog — creation, death, rune/ability/skin/aura set, stat add, and the two events above — lives on the <a href="../listeners/index.html">Events &amp; Listeners</a> page.</p>
+      <p>The complete catalog — creation, death, rune/skin/aura set, stat add, and the two events above — lives on the <a href="../listeners/index.html">Events &amp; Listeners</a> page.</p>
     </section>
 
     <!-- 4. Architecture warning -->
@@ -312,12 +312,8 @@ bank.setBalance(player.getUniqueId(), 1000);</code></pre>
       <div class="accordion">
         <details class="acc api-method"><summary><code>createProfession(String systemCode, String displayName)</code></summary>
           <div class="acc__body"><p>Creates a new profession type in the database. <code>systemCode</code> is the unique identifier; <code>displayName</code> is the human-readable name.</p><p class="ret">Returns CompletableFuture&lt;Void&gt;</p></div></details>
-        <details class="acc api-method"><summary><code>createAbility(String abilityCode, String displayName, String abilitySkin)</code></summary>
-          <div class="acc__body"><p>Creates a new ability type. <code>abilityCode</code> maps to the MythicMobs ability ID; <code>abilitySkin</code> is the model ID rendered for the ability, or null for the default skin.</p><p class="ret">Returns CompletableFuture&lt;Void&gt;</p></div></details>
         <details class="acc api-method"><summary><code>getProfessions()</code></summary>
           <div class="acc__body"><p>Retrieves all available professions.</p><p class="ret">Returns CompletableFuture&lt;Collection&lt;Profession&gt;&gt;</p></div></details>
-        <details class="acc api-method"><summary><code>getAbilities()</code></summary>
-          <div class="acc__body"><p>Retrieves all available abilities.</p><p class="ret">Returns CompletableFuture&lt;Collection&lt;Ability&gt;&gt;</p></div></details>
         <details class="acc api-method"><summary><code>getRunes()</code></summary>
           <div class="acc__body"><p>Retrieves all available runes.</p><p class="ret">Returns CompletableFuture&lt;Collection&lt;Rune&gt;&gt;</p></div></details>
       </div>
@@ -346,12 +342,8 @@ bank.setBalance(player.getUniqueId(), 1000);</code></pre>
           <div class="acc__body"><p>Atomically increments a specific stat in the database. <code>amount</code> can be negative.</p><p class="ret">Returns CompletableFuture&lt;Void&gt;</p></div></details>
       </div>
 
-      <div class="method-group">Abilities &amp; runes (equipped)</div>
+      <div class="method-group">Runes (equipped)</div>
       <div class="accordion">
-        <details class="acc api-method"><summary><code>getEquippedAbilities(UUID identityUuid)</code></summary>
-          <div class="acc__body"><p>Retrieves a map of equipped abilities.</p><p class="ret">Returns CompletableFuture&lt;Map&lt;Integer, EquippedAbility&gt;&gt; (slot → abilityCode + abilitySkin)</p></div></details>
-        <details class="acc api-method"><summary><code>setEquippedAbility(UUID identityUuid, int slot, String abilityCode, String abilitySkin)</code></summary>
-          <div class="acc__body"><p>Equips or clears an ability in a specific slot. <code>abilityCode</code> is the MythicMobs ability ID (null to clear); <code>abilitySkin</code> is the skin model ID stored with the slot, or null for the default skin.</p><p class="ret">Returns CompletableFuture&lt;Void&gt;</p></div></details>
         <details class="acc api-method"><summary><code>getRunes(UUID identityUuid)</code></summary>
           <div class="acc__body"><p>Retrieves a map of equipped runes.</p><p class="ret">Returns CompletableFuture&lt;Map&lt;Integer, String&gt;&gt; (slot → rune code)</p></div></details>
         <details class="acc api-method"><summary><code>setRune(UUID identityUuid, int slot, String runeCode)</code></summary>

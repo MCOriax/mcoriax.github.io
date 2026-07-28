@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GUI System — MCIdentity</title>
-  <meta name="description" content="The multi-tier interactive menu system for managing identities, abilities, runes, and cosmetics.">
+  <meta name="description" content="The multi-tier interactive menu system for managing identities, runes, and cosmetics.">
   <link rel="stylesheet" href="../css/main.css">
   <link rel="stylesheet" href="../css/shared/layout.css">
   <link rel="stylesheet" href="../css/shared/components.css">
@@ -39,7 +39,6 @@
       </div>
       <ul>
         <li><strong>Slot 0</strong> — a button rendered as your own player head, named <em>"Player Identity"</em>. Opens the <strong>Player Identity GUI</strong>.</li>
-        <li><strong>Slot 2</strong> — opens the <strong>Ability GUI</strong>.</li>
         <li><strong>Slot 4</strong> — interactive slot to equip / unequip your <strong>Identity Key</strong>.</li>
         <li><strong>Slot 6</strong> — opens the <strong>Rune GUI</strong>.</li>
         <li><strong>Slot 8</strong> — opens the <strong>Cosmetic GUI</strong>.</li>
@@ -72,14 +71,14 @@
     </section>
 
     <section class="section">
-      <h2>Ability &amp; Rune GUIs <span class="badge">6-rows</span></h2>
-      <p>These GUIs are dynamically bound to the database:</p>
+      <h2>Rune GUI <span class="badge">6-rows</span></h2>
+      <p>This GUI is dynamically bound to the database:</p>
       <div class="legend"><span class="fill">Equipped (Lime Stained Glass)</span><span class="empty">Empty (Red Stained Glass)</span></div>
       <ul>
-        <li><strong>Fetching:</strong> upon opening, the plugin fetches the currently equipped abilities / runes for the active identity.</li>
+        <li><strong>Fetching:</strong> upon opening, the plugin fetches the currently equipped runes for the active identity.</li>
         <li><strong>Placeholders:</strong> empty slots are shown as <strong>Red Stained Glass Panes</strong>.</li>
-        <li><strong>Equipped items:</strong> equipped abilities / runes are shown as <strong>Lime Stained Glass Panes</strong> with their respective display names.</li>
-        <li><strong>Security:</strong> these menus are only accessible if the player has an active identity equipped.</li>
+        <li><strong>Equipped items:</strong> equipped runes are shown as <strong>Lime Stained Glass Panes</strong> with their respective display names.</li>
+        <li><strong>Security:</strong> this menu is only accessible if the player has an active identity equipped.</li>
       </ul>
     </section>
   </main>

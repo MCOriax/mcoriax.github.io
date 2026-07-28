@@ -1,7 +1,7 @@
 # mcoriax.github.io
 
-The documentation website for the **MCIdentity** Minecraft plugin, published with
-GitHub Pages.
+The documentation website for the **MCIdentity** Minecraft plugin and its
+**MCIdentitySkill** add-on, published with GitHub Pages.
 
 ## Project Overview
 
@@ -32,8 +32,9 @@ full structure. In short:
 | [`docs/js/site.js`](docs/js/site.js) | Client-side include loader and navigation behaviour. |
 | [`docs/profession/`](docs/profession/) | One page per bundled profession. |
 | [`docs/api/`](docs/api/) | Developer API usage. |
+| [`docs/skill/`](docs/skill/) | The MCIdentitySkill add-on: PDC based skill items restricted by profession. |
 | [`docs/platforms/`](docs/platforms/) | SpigotMC, PaperMC, and FoliaMC guides. |
-| [`docs/logs/`](docs/logs/) | Versioned change logs. |
+| [`docs/logs/`](docs/logs/) | Versioned change logs; the add-on has its own tree under `docs/logs/skill/`. |
 | [`scripts/generate_professions.py`](scripts/generate_professions.py) | Regenerates the profession pages from bundled data. |
 
 ## Regenerating the profession pages
