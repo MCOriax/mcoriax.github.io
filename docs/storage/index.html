@@ -94,12 +94,10 @@
       <p>The relational backends create their tables automatically on first start:</p>
       <div class="chip-row">
         <span class="chip">identity_professions</span>
-        <span class="chip">identity_abilities</span>
         <span class="chip">identity_runes</span>
         <span class="chip">identity_keys</span>
         <span class="chip">identity_properties</span>
         <span class="chip">identity_stats</span>
-        <span class="chip">identity_equipped_abilities</span>
         <span class="chip">identity_equipped_runes</span>
         <span class="chip">identity_sessions</span>
         <span class="chip">identity_equipped_cosmetics</span>
@@ -107,6 +105,21 @@
         <span class="chip">player_base_slots</span>
       </div>
       <p>The SQLite schema matches the central server's, so a database file can be moved between a game server and a central server deployment.</p>
+
+      <div class="callout callout--warn">
+        <span class="callout__icon" aria-hidden="true">⚠️</span>
+        <div class="callout__body">
+          <p>
+            <strong>Upgrading from 2.x:</strong> the ability system moved into the standalone
+            <a href="../skill/index.html">MCIdentitySkill</a> add-on, where a skill's data lives on
+            the item rather than in a table. The first start after upgrading <strong>drops</strong>
+            <code>identity_abilities</code> and <code>identity_equipped_abilities</code> — and, on
+            MongoDB, the <code>identity_abilities</code> collection and the per-identity
+            <code>equipped_abilities</code> field. Those rows are <strong>not recoverable</strong>,
+            so back the database up first if you want to keep them.
+          </p>
+        </div>
+      </div>
     </section>
 
     <section class="section">
@@ -115,11 +128,11 @@
         <table>
           <thead><tr><th>Resource</th><th>Contents</th></tr></thead>
           <tbody>
-            <tr><td>Professions, abilities, runes</td><td>The shared registries identities reference.</td></tr>
+            <tr><td>Professions, runes</td><td>The shared registries identities reference.</td></tr>
             <tr><td>Identity keys</td><td>Each identity's UUID and profession.</td></tr>
             <tr><td>Properties</td><td>Level, experience, stat points, textures, and serialized inventory / ender chest storage.</td></tr>
             <tr><td>Stats</td><td>The nine numerical attributes (energy, health, food, strength, defense, wisdom, luck, agility, resilience).</td></tr>
-            <tr><td>Equipped abilities and runes</td><td>Slot assignments per identity.</td></tr>
+            <tr><td>Equipped runes</td><td>Slot assignments per identity.</td></tr>
             <tr><td>Cosmetics</td><td>Active skin (Base64) and aura (system code) per identity.</td></tr>
             <tr><td>Sessions</td><td>Which identity each player currently wears, with the serialized identity item.</td></tr>
             <tr><td>Base identity slots</td><td>How many alternative base "player" identities each player has unlocked.</td></tr>
