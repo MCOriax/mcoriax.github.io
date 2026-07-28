@@ -1,0 +1,148 @@
+/* Skill add-on page specifics — architecture split, PDC key table, flow steps */
+
+/* Add-on hero badge row -------------------------------------------------- */
+.skill-hero__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.1rem 0 0;
+}
+
+/* Before / after architecture split -------------------------------------- */
+.skill-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.1rem;
+  margin: 1.4rem 0;
+}
+.skill-split__card {
+  padding: 1.3rem 1.4rem;
+  border-radius: var(--radius);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-sm);
+  -webkit-backdrop-filter: var(--blur);
+  backdrop-filter: var(--blur);
+}
+.skill-split__card h3 {
+  margin: 0 0 0.2rem;
+  font-size: 1.05rem;
+}
+.skill-split__tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.16rem 0.55rem;
+  border-radius: 999px;
+  margin-bottom: 0.7rem;
+}
+.skill-split__tag--was { color: #9a6b16; background: rgba(154, 107, 22, 0.12); }
+.skill-split__tag--now { color: #1f7a54; background: rgba(31, 122, 84, 0.12); }
+.skill-split__card ul { margin: 0.6rem 0 0; padding-left: 1.1rem; }
+.skill-split__card li { margin: 0.35rem 0; }
+
+/* Item data diagram ------------------------------------------------------ */
+.skill-item-card {
+  margin: 1.4rem 0;
+  padding: 1.3rem 1.4rem;
+  border-radius: var(--radius);
+  background: var(--glass-strong);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-sm);
+}
+.skill-item-card__head {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.9rem;
+  font-weight: 700;
+  color: var(--ink-900);
+}
+.skill-item-card__glyph {
+  display: grid;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 10px;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font-size: 1.1rem;
+}
+.skill-item-card__keys {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.skill-item-card__keys li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.5rem 0.7rem;
+  border-radius: 10px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  font-size: 0.92rem;
+}
+.skill-item-card__keys code { font-size: 0.85rem; }
+.skill-item-card__req {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  color: var(--accent-strong);
+  background: var(--accent-soft);
+}
+
+/* Ordered flow ----------------------------------------------------------- */
+.skill-flow {
+  counter-reset: skill-step;
+  list-style: none;
+  margin: 1.3rem 0;
+  padding: 0;
+  display: grid;
+  gap: 0.65rem;
+}
+.skill-flow li {
+  counter-increment: skill-step;
+  position: relative;
+  padding: 0.85rem 1rem 0.85rem 3rem;
+  border-radius: var(--radius);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+}
+.skill-flow li::before {
+  content: counter(skill-step);
+  position: absolute;
+  left: 0.9rem;
+  top: 0.8rem;
+  display: grid;
+  place-items: center;
+  width: 1.55rem;
+  height: 1.55rem;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+.skill-flow li strong { color: var(--ink-900); }
+.skill-flow li.is-stop { border-color: rgba(178, 60, 60, 0.35); }
+
+/* Match / deny table cues ------------------------------------------------ */
+.skill-verdict {
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+.skill-verdict--allow { color: #1f7a54; }
+.skill-verdict--deny { color: #b23c3c; }
+
+@media (max-width: 760px) {
+  .skill-split { grid-template-columns: 1fr; }
+}
