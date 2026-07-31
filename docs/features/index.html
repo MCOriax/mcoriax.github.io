@@ -30,15 +30,11 @@
       </div>
       <div class="feature-item">
         <h3><span class="ic" aria-hidden="true">🗂️</span> Interactive GUI System</h3>
-        <p>Multi-tier virtual menus for managing identities, runes, and cosmetics. See the <a href="../gui/index.html">GUI System</a> page for the full layout.</p>
+        <p>Multi-tier virtual menus for managing identities and their stats. See the <a href="../gui/index.html">GUI System</a> page for the full layout.</p>
       </div>
       <div class="feature-item">
-        <h3><span class="ic" aria-hidden="true">✦</span> Skills as a Separate Add-on</h3>
-        <p>Skills live in the standalone <a href="../skill/index.html">MCIdentitySkill</a> plugin, which stores a skill's data on the item itself and restricts it by profession. This plugin owns identity, stats, and sessions only — the ability tables were removed in <code>3.0.0</code>.</p>
-      </div>
-      <div class="feature-item">
-        <h3><span class="ic" aria-hidden="true">🔄</span> Dynamic Data Binding</h3>
-        <p>The Rune GUI fetches real-time data from the database, showing equipped items or placeholders.</p>
+        <h3><span class="ic" aria-hidden="true">✦</span> Skills, Runes, and Cosmetics as Separate Add-ons</h3>
+        <p>Skills live in <a href="../skill/index.html">MCIdentitySkill</a>, runes in <a href="../rune/index.html">MCIdentityRune</a>, and skins and auras in <a href="../cosmetic/index.html">MCIdentityCosmetic</a>. Each add-on owns its own storage, keyed by identity UUID. This plugin owns identity, stats, and sessions only — the ability tables were removed in <code>3.0.0</code> and the rune and cosmetic tables in <code>4.0.0</code>.</p>
       </div>
       <div class="feature-item">
         <h3><span class="ic" aria-hidden="true">🧵</span> Regionalized Threading</h3>
@@ -87,7 +83,7 @@
       </div>
       <div class="feature-item">
         <h3><span class="ic" aria-hidden="true">🚫</span> Base Profession Restrictions</h3>
-        <p>The base profession may equip skins and auras but is blocked from using runes.</p>
+        <p>Which professions may use an add-on's feature is decided by that add-on. <a href="../rune/index.html">MCIdentityRune</a> blocks the base profession from equipping runes; <a href="../cosmetic/index.html">MCIdentityCosmetic</a> allows every profession, base included.</p>
       </div>
       <div class="feature-item">
         <h3><span class="ic" aria-hidden="true">🎒</span> Always-On Storage Isolation</h3>

@@ -1,0 +1,175 @@
+/* Shared add-on page specifics — hero badges, slot maps, ownership split */
+
+/* Add-on hero badge row -------------------------------------------------- */
+.addon-hero__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.1rem 0 0;
+}
+
+/* Before / after ownership split ----------------------------------------- */
+.addon-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.1rem;
+  margin: 1.4rem 0;
+}
+.addon-split__card {
+  padding: 1.3rem 1.4rem;
+  border-radius: var(--radius);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-sm);
+  -webkit-backdrop-filter: var(--blur);
+  backdrop-filter: var(--blur);
+}
+.addon-split__card h3 {
+  margin: 0 0 0.2rem;
+  font-size: 1.05rem;
+}
+.addon-split__tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.16rem 0.55rem;
+  border-radius: 999px;
+  margin-bottom: 0.7rem;
+}
+.addon-split__tag--was { color: #9a6b16; background: rgba(154, 107, 22, 0.12); }
+.addon-split__tag--now { color: #1f7a54; background: rgba(31, 122, 84, 0.12); }
+.addon-split__card ul { margin: 0.6rem 0 0; padding-left: 1.1rem; }
+.addon-split__card li { margin: 0.35rem 0; }
+
+/* Ordered flow ----------------------------------------------------------- */
+.addon-flow {
+  counter-reset: addon-step;
+  list-style: none;
+  margin: 1.3rem 0;
+  padding: 0;
+  display: grid;
+  gap: 0.65rem;
+}
+.addon-flow li {
+  counter-increment: addon-step;
+  position: relative;
+  padding: 0.85rem 1rem 0.85rem 3rem;
+  border-radius: var(--radius);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+}
+.addon-flow li::before {
+  content: counter(addon-step);
+  position: absolute;
+  left: 0.9rem;
+  top: 0.8rem;
+  display: grid;
+  place-items: center;
+  width: 1.55rem;
+  height: 1.55rem;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+.addon-flow li strong { color: var(--ink-900); }
+.addon-flow li.is-stop { border-color: rgba(178, 60, 60, 0.35); }
+
+/* Allow / deny table cues ------------------------------------------------ */
+.addon-verdict {
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+.addon-verdict--allow { color: #1f7a54; }
+.addon-verdict--deny { color: #b23c3c; }
+
+/* Inventory slot map ----------------------------------------------------- */
+.slot-map {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 0.3rem;
+  max-width: 30rem;
+  margin: 1.3rem 0;
+  padding: 0.7rem;
+  border-radius: var(--radius);
+  background: var(--glass-strong);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-sm);
+}
+.slot-map__cell {
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  border-radius: 7px;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.35);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--ink-400);
+}
+.slot-map__cell--rune {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  border-color: rgba(31, 122, 84, 0.3);
+}
+.slot-map__cell--ultimate {
+  background: rgba(154, 107, 22, 0.16);
+  color: #9a6b16;
+  border-color: rgba(154, 107, 22, 0.35);
+}
+.slot-map__cell--close {
+  background: rgba(178, 60, 60, 0.12);
+  color: #b23c3c;
+  border-color: rgba(178, 60, 60, 0.3);
+}
+.slot-map__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 0 0 1.4rem;
+  font-size: 0.85rem;
+  color: var(--ink-400);
+}
+.slot-map__legend span::before {
+  content: "";
+  display: inline-block;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 3px;
+  margin-right: 0.35rem;
+  vertical-align: -1px;
+}
+.slot-map__legend .is-rune::before { background: var(--accent-soft); border: 1px solid rgba(31, 122, 84, 0.35); }
+.slot-map__legend .is-ultimate::before { background: rgba(154, 107, 22, 0.16); border: 1px solid rgba(154, 107, 22, 0.4); }
+.slot-map__legend .is-close::before { background: rgba(178, 60, 60, 0.12); border: 1px solid rgba(178, 60, 60, 0.35); }
+
+/* Storage backend chips -------------------------------------------------- */
+.addon-backends {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.1rem 0 1.4rem;
+  padding: 0;
+  list-style: none;
+}
+.addon-backends li {
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+.addon-backends li.is-default {
+  background: var(--accent-soft);
+  border-color: rgba(31, 122, 84, 0.3);
+  color: var(--accent-strong);
+}
+
+@media (max-width: 760px) {
+  .addon-split { grid-template-columns: 1fr; }
+  .slot-map { max-width: 100%; }
+}

@@ -4,7 +4,7 @@ This file is the entry point for understanding the project structure. Agents MUS
 
 Agent rules are not kept in this repository. They live in the portable `.agents` instruction set used alongside it.
 
-This repository is the **static documentation website** for the MCIdentity Minecraft plugin and its **MCIdentitySkill** add-on, published with GitHub Pages from the [`docs/`](docs/) directory.
+This repository is the **static documentation website** for the MCIdentity Minecraft plugin and its **MCIdentitySkill**, **MCIdentityRune**, and **MCIdentityCosmetic** add-ons, published with GitHub Pages from the [`docs/`](docs/) directory.
 
 ## Root Files
 
@@ -33,7 +33,7 @@ The site is plain, self-contained static HTML — no build step and no external 
 | [`docs/.nojekyll`](docs/.nojekyll) | Disables Jekyll when the Pages source is `/docs`. |
 | [`docs/index.html`](docs/index.html) | Central landing page with the project overview and clickable cards. |
 | [`docs/partials/`](docs/partials/) | Shared HTML fragments included on every page. |
-| [`docs/partials/header.html`](docs/partials/header.html) | Shared site header and primary navigation (Donation link right-aligned). |
+| [`docs/partials/header.html`](docs/partials/header.html) | Shared site header and primary navigation, with the Platforms and Add-ons dropdowns and the Donation link right-aligned. |
 | [`docs/partials/footer.html`](docs/partials/footer.html) | Shared site footer. |
 | [`docs/js/`](docs/js/) | Client-side scripts. |
 | [`docs/js/site.js`](docs/js/site.js) | Include loader, favicon injection, active-nav, and mobile menu. |
@@ -64,6 +64,7 @@ runtime dependency on another site); the design system is documented in
 | [`docs/css/donation/`](docs/css/donation/) | Donation page styles. |
 | [`docs/css/logs/`](docs/css/logs/) | Change logs page styles. |
 | [`docs/css/skill/`](docs/css/skill/) | Skill add-on page styles. |
+| [`docs/css/addon/`](docs/css/addon/) | Shared add-on page styles (hero badges, ownership split, slot maps, backend chips), used by the rune and cosmetic pages. |
 
 ### Content pages
 
@@ -76,6 +77,8 @@ runtime dependency on another site); the design system is documented in
 | [`docs/commands/index.html`](docs/commands/index.html) | All command usages and permissions. |
 | [`docs/api/index.html`](docs/api/index.html) | Developer API usage of the provider class (accordion reference). |
 | [`docs/skill/index.html`](docs/skill/index.html) | The MCIdentitySkill add-on: the PDC based architecture, the profession restriction, MythicMobs casting, commands, and its developer API. |
+| [`docs/rune/index.html`](docs/rune/index.html) | The MCIdentityRune add-on: identity-scoped rune slots, the menu layout, `/rune`, its own storage, and its developer API. |
+| [`docs/cosmetic/index.html`](docs/cosmetic/index.html) | The MCIdentityCosmetic add-on: the independent skin and aura fields, the menu layout, `/cosmetic`, its own storage, and its developer API. |
 | [`docs/listeners/index.html`](docs/listeners/index.html) | Custom Bukkit events and gameplay listeners. |
 | [`docs/donation/index.html`](docs/donation/index.html) | Donation page with the GitHub sponsor block. |
 
@@ -98,13 +101,18 @@ runtime dependency on another site); the design system is documented in
 
 | Directory / File | Purpose |
 |---|---|
-| [`docs/logs/index.html`](docs/logs/index.html) | Latest MCIdentity change log with a right-side version navigation bar. The add-on keeps its own version tree under `logs/skill/` so the two products' versions never collide. |
+| [`docs/logs/index.html`](docs/logs/index.html) | Latest MCIdentity change log with a right-side version navigation bar. Each add-on keeps its own version tree under `logs/skill/`, `logs/rune/`, and `logs/cosmetic/`, so the products' versions never collide. |
 | [`docs/logs/1/0/0/index.html`](docs/logs/1/0/0/index.html) | Permalink for version 1.0.0 (versioned `major/minor/patch` structure). |
 | [`docs/logs/1/1/0/index.html`](docs/logs/1/1/0/index.html) | Permalink for version 1.1.0 (universal JAR architecture). |
 | [`docs/logs/2/0/0/index.html`](docs/logs/2/0/0/index.html) | Permalink for version 2.0.0 (developer API namespace move). |
 | [`docs/logs/3/0/0/index.html`](docs/logs/3/0/0/index.html) | Permalink for version 3.0.0 (skill decoupling; the ability tables are dropped). |
+| [`docs/logs/4/0/0/index.html`](docs/logs/4/0/0/index.html) | Permalink for version 4.0.0 (rune and cosmetic decoupling; those tables are dropped). |
 | [`docs/logs/skill/index.html`](docs/logs/skill/index.html) | Latest MCIdentitySkill change log, with its own version navigation. |
 | [`docs/logs/skill/0/0/0/index.html`](docs/logs/skill/0/0/0/index.html) | Permalink for MCIdentitySkill version 0.0.0 (initial release). |
+| [`docs/logs/rune/index.html`](docs/logs/rune/index.html) | Latest MCIdentityRune change log, with its own version navigation. |
+| [`docs/logs/rune/0/0/0/index.html`](docs/logs/rune/0/0/0/index.html) | Permalink for MCIdentityRune version 0.0.0 (initial release). |
+| [`docs/logs/cosmetic/index.html`](docs/logs/cosmetic/index.html) | Latest MCIdentityCosmetic change log, with its own version navigation. |
+| [`docs/logs/cosmetic/0/0/0/index.html`](docs/logs/cosmetic/0/0/0/index.html) | Permalink for MCIdentityCosmetic version 0.0.0 (initial release). |
 
 ## Tooling
 

@@ -1,7 +1,8 @@
 # mcoriax.github.io
 
 The documentation website for the **MCIdentity** Minecraft plugin and its
-**MCIdentitySkill** add-on, published with GitHub Pages.
+**MCIdentitySkill**, **MCIdentityRune**, and **MCIdentityCosmetic** add-ons,
+published with GitHub Pages.
 
 ## Project Overview
 
@@ -33,8 +34,10 @@ full structure. In short:
 | [`docs/profession/`](docs/profession/) | One page per bundled profession. |
 | [`docs/api/`](docs/api/) | Developer API usage. |
 | [`docs/skill/`](docs/skill/) | The MCIdentitySkill add-on: PDC based skill items restricted by profession. |
+| [`docs/rune/`](docs/rune/) | The MCIdentityRune add-on: rune slots owned by an identity, with its own storage and `/rune` command. |
+| [`docs/cosmetic/`](docs/cosmetic/) | The MCIdentityCosmetic add-on: a skin and an aura per identity, with its own storage and `/cosmetic` command. |
 | [`docs/platforms/`](docs/platforms/) | SpigotMC, PaperMC, and FoliaMC guides. |
-| [`docs/logs/`](docs/logs/) | Versioned change logs; the add-on has its own tree under `docs/logs/skill/`. |
+| [`docs/logs/`](docs/logs/) | Versioned change logs; each add-on has its own tree under `docs/logs/skill/`, `docs/logs/rune/`, and `docs/logs/cosmetic/`. |
 | [`scripts/generate_professions.py`](scripts/generate_professions.py) | Regenerates the profession pages from bundled data. |
 
 ## Regenerating the profession pages

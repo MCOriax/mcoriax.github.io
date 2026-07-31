@@ -76,7 +76,7 @@
       <h2>How it works</h2>
       <ul>
         <li>All backends implement the same <code>IMCIdentityDB</code> contract, so gameplay code never knows which storage is active.</li>
-        <li>The SQLite, MySQL, and PostgreSQL backends share their query logic and differ only in schema DDL and upsert dialect. MongoDB stores each identity as one document with embedded properties, stats, cosmetics, and equipped slots.</li>
+        <li>The SQLite, MySQL, and PostgreSQL backends share their query logic and differ only in schema DDL and upsert dialect. MongoDB stores each identity as one document with embedded properties and stats.</li>
         <li>The central-server backend implements the same contract by sending asynchronous JSON requests over a single pooled HTTP client, carrying the bearer token configured in <code>config.yml</code> (<code>central_server.token</code>).</li>
         <li>Every operation runs asynchronously on a dedicated worker pool, so the game thread is never blocked.</li>
         <li>Reads that fail resolve to safe fallbacks (empty results or zero) so the game server keeps running; failures are logged.</li>
@@ -94,13 +94,10 @@
       <p>The relational backends create their tables automatically on first start:</p>
       <div class="chip-row">
         <span class="chip">identity_professions</span>
-        <span class="chip">identity_runes</span>
         <span class="chip">identity_keys</span>
         <span class="chip">identity_properties</span>
         <span class="chip">identity_stats</span>
-        <span class="chip">identity_equipped_runes</span>
         <span class="chip">identity_sessions</span>
-        <span class="chip">identity_equipped_cosmetics</span>
         <span class="chip">identity_logs</span>
         <span class="chip">player_base_slots</span>
       </div>
@@ -109,6 +106,18 @@
       <div class="callout callout--warn">
         <span class="callout__icon" aria-hidden="true">⚠️</span>
         <div class="callout__body">
+          <p>
+            <strong>Upgrading from 3.x:</strong> runes and cosmetics moved into the standalone
+            <a href="../rune/index.html">MCIdentityRune</a> and
+            <a href="../cosmetic/index.html">MCIdentityCosmetic</a> add-ons, which create and own
+            their own tables. The first start after upgrading <strong>drops</strong>
+            <code>identity_runes</code>, <code>identity_equipped_runes</code>, and
+            <code>identity_equipped_cosmetics</code> — and, on MongoDB, the
+            <code>identity_runes</code> collection and the per-identity <code>equipped_runes</code>
+            and <code>cosmetics</code> fields. Those rows are <strong>not recoverable</strong>, and
+            the add-ons start with empty tables rather than migrating them, so back the database up
+            first if you want to keep them.
+          </p>
           <p>
             <strong>Upgrading from 2.x:</strong> the ability system moved into the standalone
             <a href="../skill/index.html">MCIdentitySkill</a> add-on, where a skill's data lives on
@@ -128,12 +137,10 @@
         <table>
           <thead><tr><th>Resource</th><th>Contents</th></tr></thead>
           <tbody>
-            <tr><td>Professions, runes</td><td>The shared registries identities reference.</td></tr>
+            <tr><td>Professions</td><td>The shared registry identities reference.</td></tr>
             <tr><td>Identity keys</td><td>Each identity's UUID and profession.</td></tr>
             <tr><td>Properties</td><td>Level, experience, stat points, textures, and serialized inventory / ender chest storage.</td></tr>
             <tr><td>Stats</td><td>The nine numerical attributes (energy, health, food, strength, defense, wisdom, luck, agility, resilience).</td></tr>
-            <tr><td>Equipped runes</td><td>Slot assignments per identity.</td></tr>
-            <tr><td>Cosmetics</td><td>Active skin (Base64) and aura (system code) per identity.</td></tr>
             <tr><td>Sessions</td><td>Which identity each player currently wears, with the serialized identity item.</td></tr>
             <tr><td>Base identity slots</td><td>How many alternative base "player" identities each player has unlocked.</td></tr>
             <tr><td>Logs</td><td>The append-only audit trail (EQUIP, UNEQUIP, DEATH_DROP, ADMIN_REMOVE).</td></tr>
