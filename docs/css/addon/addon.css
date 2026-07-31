@@ -76,6 +76,12 @@
   font-weight: 800;
 }
 .addon-flow li strong { color: var(--ink-900); }
+/* A jar name or permission node is one unbreakable token; without this it props
+   the list item open and the whole page scrolls sideways on a phone. */
+.addon-flow li code,
+.addon-backends li code {
+  overflow-wrap: anywhere;
+}
 .addon-flow li.is-stop { border-color: rgba(178, 60, 60, 0.35); }
 
 /* Allow / deny table cues ------------------------------------------------ */
@@ -89,7 +95,10 @@
 /* Inventory slot map ----------------------------------------------------- */
 .slot-map {
   display: grid;
-  grid-template-columns: repeat(9, 1fr);
+  /* minmax(0, 1fr) rather than 1fr: a bare 1fr track is minmax(auto, 1fr) and
+     can never shrink below its item's min-content width, so a cell label wider
+     than its share props the column open and pushes the grid out of the card. */
+  grid-template-columns: repeat(9, minmax(0, 1fr));
   gap: 0.3rem;
   max-width: 30rem;
   margin: 1.3rem 0;
@@ -106,9 +115,12 @@
   border-radius: 7px;
   border: 1px solid var(--glass-border);
   background: rgba(255, 255, 255, 0.35);
-  font-size: 0.72rem;
+  /* Labels scale with the cell instead of setting a floor under its width. */
+  font-size: clamp(0.55rem, 1.6vw, 0.72rem);
   font-weight: 700;
   color: var(--ink-400);
+  min-width: 0;
+  overflow: hidden;
 }
 .slot-map__cell--rune {
   background: var(--accent-soft);
