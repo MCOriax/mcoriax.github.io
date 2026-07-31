@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Change Logs — MCIdentityRune</title>
+  <meta name="description" content="Release notes for MCIdentityRune, showing the latest version with a navigation bar for earlier logs.">
+  <link rel="stylesheet" href="../../css/main.css">
+  <link rel="stylesheet" href="../../css/shared/layout.css">
+  <link rel="stylesheet" href="../../css/shared/components.css">
+  <link rel="stylesheet" href="../../css/logs/logs.css">
+  <script>window.SITE_ROOT = "../../"; window.PAGE_SECTION = "logs";</script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="../../index.html">Home</a><span class="sep">/</span>
+      <a href="../index.html">Change Logs</a><span class="sep">/</span><span>MCIdentityRune</span>
+    </nav>
+
+    <span class="eyebrow">Release notes · MCIdentityRune</span>
+    <h1>MCIdentityRune Change Logs</h1>
+    <p class="lead">The latest release of the rune add-on is shown below. Use the version list on the right to view a specific log. The core plugin's own logs live on the <a href="../index.html">main change log page</a>.</p>
+
+    <div class="logs-layout">
+      <article class="log-entry">
+        <div class="log-entry__head">
+          <span class="log-entry__version">0.0.0</span>
+          <span class="badge badge--ok">Latest</span>
+          <span class="log-entry__date">2026-07-31 · Initial release</span>
+        </div>
+        <p class="lead">The first release of <a href="../../rune/index.html">MCIdentityRune</a>, the standalone rune add-on for MCIdentity. Every identity gets its own rune slots, stored in the add-on's own database and opened with <code>/rune</code>.</p>
+
+        <div class="log-section">
+          <h3><span class="log-tag log-tag--new">Added</span> Rune slots keyed by identity</h3>
+          <ul>
+            <li>Ten slots per identity, the last reserved for the <strong>ultimate</strong> rune. The slot numbering is stored, so the menu layout is fixed and existing rows keep their meaning.</li>
+            <li>Every read and write is keyed by the <strong>identity UUID</strong> resolved from MCIdentity's session cache, never by the player UUID. Two identities owned by one player wear entirely separate runes.</li>
+            <li>The identity is resolved once at the start of an interaction, so a player who swaps identity mid-action cannot write to the identity they just left.</li>
+            <li>Reads <strong>fail closed</strong>: an unresolvable identity or an unreachable core plugin yields an empty result, never another identity's runes.</li>
+          </ul>
+        </div>
+
+        <div class="log-section">
+          <h3><span class="log-tag log-tag--new">Added</span> Its own storage</h3>
+          <ul>
+            <li><code>identity_runes</code> (the rune type registry) and <code>identity_equipped_runes</code> (slot assignments) are created and owned by this add-on, with no foreign key onto any MCIdentity table.</li>
+            <li>Backends: <strong>SQLite</strong> (default, zero configuration), MySQL, PostgreSQL, MongoDB, or the shared central REST server — selected with <code>database.type</code>.</li>
+            <li>Schema creation is idempotent and runs on every start. Every query binds its parameters; the only identifiers ever interpolated come from a frozen allow-list.</li>
+            <li>All database work runs off the game thread on the add-on's own worker pool.</li>
+          </ul>
+        </div>
+
+        <div class="log-section">
+          <h3><span class="log-tag log-tag--new">Added</span> Menu, commands, and developer API</h3>
+          <ul>
+            <li><code>/rune</code> opens the six-row rune menu for the identity you are wearing. <code>/rune list</code> lists registered rune types.</li>
+            <li><code>/rune register &lt;code&gt; &lt;display name&gt;</code>, <code>/rune set &lt;slot&gt; &lt;code&gt;</code>, and <code>/rune clear &lt;slot&gt;</code> require <code>mcidentityrune.admin</code>.</li>
+            <li>Cancellable <code>MCIdentityRuneSetEvent</code>, carrying the player, the identity UUID, the slot, and the rune code (<code>null</code> when clearing).</li>
+            <li>Published library modules: <code>mcidentity-rune-api</code>, <code>mcidentity-rune-common</code>, and <code>mcidentity-rune-bukkit</code>.</li>
+          </ul>
+        </div>
+
+        <div class="log-section">
+          <h3><span class="log-tag log-tag--note">Note</span> Requirements</h3>
+          <ul>
+            <li>One universal jar for <strong>SpigotMC</strong>, <strong>PaperMC</strong>, and <strong>Folia</strong>; the server type is detected at enable time.</li>
+            <li><strong>MCIdentity 4.0.0</strong> or newer is a hard dependency — that is the release where the core stopped shipping a rune system of its own. An older core logs a warning at startup, because the two rune systems would sit side by side.</li>
+            <li>The base <code>player</code> profession may <strong>not</strong> equip runes. Cosmetics carry no such restriction — see <a href="../../cosmetic/index.html">MCIdentityCosmetic</a>.</li>
+            <li>Rune assignments from MCIdentity 3.x are <strong>not</strong> migrated. The core drops its own tables on upgrade and this add-on starts empty.</li>
+          </ul>
+        </div>
+      </article>
+
+      <aside class="logs-nav" aria-label="Log versions">
+        <h4>Versions</h4>
+        <ul>
+          <li><a href="../index.html">4.0.0 <span class="latest">Latest</span></a></li>
+          <li><a href="../3/0/0/index.html">3.0.0</a></li>
+          <li><a href="../2/0/0/index.html">2.0.0</a></li>
+          <li><a href="../1/1/0/index.html">1.1.0</a></li>
+          <li><a href="../1/0/0/index.html">1.0.0</a></li>
+        </ul>
+        <h4 style="margin-top:1.2rem;">MCIdentitySkill</h4>
+        <ul>
+          <li><a href="../skill/index.html">0.0.0 <span class="latest">Latest</span></a></li>
+        </ul>
+        <h4 style="margin-top:1.2rem;">MCIdentityRune</h4>
+        <ul>
+          <li><a class="is-current" href="../rune/index.html">0.0.0 <span class="latest">Latest</span></a></li>
+        </ul>
+        <h4 style="margin-top:1.2rem;">MCIdentityCosmetic</h4>
+        <ul>
+          <li><a href="../cosmetic/index.html">0.0.0 <span class="latest">Latest</span></a></li>
+        </ul>
+        <p style="margin:0.9rem 0 0;font-size:0.8rem;color:var(--ink-400);"><a href="../index.html">← MCIdentity logs</a></p>
+      </aside>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="../../js/site.js" defer></script>
+</body>
+</html>

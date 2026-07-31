@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GUI System — MCIdentity</title>
-  <meta name="description" content="The multi-tier interactive menu system for managing identities, runes, and cosmetics.">
+  <meta name="description" content="The multi-tier interactive menu system for managing identities and switching between the base identities a player owns.">
   <link rel="stylesheet" href="../css/main.css">
   <link rel="stylesheet" href="../css/shared/layout.css">
   <link rel="stylesheet" href="../css/shared/components.css">
@@ -29,20 +29,19 @@
       <div class="slotmap" aria-hidden="true">
         <div class="slot is-filled"><small>0</small>🧑</div>
         <div class="slot is-empty"><small>1</small></div>
-        <div class="slot is-filled"><small>2</small>⚔️</div>
+        <div class="slot is-empty"><small>2</small></div>
         <div class="slot is-empty"><small>3</small></div>
         <div class="slot is-filled"><small>4</small>🪪</div>
         <div class="slot is-empty"><small>5</small></div>
-        <div class="slot is-filled"><small>6</small>🔮</div>
+        <div class="slot is-empty"><small>6</small></div>
         <div class="slot is-empty"><small>7</small></div>
-        <div class="slot is-filled"><small>8</small>✨</div>
+        <div class="slot is-empty"><small>8</small></div>
       </div>
       <ul>
         <li><strong>Slot 0</strong> — a button rendered as your own player head, named <em>"Player Identity"</em>. Opens the <strong>Player Identity GUI</strong>.</li>
         <li><strong>Slot 4</strong> — interactive slot to equip / unequip your <strong>Identity Key</strong>.</li>
-        <li><strong>Slot 6</strong> — opens the <strong>Rune GUI</strong>.</li>
-        <li><strong>Slot 8</strong> — opens the <strong>Cosmetic GUI</strong>.</li>
       </ul>
+      <p>Runes and cosmetics have their own menus in their own plugins, opened with <code>/rune</code> and <code>/cosmetic</code> — see the <a href="../rune/index.html">Rune add-on</a> and the <a href="../cosmetic/index.html">Cosmetic add-on</a>.</p>
     </section>
 
     <section class="section">
@@ -61,25 +60,13 @@
     </section>
 
     <section class="section">
-      <h2>Cosmetic GUI <span class="badge">1-row</span></h2>
-      <p>Provides a menu to manage visual aspects of the identity:</p>
+      <h2>Menus owned by the add-ons</h2>
+      <p>The Rune GUI and the Cosmetic GUI are <strong>not</strong> part of this plugin. They ship with, and are documented by, the add-ons that own the data behind them:</p>
       <ul>
-        <li><strong>Slot 5</strong> — displays a <strong>Skin</strong> placeholder.</li>
-        <li><strong>Slot 7</strong> — displays an <strong>Aura</strong> placeholder.</li>
-        <li><strong>Security:</strong> this menu is only accessible if the player has an active identity equipped.</li>
+        <li><a href="../rune/index.html">MCIdentityRune</a> — the six-row Rune GUI, opened with <code>/rune</code>.</li>
+        <li><a href="../cosmetic/index.html">MCIdentityCosmetic</a> — the one-row Cosmetic GUI for skins and auras, opened with <code>/cosmetic</code>.</li>
       </ul>
-    </section>
-
-    <section class="section">
-      <h2>Rune GUI <span class="badge">6-rows</span></h2>
-      <p>This GUI is dynamically bound to the database:</p>
-      <div class="legend"><span class="fill">Equipped (Lime Stained Glass)</span><span class="empty">Empty (Red Stained Glass)</span></div>
-      <ul>
-        <li><strong>Fetching:</strong> upon opening, the plugin fetches the currently equipped runes for the active identity.</li>
-        <li><strong>Placeholders:</strong> empty slots are shown as <strong>Red Stained Glass Panes</strong>.</li>
-        <li><strong>Equipped items:</strong> equipped runes are shown as <strong>Lime Stained Glass Panes</strong> with their respective display names.</li>
-        <li><strong>Security:</strong> this menu is only accessible if the player has an active identity equipped.</li>
-      </ul>
+      <p>Both add-ons read the equipped identity from this plugin's session cache, so they are only usable while an identity is equipped.</p>
     </section>
   </main>
 

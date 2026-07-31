@@ -138,7 +138,7 @@ provider.getSession(playerUuid).thenAccept(optSession -&gt;
     }));</code></pre>
 
       <h3>2.2 · Modify — persist changes to an identity</h3>
-      <p><code>IdentityProperties</code> values are snapshots. For cosmetic/storage fields use <code>MutableIdentityProperties.copyOf(...)</code> and its setters; for <code>level</code>, <code>exp</code>, or <code>statPoints</code>, build a fresh value and call <code>updateProperties</code>:</p>
+      <p><code>IdentityProperties</code> values are snapshots. For storage fields use <code>MutableIdentityProperties.copyOf(...)</code> and its setters; for <code>level</code>, <code>exp</code>, or <code>statPoints</code>, build a fresh value and call <code>updateProperties</code>:</p>
 <pre><code>import io.github.mcoriax.mcidentity.common.model.MutableIdentityProperties;
 
 provider.getProperties(identityUuid).thenCompose(optProps -&gt; {
@@ -153,8 +153,6 @@ provider.getProperties(identityUuid).thenCompose(optProps -&gt; {
         0,                        // exp (reset)
         current.getStatPoints() + 5,
         current.getHeadText(),
-        current.getSkin(),
-        current.getAura(),
         current.getInventoryContents(),
         current.getEnderchestContents()
     );
@@ -163,10 +161,6 @@ provider.getProperties(identityUuid).thenCompose(optProps -&gt; {
 
 // Atomic stat change (safe under concurrency), negative to subtract:
 provider.addStat(identityUuid, "defense", 10);
-
-// Cosmetics:
-provider.saveSkin(identityUuid, base64SkinTexture);
-provider.saveAura(identityUuid, "aura_flame");
 
 // Per-identity storage — the inventory and ender chest are isolated per
 // identity. Pass null for a storage you do not want to touch.
@@ -267,7 +261,7 @@ public class IdentityBankListener implements Listener {
         new IdentityBankListener(bankService), this);</code></pre>
       <p><strong>Cancelling.</strong> Both events implement <code>Cancellable</code>. Calling <code>event.setCancelled(true)</code> vetoes the equip/unequip — useful if, for example, a membership must be active before an identity can be worn.</p>
       <p><strong>Folia / async safety.</strong> MCIdentity events mark themselves asynchronous whenever fired off the primary thread. Keep your handlers thread-safe and, when you must call main-thread-only Bukkit API, schedule back onto the appropriate scheduler instead of calling it directly.</p>
-      <p>The complete catalog — creation, death, rune/skin/aura set, stat add, and the two events above — lives on the <a href="../listeners/index.html">Events &amp; Listeners</a> page.</p>
+      <p>The complete catalog — creation, death, stat add, and the two events above — lives on the <a href="../listeners/index.html">Events &amp; Listeners</a> page.</p>
     </section>
 
     <!-- 4. Architecture warning -->
@@ -314,8 +308,6 @@ bank.setBalance(player.getUniqueId(), 1000);</code></pre>
           <div class="acc__body"><p>Creates a new profession type in the database. <code>systemCode</code> is the unique identifier; <code>displayName</code> is the human-readable name.</p><p class="ret">Returns CompletableFuture&lt;Void&gt;</p></div></details>
         <details class="acc api-method"><summary><code>getProfessions()</code></summary>
           <div class="acc__body"><p>Retrieves all available professions.</p><p class="ret">Returns CompletableFuture&lt;Collection&lt;Profession&gt;&gt;</p></div></details>
-        <details class="acc api-method"><summary><code>getRunes()</code></summary>
-          <div class="acc__body"><p>Retrieves all available runes.</p><p class="ret">Returns CompletableFuture&lt;Collection&lt;Rune&gt;&gt;</p></div></details>
       </div>
 
       <div class="method-group">Identities &amp; properties</div>
@@ -342,14 +334,6 @@ bank.setBalance(player.getUniqueId(), 1000);</code></pre>
           <div class="acc__body"><p>Atomically increments a specific stat in the database. <code>amount</code> can be negative.</p><p class="ret">Returns CompletableFuture&lt;Void&gt;</p></div></details>
       </div>
 
-      <div class="method-group">Runes (equipped)</div>
-      <div class="accordion">
-        <details class="acc api-method"><summary><code>getRunes(UUID identityUuid)</code></summary>
-          <div class="acc__body"><p>Retrieves a map of equipped runes.</p><p class="ret">Returns CompletableFuture&lt;Map&lt;Integer, String&gt;&gt; (slot → rune code)</p></div></details>
-        <details class="acc api-method"><summary><code>setRune(UUID identityUuid, int slot, String runeCode)</code></summary>
-          <div class="acc__body"><p>Sets or clears a rune in a specific slot (null to clear).</p><p class="ret">Returns CompletableFuture&lt;Void&gt;</p></div></details>
-      </div>
-
       <div class="method-group">Active identity &amp; session</div>
       <div class="accordion">
         <details class="acc api-method"><summary><code>getActiveIdentity(UUID playerUuid)</code></summary>
@@ -364,16 +348,6 @@ bank.setBalance(player.getUniqueId(), 1000);</code></pre>
           <div class="acc__body"><p>Rewrites only the serialized identity item stored on a player's active session, leaving the equipped identity unchanged, and refreshes the RAM cache if active.</p><p class="ret">Returns CompletableFuture&lt;Void&gt;</p></div></details>
         <details class="acc api-method"><summary><code>logAction(UUID playerUuid, UUID identityUuid, ActionType actionType)</code></summary>
           <div class="acc__body"><p>Logs an identity-related action (EQUIP, UNEQUIP, etc.) to the database.</p><p class="ret">Returns CompletableFuture&lt;Void&gt;</p></div></details>
-      </div>
-
-      <div class="method-group">Cosmetics</div>
-      <div class="accordion">
-        <details class="acc api-method"><summary><code>getCosmetics(UUID uuid)</code></summary>
-          <div class="acc__body"><p>Retrieves cosmetics (skin, aura) for an identity.</p><p class="ret">Returns CompletableFuture&lt;Map&lt;String, String&gt;&gt;</p></div></details>
-        <details class="acc api-method"><summary><code>saveSkin(UUID uuid, String skin)</code></summary>
-          <div class="acc__body"><p>Saves the skin cosmetic (Base64 skin texture) for an identity.</p><p class="ret">Returns CompletableFuture&lt;Void&gt;</p></div></details>
-        <details class="acc api-method"><summary><code>saveAura(UUID uuid, String aura)</code></summary>
-          <div class="acc__body"><p>Saves the aura cosmetic (aura system code) for an identity.</p><p class="ret">Returns CompletableFuture&lt;Void&gt;</p></div></details>
       </div>
 
       <div class="method-group">Per-identity storage</div>

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MCIdentityRune — Runes equipped per identity</title>
+  <meta name="description" content="MCIdentityRune is a standalone add-on for MCIdentity. Runes are equipped into slots that belong to an identity, stored in the add-on's own database, and opened with /rune.">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/shared/layout.css">
+  <link rel="stylesheet" href="../css/shared/components.css">
+  <link rel="stylesheet" href="../css/addon/addon.css">
+  <script>window.SITE_ROOT = "../"; window.PAGE_SECTION = "addons";</script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="../index.html">Home</a><span class="sep">/</span><span>Rune Add-on</span>
+    </nav>
+
+    <section class="hero">
+      <span class="eyebrow">Add-on plugin · MCIdentityRune</span>
+      <h1>Runes belong to the identity, not the player.</h1>
+      <p class="lead">
+        <strong>MCIdentityRune</strong> is a standalone add-on that gives every MCIdentity identity
+        its own set of <strong>rune slots</strong>. It ships as its own jar, keeps its own database,
+        and installs alongside the core plugin. Open it with <code>/rune</code>.
+      </p>
+      <div class="addon-hero__badges">
+        <span class="badge badge--ok">SpigotMC</span>
+        <span class="badge badge--ok">PaperMC</span>
+        <span class="badge badge--ok">Folia</span>
+        <span class="badge badge--accent">Own database</span>
+        <span class="badge">Requires MCIdentity 4.0.0+</span>
+      </div>
+    </section>
+
+    <!-- The architectural change -->
+    <section class="section">
+      <h2>What changed: runes left the core plugin</h2>
+      <p class="lead">
+        The rune system used to live inside MCIdentity, sharing its tables and its GUI.
+        MCIdentity <code>4.0.0</code> removed it, and this add-on picked it up — along with the
+        storage, which it now owns outright.
+      </p>
+
+      <div class="addon-split">
+        <div class="addon-split__card">
+          <span class="addon-split__tag addon-split__tag--was">Previously</span>
+          <h3>Runes inside MCIdentity</h3>
+          <ul>
+            <li>An <code>identity_runes</code> registry and an <code>identity_equipped_runes</code> slot table, both living in the core plugin's schema.</li>
+            <li>Slot 6 of the main identity menu opened a rune GUI the core plugin drew.</li>
+            <li><code>/identity rune get</code> was a core admin sub-command.</li>
+            <li>Every rune change meant a release of the whole identity plugin.</li>
+          </ul>
+        </div>
+        <div class="addon-split__card">
+          <span class="addon-split__tag addon-split__tag--now">Now</span>
+          <h3>Runes in MCIdentityRune</h3>
+          <ul>
+            <li>The add-on creates and owns both tables, in <strong>its own</strong> database — with no foreign key onto anything the core plugin owns.</li>
+            <li>Its own <code>/rune</code> command and its own menu, on its own version line.</li>
+            <li>It reads one thing from the core: which identity you are currently wearing.</li>
+            <li>Either plugin can be upgraded without waiting for the other.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout callout--warn">
+        <span class="callout__icon" aria-hidden="true">⚠️</span>
+        <div class="callout__body">
+          <p>
+            Upgrading the core to <code>4.0.0</code> <strong>drops</strong> <code>identity_runes</code>
+            and <code>identity_equipped_runes</code> from its database, and this add-on starts with
+            empty tables rather than migrating them. Existing rune assignments are
+            <strong>not recoverable</strong> — back the database up first if you want to keep them.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Identity scoped -->
+    <section class="section">
+      <h2>Every row is keyed by identity</h2>
+      <p class="lead">
+        A rune is equipped by an <em>identity</em>, never by a player. Two identities owned by the
+        same person wear entirely separate runes, and swapping identity swaps the whole rune set
+        with it.
+      </p>
+      <p>
+        This is the invariant the whole add-on is built around: every read and every write is
+        keyed by the identity UUID resolved from the core plugin's session cache, never by the
+        player UUID. A player with no active identity has nothing to read and nothing to write to.
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Situation</th><th>Result</th></tr></thead>
+          <tbody>
+            <tr><td>Wearing a profession identity</td><td><span class="addon-verdict addon-verdict--allow">allowed</span> — reads and writes that identity's slots</td></tr>
+            <tr><td>Wearing the base <code>player</code> profession</td><td><span class="addon-verdict addon-verdict--deny">denied</span> — the base profession may not use runes</td></tr>
+            <tr><td>No active identity</td><td><span class="addon-verdict addon-verdict--deny">denied</span> — there is nothing to key the row by</td></tr>
+            <tr><td>Core plugin unreachable</td><td><span class="addon-verdict addon-verdict--deny">denied</span> — the add-on fails closed rather than guessing</td></tr>
+            <tr><td>Identity swapped mid-interaction</td><td>The write still lands on the identity that was resolved when the action started, never on the new one.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout callout--info">
+        <span class="callout__icon" aria-hidden="true">🔒</span>
+        <div class="callout__body">
+          <p>
+            A failed read returns <strong>an empty result, never another identity's runes</strong>.
+            There is no fallback that could show one identity the equipment of another.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- The menu -->
+    <section class="section">
+      <h2>The rune menu</h2>
+      <p>
+        <code>/rune</code> with no arguments opens a six-row menu for the identity you are wearing.
+        Equipped slots show the rune's display name; empty slots show a placeholder. The layout is
+        fixed, because the slot numbers are stored in the database and existing rows reference them.
+      </p>
+
+      <div class="slot-map" role="img" aria-label="Rune menu layout: ten rune slots across six rows, with the tenth reserved for the ultimate rune and a close button on the bottom-left">
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell slot-map__cell--rune" title="Rune slot 1">1</div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell slot-map__cell--rune" title="Rune slot 2">2</div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell slot-map__cell--rune" title="Rune slot 3">3</div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell slot-map__cell--rune" title="Rune slot 4">4</div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell slot-map__cell--rune" title="Rune slot 5">5</div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell slot-map__cell--rune" title="Rune slot 6">6</div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell slot-map__cell--rune" title="Rune slot 7">7</div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell slot-map__cell--close" title="Close button">✕</div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell slot-map__cell--rune" title="Rune slot 8">8</div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell slot-map__cell--rune" title="Rune slot 9">9</div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell" aria-hidden="true"></div>
+          <div class="slot-map__cell slot-map__cell--ultimate" title="Rune slot 10 (ultimate)">Ultimate</div>
+      </div>
+      <p class="slot-map__legend">
+        <span class="is-rune">Rune slots 1–9</span>
+        <span class="is-ultimate">Slot 10 — ultimate rune</span>
+        <span class="is-close">Close</span>
+      </p>
+
+      <p>
+        Ten slots per identity. The last one is the <strong>ultimate</strong> slot, set apart in the
+        layout but stored exactly like the others. Clicking a slot equips or clears it; every other
+        click in the menu is cancelled so nothing can be dragged out of it.
+      </p>
+    </section>
+
+    <!-- Commands -->
+    <section class="section">
+      <h2>Commands &amp; permissions</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Command</th><th>Description</th><th>Permission</th></tr></thead>
+          <tbody>
+            <tr><td><code>/rune</code></td><td>Open the rune menu for the identity you are wearing.</td><td>—</td></tr>
+            <tr><td><code>/rune list</code></td><td>List every registered rune type.</td><td>—</td></tr>
+            <tr><td><code>/rune register &lt;code&gt; &lt;display name&gt;</code></td><td>Register a rune type. Idempotent — registering an existing code keeps the original.</td><td><code>mcidentityrune.admin</code></td></tr>
+            <tr><td><code>/rune set &lt;slot&gt; &lt;code&gt;</code></td><td>Equip a rune into a slot of your active identity.</td><td><code>mcidentityrune.admin</code></td></tr>
+            <tr><td><code>/rune clear &lt;slot&gt;</code></td><td>Clear a slot.</td><td><code>mcidentityrune.admin</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Registering and equipping a rune</h3>
+      <pre><code>/rune register ember Ember Sigil
+/rune set 1 ember
+/rune clear 1</code></pre>
+      <p>
+        Rune codes are stored lower-cased and trimmed, so <code>Ember</code> and <code>ember</code>
+        are the same rune. A slot number outside <code>1</code>–<code>10</code> is rejected before
+        anything reaches the database.
+      </p>
+    </section>
+
+    <!-- Storage -->
+    <section class="section">
+      <h2>Storage</h2>
+      <p class="lead">
+        The add-on keeps its own storage and picks its backend the same way the core plugin does,
+        with <code>database.type</code> in its own <code>config.yml</code>.
+      </p>
+      <ul class="addon-backends">
+        <li class="is-default">SQLite — default, zero configuration</li>
+        <li>MySQL / MariaDB</li>
+        <li>PostgreSQL</li>
+        <li>MongoDB</li>
+        <li>Central REST server</li>
+      </ul>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Table</th><th>Contents</th></tr></thead>
+          <tbody>
+            <tr><td><code>identity_runes</code></td><td>The registry of rune types: system code and display name.</td></tr>
+            <tr><td><code>identity_equipped_runes</code></td><td>Which rune sits in which slot, keyed by identity UUID.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        Neither table carries a foreign key onto a core plugin table. That is deliberate: it is what
+        lets the two plugins be upgraded, and even backed by different databases, independently.
+        Schema creation is idempotent and runs on every start; every query binds its parameters, and
+        the only identifiers ever interpolated come from a frozen allow-list.
+      </p>
+
+      <div class="callout callout--info">
+        <span class="callout__icon" aria-hidden="true">💡</span>
+        <div class="callout__body">
+          <p>
+            Every database call runs off the game thread on the add-on's own worker pool, so a slow
+            or unreachable database never stalls the server — see the core plugin's
+            <a href="../storage/index.html">Data Storage</a> page for the same model applied to identities.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Install -->
+    <section class="section">
+      <h2>Installing</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Requirement</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td>Java 25 or newer</td><td>Matches the core plugin's toolchain.</td></tr>
+            <tr><td>SpigotMC, PaperMC, or Folia</td><td>One universal jar; the server type is detected at enable time.</td></tr>
+            <tr><td><strong>MCIdentity 4.0.0 or newer</strong></td><td>Hard dependency. It owns the identity a rune is attached to, and <code>4.0.0</code> is the release where it stopped shipping a competing rune system of its own.</td></tr>
+            <tr><td>A database</td><td>Optional in practice — SQLite is the default and needs no setup.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <ol class="addon-flow">
+        <li>Drop <code>MCIdentityRune-&lt;version&gt;.jar</code> into <code>plugins/</code>, alongside MCIdentity.</li>
+        <li>Start the server once. It writes <code>plugins/MCIdentityRune/config.yml</code> and then disables itself, because <code>enable</code> defaults to <code>false</code>.</li>
+        <li>Set <code>enable: true</code>, and pick a <code>database.type</code> if you do not want SQLite.</li>
+        <li>Restart the server.</li>
+      </ol>
+
+      <pre><code># Master switch. The plugin generates no data files and registers nothing
+# until this is turned on.
+enable: false
+
+# Storage backend for runes.
+database:
+  type: sqlite
+  sqlite:
+    file: "mcidentityrune.db"</code></pre>
+
+      <p>
+        On an older core the add-on logs a warning at startup rather than refusing to enable — but
+        that core still ships its own rune GUI, so players would see two competing rune systems.
+        Upgrade the core plugin.
+      </p>
+    </section>
+
+    <!-- Developer API -->
+    <section class="section">
+      <h2>For developers</h2>
+      <p>
+        The add-on publishes its own library modules under the <code>io.github.mcoriax</code> group:
+        <code>mcidentity-rune-api</code>, <code>mcidentity-rune-common</code>, and
+        <code>mcidentity-rune-bukkit</code>. Declare them <code>compileOnly</code> and add
+        <code>MCIdentityRune</code> to your <code>plugin.yml</code>:
+      </p>
+      <pre><code>depend:
+  - MCIdentityRune</code></pre>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Event</th><th>Fired when</th></tr></thead>
+          <tbody>
+            <tr><td><code>MCIdentityRuneSetEvent</code></td><td>A rune is about to be equipped into, or cleared from, a slot. Cancellable — cancelling refuses the change before it reaches the database.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        The event carries the player, the <strong>identity UUID</strong> the change targets, the slot
+        number, and the rune code (<code>null</code> when the slot is being cleared). Bind your own
+        data to the identity UUID, never to the player UUID — that is the key the add-on itself uses.
+      </p>
+
+      <div class="callout callout--info">
+        <span class="callout__icon" aria-hidden="true">📖</span>
+        <div class="callout__body">
+          <p>
+            The core plugin's own integration surface is on the
+            <a href="../api/index.html">Developer API</a> and <a href="../listeners/index.html">Events &amp; Listeners</a>
+            pages. For this add-on's release history, see the
+            <a href="../logs/rune/index.html">MCIdentityRune change logs</a>.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="../js/site.js" defer></script>
+</body>
+</html>
