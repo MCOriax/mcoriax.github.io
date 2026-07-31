@@ -243,11 +243,23 @@
         <table>
           <thead><tr><th>Table</th><th>Contents</th></tr></thead>
           <tbody>
-            <tr><td><code>identity_runes</code></td><td>The registry of rune types: system code and display name.</td></tr>
+            <tr><td><code>identity_runes</code></td><td>The registry of rune types: system code, display name, and an optional Base64 <code>item</code> template.</td></tr>
             <tr><td><code>identity_equipped_runes</code></td><td>Which rune sits in which slot, keyed by identity UUID.</td></tr>
           </tbody>
         </table>
       </div>
+
+      <h3>The item template</h3>
+      <p>
+        A rune type may carry an <code>item</code> template: a whole item serialised to Base64.
+        <code>/rune register</code> stores whatever the admin is holding, so a rune is registered by
+        holding what it should look like. An empty hand registers the type without one.
+      </p>
+      <p>
+        The template describes what a rune <em>is</em>, not what anyone has equipped — slot
+        assignments stay a slot-to-code mapping. It exists so a rune can be handed out, inspected,
+        or browsed as a real item later.
+      </p>
 
       <p>
         Neither table carries a foreign key onto a core plugin table. That is deliberate: it is what
