@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="../css/shared/layout.css">
   <link rel="stylesheet" href="../css/shared/components.css">
   <link rel="stylesheet" href="../css/skill/skill.css">
+  <link rel="stylesheet" href="../css/addon/addon.css">
   <script>window.SITE_ROOT = "../"; window.PAGE_SECTION = "addons";</script>
 </head>
 <body>
@@ -32,7 +33,7 @@
         <span class="badge badge--ok">SpigotMC</span>
         <span class="badge badge--ok">PaperMC</span>
         <span class="badge badge--ok">Folia</span>
-        <span class="badge badge--accent">No database</span>
+        <span class="badge badge--accent">Own database</span>
         <span class="badge">Requires MCIdentity + MythicMobs</span>
       </div>
     </section>
@@ -61,10 +62,11 @@
           <span class="skill-split__tag skill-split__tag--now">Now</span>
           <h3>Skills on the item (PDC)</h3>
           <ul>
-            <li>No skills table, no schema, no migration — the add-on has no database at all.</li>
+            <li>A skill's <em>definition</em> lives on the item, not in a table — no registry row can contradict what a player is holding.</li>
             <li>The item <em>is</em> the record. Trade it, drop it, or chest it and its data goes with it.</li>
             <li>Reads are in-memory: the data is already in the item you are holding.</li>
             <li>Nothing can be orphaned, and no lookup can disagree with what the player holds.</li>
+            <li>A database records two narrower things: which type exists on the server, and which item an identity has <strong>equipped</strong> in which slot.</li>
           </ul>
         </div>
       </div>
@@ -264,7 +266,7 @@
       </p>
 
       <h3>Reading a skill item back</h3>
-      <p>Because there is no database, reading the item is the only way to see a skill's data — and <code>/skill info</code> is that read, made visible:</p>
+      <p>A skill's definition lives on the item, so reading the item is how you see it — and <code>/skill info</code> is that read, made visible:</p>
       <pre><code>[Skill] Skill item stored on this player_head:
   Skill code: quarry_sense
   Profession: miner
@@ -283,7 +285,7 @@
             <tr><td>SpigotMC, PaperMC, or Folia</td><td>One universal jar; the server type is detected at enable time.</td></tr>
             <tr><td><strong>MCIdentity</strong></td><td>Hard dependency. It owns the active profession every skill item is checked against.</td></tr>
             <tr><td><strong>MythicMobs</strong></td><td>Hard dependency. It owns and executes every skill behaviour.</td></tr>
-            <tr><td>A database</td><td>Not required. The add-on stores nothing outside the item.</td></tr>
+            <tr><td>A database</td><td>Optional in practice — SQLite is the default and needs no setup. It records the type registry and the equipped slots; a skill's own definition still lives on the item.</td></tr>
           </tbody>
         </table>
       </div>
@@ -295,10 +297,60 @@
         <li>Restart the server.</li>
       </ol>
 
-      <p>The whole configuration file is one switch — there is no storage section, because there is no storage:</p>
       <pre><code># Master switch. The plugin generates no data files and registers
 # nothing until this is turned on.
-enable: false</code></pre>
+enable: false
+
+# Storage backend for the skill registry and the equipped slots.
+database:
+  type: sqlite
+  sqlite:
+    file: "mcidentityskill.db"</code></pre>
+    </section>
+
+    <!-- Storage -->
+    <section class="section">
+      <h2>Storage</h2>
+      <p class="lead">
+        Two tables, both mirroring <a href="../rune/index.html">MCIdentityRune</a>. A skill's own
+        definition is not in either of them — that still lives on the item.
+      </p>
+
+      <ul class="addon-backends">
+        <li class="is-default">SQLite — default, zero configuration</li>
+        <li>MySQL / MariaDB</li>
+        <li>PostgreSQL</li>
+        <li>MongoDB</li>
+        <li>Central REST server</li>
+      </ul>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Table</th><th>Contents</th></tr></thead>
+          <tbody>
+            <tr><td><code>identity_skills</code></td><td>The registry of skill types: system code, display name, and an optional Base64 <code>item</code> template.</td></tr>
+            <tr><td><code>identity_equipped_skills</code></td><td>Which item an identity has equipped in which slot, keyed by identity UUID and stored as Base64.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        The two are <strong>independent</strong>. A type existing does not equip it, and equipping
+        does not require a registered type — a slot stores the item outright rather than pointing at
+        a registry row, so the two can never contradict each other.
+      </p>
+
+      <div class="callout callout--warn">
+        <span class="callout__icon" aria-hidden="true">&#128274;</span>
+        <div class="callout__body">
+          <p>
+            <strong>An equipped skill is permanent.</strong> A player may fill an empty slot and may
+            never empty a filled one. The menu cancels every click, and the equip rules refuse to
+            write to an occupied slot, so no command or API path can take a skill off either. Only
+            an administrator can clear a slot, to correct a bad row.
+          </p>
+        </div>
+      </div>
     </section>
 
     <!-- Developer API -->
