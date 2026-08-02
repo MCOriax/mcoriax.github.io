@@ -110,7 +110,7 @@
           <thead><tr><th>Column</th><th>Type</th><th>Contents</th></tr></thead>
           <tbody>
             <tr><td><code>identity_uuid</code></td><td>VARCHAR(36)</td><td>Primary key — the identity this row describes.</td></tr>
-            <tr><td><code>alias</code></td><td>VARCHAR(32)</td><td>The optional name the player gives this identity with <code>/identity alias</code>. Unique across every identity; empty until one is claimed.</td></tr>
+            <tr><td><code>alias</code></td><td>VARCHAR(32)</td><td>The optional name the player gives this identity with <code>/identity alias</code>. Unique across every identity; empty until one is claimed. Once claimed, it replaces the player's Minecraft name in chat and in the tab list while the identity is equipped.</td></tr>
             <tr><td><code>current_level</code></td><td>INT</td><td>The identity's level.</td></tr>
             <tr><td><code>exp</code></td><td>INT</td><td>Experience toward the next level.</td></tr>
             <tr><td><code>stat_points</code></td><td>INT</td><td>Unspent points available to <code>/identity stats add</code>.</td></tr>
@@ -138,6 +138,7 @@
         </table>
       </div>
       <p>The uniqueness check and the write happen together, so two players can never end up holding the same alias — and a name someone releases becomes available to everyone else immediately.</p>
+      <p>A stored alias is also the name the server shows: while the identity holding it is equipped, it replaces the player's Minecraft name in chat and in the tab list. That display is served from the session already held in memory, so naming a player costs no extra read against the backend.</p>
 
       <div class="callout callout--info">
         <span class="callout__icon" aria-hidden="true">ℹ️</span>

@@ -101,13 +101,15 @@ runtime dependency on another site); the design system is documented in
 
 | Directory / File | Purpose |
 |---|---|
-| [`docs/logs/index.html`](docs/logs/index.html) | Latest MCIdentity change log (`4.1.0`) with a right-side version navigation bar. Each add-on keeps its own version tree under `logs/skill/`, `logs/rune/`, and `logs/cosmetic/`, so the products' versions never collide. |
+| [`docs/logs/index.html`](docs/logs/index.html) | Latest MCIdentity change log (`4.3.0`) with a right-side version navigation bar. Each add-on keeps its own version tree under `logs/skill/`, `logs/rune/`, and `logs/cosmetic/`, so the products' versions never collide. |
 | [`docs/logs/1/0/0/index.html`](docs/logs/1/0/0/index.html) | Permalink for version 1.0.0 (versioned `major/minor/patch` structure). |
 | [`docs/logs/1/1/0/index.html`](docs/logs/1/1/0/index.html) | Permalink for version 1.1.0 (universal JAR architecture). |
 | [`docs/logs/2/0/0/index.html`](docs/logs/2/0/0/index.html) | Permalink for version 2.0.0 (developer API namespace move). |
 | [`docs/logs/3/0/0/index.html`](docs/logs/3/0/0/index.html) | Permalink for version 3.0.0 (skill decoupling; the ability tables are dropped). |
 | [`docs/logs/4/0/0/index.html`](docs/logs/4/0/0/index.html) | Permalink for version 4.0.0 (rune and cosmetic decoupling; those tables are dropped). |
 | [`docs/logs/4/1/0/index.html`](docs/logs/4/1/0/index.html) | Permalink for version 4.1.0 (identity aliases: the `alias` column and `/identity alias`). |
+| [`docs/logs/4/2/0/index.html`](docs/logs/4/2/0/index.html) | Permalink for version 4.2.0 (one supported way in: the provider owns storage, the manager owns RAM state). |
+| [`docs/logs/4/3/0/index.html`](docs/logs/4/3/0/index.html) | Permalink for version 4.3.0 (a claimed alias names the player in chat and the tab list). |
 | [`docs/logs/skill/index.html`](docs/logs/skill/index.html) | Latest MCIdentitySkill change log, with its own version navigation. |
 | [`docs/logs/skill/0/0/0/index.html`](docs/logs/skill/0/0/0/index.html) | Permalink for MCIdentitySkill version 0.0.0 (initial release). |
 | [`docs/logs/rune/index.html`](docs/logs/rune/index.html) | Latest MCIdentityRune change log, with its own version navigation. |
