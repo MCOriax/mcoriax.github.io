@@ -3,40 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Change Logs — MCIdentitySkill</title>
-  <meta name="description" content="Release notes for MCIdentitySkill, showing the latest version with a navigation bar for earlier logs.">
-  <link rel="stylesheet" href="../../css/main.css">
-  <link rel="stylesheet" href="../../css/shared/layout.css">
-  <link rel="stylesheet" href="../../css/shared/components.css">
-  <link rel="stylesheet" href="../../css/logs/logs.css">
-  <script>window.SITE_ROOT = "../../"; window.PAGE_SECTION = "logs";</script>
+  <title>Change Log 0.1.0 — MCIdentitySkill</title>
+  <meta name="description" content="Release notes for MCIdentitySkill version 0.1.0 — the base player identity owns no skills and has no skill menu.">
+  <link rel="stylesheet" href="../../../../../css/main.css">
+  <link rel="stylesheet" href="../../../../../css/shared/layout.css">
+  <link rel="stylesheet" href="../../../../../css/shared/components.css">
+  <link rel="stylesheet" href="../../../../../css/logs/logs.css">
+  <script>window.SITE_ROOT = "../../../../../"; window.PAGE_SECTION = "logs";</script>
 </head>
 <body>
   <div id="site-header"></div>
 
   <main class="container">
     <nav class="breadcrumbs" aria-label="Breadcrumb">
-      <a href="../../index.html">Home</a><span class="sep">/</span>
-      <a href="../index.html">Change Logs</a><span class="sep">/</span><span>MCIdentitySkill</span>
+      <a href="../../../../../index.html">Home</a><span class="sep">/</span>
+      <a href="../../../../index.html">Change Logs</a><span class="sep">/</span>
+      <a href="../../../index.html">MCIdentitySkill</a><span class="sep">/</span><span>0.1.0</span>
     </nav>
 
     <span class="eyebrow">Release notes · MCIdentitySkill</span>
-    <h1>MCIdentitySkill Change Logs</h1>
-    <p class="lead">The latest release of the skill add-on is shown below. Use the version list on the right to view a specific log. The core plugin's own logs live on the <a href="../index.html">main change log page</a>.</p>
+    <h1>Change Log — 0.1.0</h1>
+    <p class="lead">Permalink for MCIdentitySkill version 0.1.0.</p>
 
     <div class="logs-layout">
       <article class="log-entry">
         <div class="log-entry__head">
           <span class="log-entry__version">0.1.0</span>
           <span class="badge badge--ok">Latest</span>
-          <span class="log-entry__date">2026-08-02 &middot; Base identity lock</span>
+          <span class="log-entry__date">2026-08-02 · Base identity lock</span>
         </div>
         <p class="lead">The base <code>player</code> identity every player starts with now owns no skills at all. It cannot equip or use a skill item, and it has no skill menu. Skills belong to a chosen profession, so a player picks one first.</p>
 
         <div class="log-section">
           <h3><span class="log-tag log-tag--improve">Changed</span> The base <code>player</code> identity owns no skills</h3>
           <ul>
-            <li><code>player</code> is the reserved profession of the base identity. It is now the one profession that <strong>never</strong> matches a skill item &mdash; previously it was treated like any other profession.</li>
+            <li><code>player</code> is the reserved profession of the base identity. It is now the one profession that <strong>never</strong> matches a skill item — previously it was treated like any other profession.</li>
             <li>While the base identity is worn, a skill item cannot be equipped or used <strong>whatever profession it asks for</strong>. The refusal applies everywhere the restriction already applied: inventory click, drag, hotbar selection, and right-click use.</li>
             <li>An item stamped with the profession <code>player</code> does not work around it. The base identity is answered <em>before</em> the two professions are compared, so no item can be built that grants it a skill.</li>
             <li>The denial has its own message, so a player is told what to do rather than only that they were refused:
@@ -47,7 +48,7 @@
         <div class="log-section">
           <h3><span class="log-tag log-tag--improve">Changed</span> The skill menu belongs to a profession</h3>
           <ul>
-            <li><code>/skill gui</code> no longer opens for the base identity &mdash; it has no slots to show, and the refusal happens before any storage is read.</li>
+            <li><code>/skill gui</code> no longer opens for the base identity — it has no slots to show, and the refusal happens before any storage is read.</li>
             <li><code>/skill equip &lt;slot&gt;</code> refuses for the base identity as well, so nothing can be written to a slot it does not own.</li>
             <li>Both refusals name the base identity and point at the fix: wear an identity with a profession first.</li>
           </ul>
@@ -61,46 +62,44 @@
             <li>Nothing else changed: the item is still the record, the restriction still fails closed and cannot be switched off, and an equipped skill is still permanent.</li>
           </ul>
         </div>
-
-        <p style="margin-top:1.2rem;"><a href="0/1/0/index.html">Permalink for 0.1.0 &rarr;</a></p>
       </article>
 
       <aside class="logs-nav" aria-label="Log versions">
         <h4>Versions</h4>
         <ul>
-          <li><a href="../index.html">4.6.0 <span class="latest">Latest</span></a></li>
-          <li><a href="../4/5/1/index.html">4.5.1</a></li>
-          <li><a href="../4/5/0/index.html">4.5.0</a></li>
-          <li><a href="../4/4/0/index.html">4.4.0</a></li>
-          <li><a href="../4/3/1/index.html">4.3.1</a></li>
-          <li><a href="../4/3/0/index.html">4.3.0</a></li>
-          <li><a href="../4/2/0/index.html">4.2.0</a></li>
-          <li><a href="../4/1/0/index.html">4.1.0</a></li>
-          <li><a href="../4/0/0/index.html">4.0.0</a></li>
-          <li><a href="../3/0/0/index.html">3.0.0</a></li>
-          <li><a href="../2/0/0/index.html">2.0.0</a></li>
-          <li><a href="../1/1/0/index.html">1.1.0</a></li>
-          <li><a href="../1/0/0/index.html">1.0.0</a></li>
+          <li><a href="../../../../index.html">4.6.0 <span class="latest">Latest</span></a></li>
+          <li><a href="../../../../4/5/1/index.html">4.5.1</a></li>
+          <li><a href="../../../../4/5/0/index.html">4.5.0</a></li>
+          <li><a href="../../../../4/4/0/index.html">4.4.0</a></li>
+          <li><a href="../../../../4/3/1/index.html">4.3.1</a></li>
+          <li><a href="../../../../4/3/0/index.html">4.3.0</a></li>
+          <li><a href="../../../../4/2/0/index.html">4.2.0</a></li>
+          <li><a href="../../../../4/1/0/index.html">4.1.0</a></li>
+          <li><a href="../../../../4/0/0/index.html">4.0.0</a></li>
+          <li><a href="../../../../3/0/0/index.html">3.0.0</a></li>
+          <li><a href="../../../../2/0/0/index.html">2.0.0</a></li>
+          <li><a href="../../../../1/1/0/index.html">1.1.0</a></li>
+          <li><a href="../../../../1/0/0/index.html">1.0.0</a></li>
         </ul>
         <h4 style="margin-top:1.2rem;">MCIdentitySkill</h4>
         <ul>
-          <li><a class="is-current" href="../skill/index.html">0.1.0 <span class="latest">Latest</span></a></li>
-          <li><a href="../skill/0/0/0/index.html">0.0.0</a></li>
+          <li><a class="is-current" href="../../../../skill/index.html">0.1.0 <span class="latest">Latest</span></a></li>
+          <li><a href="../../../../skill/0/0/0/index.html">0.0.0</a></li>
         </ul>
         <h4 style="margin-top:1.2rem;">MCIdentityRune</h4>
         <ul>
-          <li><a href="../rune/index.html">0.0.0 <span class="latest">Latest</span></a></li>
+          <li><a href="../../../../rune/index.html">0.0.0 <span class="latest">Latest</span></a></li>
         </ul>
         <h4 style="margin-top:1.2rem;">MCIdentityCosmetic</h4>
         <ul>
-          <li><a href="../cosmetic/index.html">0.0.0 <span class="latest">Latest</span></a></li>
+          <li><a href="../../../../cosmetic/index.html">0.0.0 <span class="latest">Latest</span></a></li>
         </ul>
-        <p style="margin:0.9rem 0 0;font-size:0.8rem;color:var(--ink-400);"><a href="../index.html">← MCIdentity logs</a></p>
+        <p style="margin:0.9rem 0 0;font-size:0.8rem;color:var(--ink-400);"><a href="../../../../skill/index.html">← Back to latest</a></p>
       </aside>
     </div>
   </main>
 
   <div id="site-footer"></div>
-  <script src="../../js/site.js" defer></script>
+  <script src="../../../../../js/site.js" defer></script>
 </body>
 </html>
