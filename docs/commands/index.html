@@ -48,7 +48,7 @@
         </div>
         <div class="cmd">
           <div class="cmd__sig">/identity alias</div>
-          <p>Show the alias of the identity you are currently wearing, or a hint on how to claim one when it has none.</p>
+          <p>Show the alias of the identity you are currently wearing, or a hint on how to claim one when it has none. On the base <code>Player</code> identity it reports that the identity always goes by your Minecraft name.</p>
         </div>
         <div class="cmd">
           <div class="cmd__sig">/identity alias &lt;name&gt;</div>
@@ -57,8 +57,9 @@
             <li><strong>Alphanumeric only.</strong> A name may contain letters and digits only — <code>a-z</code>, <code>A-Z</code>, and <code>0-9</code> — and at most <strong>32</strong> of them. Spaces, underscores, hyphens, and symbols are rejected.</li>
             <li><strong>Unique across the whole server, ignoring case.</strong> Two aliases that differ only in capitalisation are the same alias: if someone already holds <code>Alex</code>, then <code>alex</code> and <code>ALEX</code> are refused for everyone else.</li>
             <li><strong>Your capitalisation is kept.</strong> The name is stored exactly as you typed it, so <code>Alex</code> stays <code>Alex</code> wherever it is shown.</li>
-            <li>Running the command again renames the identity, and a name you give up becomes available to everyone else.</li>
-            <li><strong>Your alias is the name everyone sees.</strong> While that identity is equipped, the alias replaces your Minecraft name in chat and in the tab list. Unequip it, or wear an identity with no alias, and your Minecraft name comes straight back.</li>
+            <li><strong>An alias is permanent.</strong> Once an identity carries one it is never renamed &mdash; running the command again is refused with <em>"This identity alias is already set as ..."</em>. Choose the name you want to keep.</li>
+            <li><strong>The base <code>Player</code> identity has no alias.</strong> It is your own character rather than a role you put on, so it always goes by your Minecraft name and the command is refused there. Every other identity can claim one, alternative base identities included.</li>
+            <li><strong>Your alias is the name everyone sees.</strong> While that identity is equipped, the alias replaces your Minecraft name in chat and in the tab list, shown after the profession of the identity you are wearing. Unequip it, or wear an identity with no alias, and your Minecraft name comes straight back.</li>
           </ul>
         </div>
         <div class="cmd">

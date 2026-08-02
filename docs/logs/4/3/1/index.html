@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Change Log 1.1.0 — MCIdentity</title>
-  <meta name="description" content="Release notes for MCIdentity version 1.1.0 — a single universal plugin jar for SpigotMC, PaperMC, and Folia.">
+  <title>Change Log 4.3.1 — MCIdentity</title>
+  <meta name="description" content="Release notes for MCIdentity version 4.3.1 — the profession prefix is back in chat for players with an alias.">
   <link rel="stylesheet" href="../../../../css/main.css">
   <link rel="stylesheet" href="../../../../css/shared/layout.css">
   <link rel="stylesheet" href="../../../../css/shared/components.css">
@@ -17,28 +17,42 @@
   <main class="container">
     <nav class="breadcrumbs" aria-label="Breadcrumb">
       <a href="../../../../index.html">Home</a><span class="sep">/</span>
-      <a href="../../../index.html">Change Logs</a><span class="sep">/</span><span>1.1.0</span>
+      <a href="../../../index.html">Change Logs</a><span class="sep">/</span><span>4.3.1</span>
     </nav>
 
     <span class="eyebrow">Release notes</span>
-    <h1>Change Log — 1.1.0</h1>
-    <p class="lead">Permalink for version 1.1.0.</p>
+    <h1>Change Log — 4.3.1</h1>
+    <p class="lead">Permalink for version 4.3.1.</p>
 
     <div class="logs-layout">
       <article class="log-entry">
         <div class="log-entry__head">
-          <span class="log-entry__version">1.1.0</span>
-          <span class="badge">Archived</span>
-          <span class="log-entry__date">2026-07-17 · Universal JAR</span>
+          <span class="log-entry__version">4.3.1</span>
+          <span class="log-entry__date">2026-08-02 &middot; Profession prefix in chat</span>
         </div>
-        <p class="lead">One download now runs everywhere. MCIdentity ships as a single universal plugin jar that adapts to whichever server it is installed on.</p>
+        <p class="lead">A fix for 4.3.0: claiming an alias no longer costs you your profession prefix in chat.</p>
 
         <div class="log-section">
-          <h3><span class="log-tag log-tag--improve">Changed</span> Universal JAR architecture</h3>
+          <h3><span class="log-tag log-tag--improve">Fixed</span> The profession is shown in chat again</h3>
           <ul>
-            <li>A single plugin file now seamlessly supports SpigotMC, PaperMC, and Folia automatically without needing separate downloads.</li>
-            <li>The plugin detects your server type on startup and enables the matching scheduling, so Folia's regionalized scheduling is still used automatically when you run Folia.</li>
-            <li>Installation is simpler: drop the one jar into your <code>plugins/</code> folder — there is no longer a per-platform build to choose from.</li>
+            <li>In 4.3.0, a player who had claimed an alias spoke as <code>&lt;Rockbiter&gt;</code> instead of <code>&lt;[Miner] Rockbiter&gt;</code>. The alias replaced the whole name tag rather than only the name inside it, so the profession went missing from every line they sent.</li>
+            <li>Chat now shows the profession and the alias together, exactly as the tab list already did.</li>
+            <li>Players without an alias were never affected, which is why this only appeared once someone claimed one.</li>
+          </ul>
+        </div>
+
+        <div class="log-section">
+          <h3><span class="log-tag log-tag--improve">Fixed</span> Profession names containing a percent sign</h3>
+          <ul>
+            <li>A profession whose <code>display_name</code> in <code>professions/*.yml</code> contains a <code>%</code> no longer risks breaking the chat line it appears in.</li>
+          </ul>
+        </div>
+
+        <div class="log-section">
+          <h3><span class="log-tag log-tag--note">Note</span> Upgrading</h3>
+          <ul>
+            <li>Drop the new jar in and restart. No schema change, no configuration change, and nothing to migrate.</li>
+            <li>A prefix another plugin adds to the chat format is still preserved, as before.</li>
           </ul>
         </div>
       </article>
@@ -47,14 +61,14 @@
         <h4>Versions</h4>
         <ul>
           <li><a href="../../../index.html">4.4.0 <span class="latest">Latest</span></a></li>
-          <li><a href="../../../4/3/1/index.html">4.3.1</a></li>
+          <li><a class="is-current" href="../../../4/3/1/index.html">4.3.1</a></li>
           <li><a href="../../../4/3/0/index.html">4.3.0</a></li>
           <li><a href="../../../4/2/0/index.html">4.2.0</a></li>
           <li><a href="../../../4/1/0/index.html">4.1.0</a></li>
           <li><a href="../../../4/0/0/index.html">4.0.0</a></li>
           <li><a href="../../../3/0/0/index.html">3.0.0</a></li>
           <li><a href="../../../2/0/0/index.html">2.0.0</a></li>
-          <li><a class="is-current" href="../../../1/1/0/index.html">1.1.0</a></li>
+          <li><a href="../../../1/1/0/index.html">1.1.0</a></li>
           <li><a href="../../../1/0/0/index.html">1.0.0</a></li>
         </ul>
         <h4 style="margin-top:1.2rem;">MCIdentitySkill</h4>

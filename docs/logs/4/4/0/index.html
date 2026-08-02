@@ -3,25 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Change Logs — MCIdentity</title>
-  <meta name="description" content="Release notes for MCIdentity, showing the latest version with a navigation bar for earlier logs.">
-  <link rel="stylesheet" href="../css/main.css">
-  <link rel="stylesheet" href="../css/shared/layout.css">
-  <link rel="stylesheet" href="../css/shared/components.css">
-  <link rel="stylesheet" href="../css/logs/logs.css">
-  <script>window.SITE_ROOT = "../"; window.PAGE_SECTION = "logs";</script>
+  <title>Change Log 4.4.0 — MCIdentity</title>
+  <meta name="description" content="Release notes for MCIdentity version 4.4.0 — an alias is claimed once and kept, and the base Player identity always goes by your Minecraft name.">
+  <link rel="stylesheet" href="../../../../css/main.css">
+  <link rel="stylesheet" href="../../../../css/shared/layout.css">
+  <link rel="stylesheet" href="../../../../css/shared/components.css">
+  <link rel="stylesheet" href="../../../../css/logs/logs.css">
+  <script>window.SITE_ROOT = "../../../../"; window.PAGE_SECTION = "logs";</script>
 </head>
 <body>
   <div id="site-header"></div>
 
   <main class="container">
     <nav class="breadcrumbs" aria-label="Breadcrumb">
-      <a href="../index.html">Home</a><span class="sep">/</span><span>Change Logs</span>
+      <a href="../../../../index.html">Home</a><span class="sep">/</span>
+      <a href="../../../index.html">Change Logs</a><span class="sep">/</span><span>4.4.0</span>
     </nav>
 
     <span class="eyebrow">Release notes</span>
-    <h1>Change Logs</h1>
-    <p class="lead">The latest release is shown below. Use the version list on the right to view a specific log.</p>
+    <h1>Change Log — 4.4.0</h1>
+    <p class="lead">Permalink for version 4.4.0.</p>
 
     <div class="logs-layout">
       <article class="log-entry">
@@ -45,7 +46,7 @@
             <li>Running <code>/identity alias &lt;name&gt;</code> on an identity that already carries an alias is refused with <em>"This identity alias is already set as ..."</em>, and the name already claimed is left untouched.</li>
             <li>Claiming a name on an identity that has none works exactly as before, including the alphanumeric rule, the 32 character limit, and the server-wide uniqueness check that ignores capitalisation.</li>
             <li><code>/identity alias</code> with no arguments still reports the current alias.</li>
-            <li>Because a name is never released, one that is taken now stays taken. See <a href="../commands/index.html">Commands &amp; Permissions</a> for the full reference.</li>
+            <li>Because a name is never released, one that is taken now stays taken. See <a href="../../../../commands/index.html">Commands &amp; Permissions</a> for the full reference.</li>
           </ul>
         </div>
 
@@ -60,19 +61,11 @@
         </div>
 
         <div class="log-section">
-          <h3><span class="log-tag log-tag--improve">Fixed</span> The profession is shown in chat again</h3>
-          <ul>
-            <li>Carried in from 4.3.1: a player who had claimed an alias spoke as <code>&lt;Rockbiter&gt;</code> instead of <code>&lt;[Miner] Rockbiter&gt;</code>, because the alias replaced the whole name tag rather than only the name inside it. Chat and the tab list agree again.</li>
-            <li>A profession whose <code>display_name</code> contains a <code>%</code> no longer risks breaking the chat line it appears in.</li>
-          </ul>
-        </div>
-
-        <div class="log-section">
           <h3><span class="log-tag log-tag--note">Note</span> Developers</h3>
           <ul>
             <li><code>MCIdentityProvider.setIdentityAlias(UUID, String)</code> is <strong>unchanged</strong> and still renames an identity or releases its name with <code>null</code>. Both new rules live in the <code>/identity alias</code> command, not in the provider or the database column.</li>
             <li>That leaves the door open for an administrative tool or an integrating plugin to correct a name a player cannot change themselves.</li>
-            <li>See <a href="../api/index.html">Developer API</a> for the provider reference and <a href="../storage/index.html">Data Storage</a> for the <code>alias</code> column.</li>
+            <li>See <a href="../../../../api/index.html">Developer API</a> for the provider reference and <a href="../../../../storage/index.html">Data Storage</a> for the <code>alias</code> column.</li>
           </ul>
         </div>
 
@@ -89,34 +82,35 @@
       <aside class="logs-nav" aria-label="Log versions">
         <h4>Versions</h4>
         <ul>
-          <li><a class="is-current" href="index.html">4.4.0 <span class="latest">Latest</span></a></li>
-          <li><a href="4/3/1/index.html">4.3.1</a></li>
-          <li><a href="4/3/0/index.html">4.3.0</a></li>
-          <li><a href="4/2/0/index.html">4.2.0</a></li>
-          <li><a href="4/1/0/index.html">4.1.0</a></li>
-          <li><a href="4/0/0/index.html">4.0.0</a></li>
-          <li><a href="3/0/0/index.html">3.0.0</a></li>
-          <li><a href="2/0/0/index.html">2.0.0</a></li>
-          <li><a href="1/1/0/index.html">1.1.0</a></li>
-          <li><a href="1/0/0/index.html">1.0.0</a></li>
+          <li><a class="is-current" href="../../../index.html">4.4.0 <span class="latest">Latest</span></a></li>
+          <li><a href="../../../4/3/1/index.html">4.3.1</a></li>
+          <li><a href="../../../4/3/0/index.html">4.3.0</a></li>
+          <li><a href="../../../4/2/0/index.html">4.2.0</a></li>
+          <li><a href="../../../4/1/0/index.html">4.1.0</a></li>
+          <li><a href="../../../4/0/0/index.html">4.0.0</a></li>
+          <li><a href="../../../3/0/0/index.html">3.0.0</a></li>
+          <li><a href="../../../2/0/0/index.html">2.0.0</a></li>
+          <li><a href="../../../1/1/0/index.html">1.1.0</a></li>
+          <li><a href="../../../1/0/0/index.html">1.0.0</a></li>
         </ul>
         <h4 style="margin-top:1.2rem;">MCIdentitySkill</h4>
         <ul>
-          <li><a href="skill/index.html">0.0.0 <span class="latest">Latest</span></a></li>
+          <li><a href="../../../skill/index.html">0.0.0 <span class="latest">Latest</span></a></li>
         </ul>
         <h4 style="margin-top:1.2rem;">MCIdentityRune</h4>
         <ul>
-          <li><a href="rune/index.html">0.0.0 <span class="latest">Latest</span></a></li>
+          <li><a href="../../../rune/index.html">0.0.0 <span class="latest">Latest</span></a></li>
         </ul>
         <h4 style="margin-top:1.2rem;">MCIdentityCosmetic</h4>
         <ul>
-          <li><a href="cosmetic/index.html">0.0.0 <span class="latest">Latest</span></a></li>
+          <li><a href="../../../cosmetic/index.html">0.0.0 <span class="latest">Latest</span></a></li>
         </ul>
+        <p style="margin:0.9rem 0 0;font-size:0.8rem;color:var(--ink-400);"><a href="../../../index.html">← Back to latest</a></p>
       </aside>
     </div>
   </main>
 
   <div id="site-footer"></div>
-  <script src="../js/site.js" defer></script>
+  <script src="../../../../js/site.js" defer></script>
 </body>
 </html>
