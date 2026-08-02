@@ -101,7 +101,7 @@ runtime dependency on another site); the design system is documented in
 
 | Directory / File | Purpose |
 |---|---|
-| [`docs/logs/index.html`](docs/logs/index.html) | Latest MCIdentity change log (`4.4.0`) with a right-side version navigation bar. Each add-on keeps its own version tree under `logs/skill/`, `logs/rune/`, and `logs/cosmetic/`, so the products' versions never collide. |
+| [`docs/logs/index.html`](docs/logs/index.html) | Latest MCIdentity change log (`4.5.0`) with a right-side version navigation bar. Each add-on keeps its own version tree under `logs/skill/`, `logs/rune/`, and `logs/cosmetic/`, so the products' versions never collide. |
 | [`docs/logs/1/0/0/index.html`](docs/logs/1/0/0/index.html) | Permalink for version 1.0.0 (versioned `major/minor/patch` structure). |
 | [`docs/logs/1/1/0/index.html`](docs/logs/1/1/0/index.html) | Permalink for version 1.1.0 (universal JAR architecture). |
 | [`docs/logs/2/0/0/index.html`](docs/logs/2/0/0/index.html) | Permalink for version 2.0.0 (developer API namespace move). |
@@ -112,6 +112,7 @@ runtime dependency on another site); the design system is documented in
 | [`docs/logs/4/3/0/index.html`](docs/logs/4/3/0/index.html) | Permalink for version 4.3.0 (a claimed alias names the player in chat and the tab list). |
 | [`docs/logs/4/3/1/index.html`](docs/logs/4/3/1/index.html) | Permalink for version 4.3.1 (the profession prefix is kept in chat alongside the alias). |
 | [`docs/logs/4/4/0/index.html`](docs/logs/4/4/0/index.html) | Permalink for version 4.4.0 (an alias is claimed once; the base `Player` identity keeps the Minecraft name). |
+| [`docs/logs/4/5/0/index.html`](docs/logs/4/5/0/index.html) | Permalink for version 4.5.0 (identities are named by their alias, with profession and level in the lore). |
 | [`docs/logs/skill/index.html`](docs/logs/skill/index.html) | Latest MCIdentitySkill change log, with its own version navigation. |
 | [`docs/logs/skill/0/0/0/index.html`](docs/logs/skill/0/0/0/index.html) | Permalink for MCIdentitySkill version 0.0.0 (initial release). |
 | [`docs/logs/rune/index.html`](docs/logs/rune/index.html) | Latest MCIdentityRune change log, with its own version navigation. |
