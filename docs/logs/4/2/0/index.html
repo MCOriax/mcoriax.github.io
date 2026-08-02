@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Change Log 4.2.0 — MCIdentity</title>
+  <meta name="description" content="Release notes for MCIdentity version 4.2.0 — one supported way in: MCIdentityProvider for storage, MCIdentityManager for RAM state.">
+  <link rel="stylesheet" href="../../../../css/main.css">
+  <link rel="stylesheet" href="../../../../css/shared/layout.css">
+  <link rel="stylesheet" href="../../../../css/shared/components.css">
+  <link rel="stylesheet" href="../../../../css/logs/logs.css">
+  <script>window.SITE_ROOT = "../../../../"; window.PAGE_SECTION = "logs";</script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="../../../../index.html">Home</a><span class="sep">/</span>
+      <a href="../../../index.html">Change Logs</a><span class="sep">/</span><span>4.2.0</span>
+    </nav>
+
+    <span class="eyebrow">Release notes</span>
+    <h1>Change Log — 4.2.0</h1>
+    <p class="lead">Permalink for version 4.2.0.</p>
+
+    <div class="logs-layout">
+      <article class="log-entry">
+        <div class="log-entry__head">
+          <span class="log-entry__version">4.2.0</span>
+          <span class="log-entry__date">2026-08-02 &middot; One way in</span>
+        </div>
+        <p class="lead">MCIdentity now has exactly two supported entry points, and only two: <code>MCIdentityProvider</code> for everything that is stored, and <code>MCIdentityManager</code> for everything held in memory. Nothing changes for server owners; integrating plugins get a smaller, clearer surface to write against.</p>
+
+        <div class="callout callout--info">
+          <span class="callout__icon" aria-hidden="true">&#8505;&#65039;</span>
+          <div class="callout__body">
+            <p><strong>Server owners can upgrade straight in.</strong> There is no schema change, no configuration change, and no data migration in this release. Drop the new jar in and restart.</p>
+          </div>
+        </div>
+
+        <div class="log-section">
+          <h3><span class="log-tag log-tag--improve">Changed</span> The storage backend is no longer handed out</h3>
+          <ul>
+            <li><code>MCIdentityProvider</code> keeps its storage backend to itself. There is no supported way to obtain the raw persistence contract, or one of the concrete backends behind it, and call it directly.</li>
+            <li>Everything the backend can do is reachable on the provider instead &mdash; reads, writes, and the storage lifecycle. If something you need is missing from it, treat that as a gap worth reporting rather than a reason to reach around it.</li>
+            <li>Storage is brought up with <code>MCIdentityProvider.create(type, options)</code>, which builds the backend and installs it as <code>MCIdentityProvider.instance</code>.</li>
+            <li>See <a href="../../../../api/index.html">Developer API</a> for the full provider reference.</li>
+          </ul>
+        </div>
+
+        <div class="log-section">
+          <h3><span class="log-tag log-tag--improve">Changed</span> <code>MCIdentityManager</code> is RAM state only</h3>
+          <ul>
+            <li><code>MCIdentityManager</code> now covers exactly one job: state held in memory &mdash; active identity sessions, profession configuration, and per-player gameplay state.</li>
+            <li>Anything that touches the database moved to <code>MCIdentityProvider</code>. The split means a call site no longer has to know which of the two facades happens to own a given operation: if it is stored, it is on the provider.</li>
+          </ul>
+        </div>
+
+        <div class="log-section">
+          <h3><span class="log-tag log-tag--note">Note</span> Deprecation</h3>
+          <ul>
+            <li><code>MCIdentityManager.createDatabase(...)</code> is <strong>deprecated</strong>, because it returned a raw backend. It still works in this release.</li>
+            <li>Move any code that called it to <code>MCIdentityProvider.create(type, options)</code>, which builds the same backend and makes it the active provider.</li>
+            <li>Server owners are unaffected either way &mdash; the plugin wires its own storage from <code>config.yml</code> and never went through that method.</li>
+          </ul>
+        </div>
+
+        <div class="log-section">
+          <h3><span class="log-tag log-tag--note">Note</span> Compatibility</h3>
+          <ul>
+            <li>No gameplay, command, permission, GUI, or configuration behaviour changes in this release.</li>
+            <li>The MCIdentitySkill, MCIdentityRune, and MCIdentityCosmetic add-ons are unaffected: each owns its own storage and reads the equipped identity through the session cache, which is unchanged.</li>
+            <li>Every supported backend &mdash; SQLite, MySQL, MariaDB, PostgreSQL, MongoDB, and the central server &mdash; keeps working exactly as before. See <a href="../../../../storage/index.html">Data Storage</a>.</li>
+          </ul>
+        </div>
+      </article>
+
+      <aside class="logs-nav" aria-label="Log versions">
+        <h4>Versions</h4>
+        <ul>
+          <li><a href="../../../index.html">4.3.0 <span class="latest">Latest</span></a></li>
+          <li><a class="is-current" href="../../../4/2/0/index.html">4.2.0</a></li>
+          <li><a href="../../../4/1/0/index.html">4.1.0</a></li>
+          <li><a href="../../../4/0/0/index.html">4.0.0</a></li>
+          <li><a href="../../../3/0/0/index.html">3.0.0</a></li>
+          <li><a href="../../../2/0/0/index.html">2.0.0</a></li>
+          <li><a href="../../../1/1/0/index.html">1.1.0</a></li>
+          <li><a href="../../../1/0/0/index.html">1.0.0</a></li>
+        </ul>
+        <h4 style="margin-top:1.2rem;">MCIdentitySkill</h4>
+        <ul>
+          <li><a href="../../../skill/index.html">0.0.0 <span class="latest">Latest</span></a></li>
+        </ul>
+        <h4 style="margin-top:1.2rem;">MCIdentityRune</h4>
+        <ul>
+          <li><a href="../../../rune/index.html">0.0.0 <span class="latest">Latest</span></a></li>
+        </ul>
+        <h4 style="margin-top:1.2rem;">MCIdentityCosmetic</h4>
+        <ul>
+          <li><a href="../../../cosmetic/index.html">0.0.0 <span class="latest">Latest</span></a></li>
+        </ul>
+        <p style="margin:0.9rem 0 0;font-size:0.8rem;color:var(--ink-400);"><a href="../../../index.html">← Back to latest</a></p>
+      </aside>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="../../../../js/site.js" defer></script>
+</body>
+</html>
