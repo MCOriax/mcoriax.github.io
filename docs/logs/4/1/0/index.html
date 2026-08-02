@@ -3,25 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Change Logs — MCIdentity</title>
-  <meta name="description" content="Release notes for MCIdentity, showing the latest version with a navigation bar for earlier logs.">
-  <link rel="stylesheet" href="../css/main.css">
-  <link rel="stylesheet" href="../css/shared/layout.css">
-  <link rel="stylesheet" href="../css/shared/components.css">
-  <link rel="stylesheet" href="../css/logs/logs.css">
-  <script>window.SITE_ROOT = "../"; window.PAGE_SECTION = "logs";</script>
+  <title>Change Log 4.1.0 — MCIdentity</title>
+  <meta name="description" content="Release notes for MCIdentity version 4.1.0 — every identity can claim a unique alphanumeric alias with /identity alias.">
+  <link rel="stylesheet" href="../../../../css/main.css">
+  <link rel="stylesheet" href="../../../../css/shared/layout.css">
+  <link rel="stylesheet" href="../../../../css/shared/components.css">
+  <link rel="stylesheet" href="../../../../css/logs/logs.css">
+  <script>window.SITE_ROOT = "../../../../"; window.PAGE_SECTION = "logs";</script>
 </head>
 <body>
   <div id="site-header"></div>
 
   <main class="container">
     <nav class="breadcrumbs" aria-label="Breadcrumb">
-      <a href="../index.html">Home</a><span class="sep">/</span><span>Change Logs</span>
+      <a href="../../../../index.html">Home</a><span class="sep">/</span>
+      <a href="../../../index.html">Change Logs</a><span class="sep">/</span><span>4.1.0</span>
     </nav>
 
     <span class="eyebrow">Release notes</span>
-    <h1>Change Logs</h1>
-    <p class="lead">The latest release is shown below. Use the version list on the right to view a specific log.</p>
+    <h1>Change Log — 4.1.0</h1>
+    <p class="lead">Permalink for version 4.1.0.</p>
 
     <div class="logs-layout">
       <article class="log-entry">
@@ -47,7 +48,7 @@
             <li>A name may contain <strong>letters and digits only</strong> (<code>a-z</code>, <code>A-Z</code>, <code>0-9</code>) and at most <strong>32</strong> of them. Spaces, underscores, hyphens, and symbols are rejected with a message explaining the rule.</li>
             <li>An alias is <strong>unique across every identity on the server</strong>, and the check <strong>ignores case</strong>: once someone holds <code>Alex</code>, both <code>alex</code> and <code>ALEX</code> are refused for everyone else. Your own capitalisation is preserved, so <code>Alex</code> is shown as <code>Alex</code>.</li>
             <li>Available to all players by default, under the new <code>mcoriax.mcidentity.command.alias</code> node. Tab completion lists the sub-command and hints at the argument.</li>
-            <li>See <a href="../commands/index.html">Commands &amp; Permissions</a> for the full reference.</li>
+            <li>See <a href="../../../../commands/index.html">Commands &amp; Permissions</a> for the full reference.</li>
           </ul>
         </div>
 
@@ -57,7 +58,7 @@
             <li><code>identity_properties</code> gains a nullable <code>alias</code> column, placed directly after <code>identity_uuid</code> on a freshly created schema.</li>
             <li>Every backend enforces the same rule its own way: a unique index over the folded value on SQLite and PostgreSQL, a case-insensitive collation on MySQL and MariaDB, a sparse unique index on MongoDB, and the server's own check &mdash; answering <code>409 Conflict</code> &mdash; on the central server.</li>
             <li>A database created before this release gains the column automatically on the next start. MySQL and MariaDB place it after <code>identity_uuid</code>; SQLite and PostgreSQL can only append it, so there it sits last. Both positions behave identically.</li>
-            <li>See <a href="../storage/index.html">Data Storage</a> for the column reference and the per-backend details.</li>
+            <li>See <a href="../../../../storage/index.html">Data Storage</a> for the column reference and the per-backend details.</li>
           </ul>
         </div>
 
@@ -66,7 +67,7 @@
           <ul>
             <li><code>MCIdentityProvider</code> gains <code>getIdentityByAlias(String)</code>, resolving an alias to the identity holding it in any capitalisation, and <code>setIdentityAlias(UUID, String)</code>, claiming one (or releasing it with <code>null</code>). The latter answers <code>false</code> when the name is malformed or already taken.</li>
             <li><code>IdentityProperties</code> gains <code>getAlias()</code>, so an identity's name comes back with every properties read.</li>
-            <li>See <a href="../api/index.html">Developer API</a> for the usage reference.</li>
+            <li>See <a href="../../../../api/index.html">Developer API</a> for the usage reference.</li>
           </ul>
         </div>
 
@@ -91,30 +92,31 @@
       <aside class="logs-nav" aria-label="Log versions">
         <h4>Versions</h4>
         <ul>
-          <li><a class="is-current" href="index.html">4.1.0 <span class="latest">Latest</span></a></li>
-          <li><a href="4/0/0/index.html">4.0.0</a></li>
-          <li><a href="3/0/0/index.html">3.0.0</a></li>
-          <li><a href="2/0/0/index.html">2.0.0</a></li>
-          <li><a href="1/1/0/index.html">1.1.0</a></li>
-          <li><a href="1/0/0/index.html">1.0.0</a></li>
+          <li><a class="is-current" href="../../../index.html">4.1.0 <span class="latest">Latest</span></a></li>
+          <li><a href="../../../4/0/0/index.html">4.0.0</a></li>
+          <li><a href="../../../3/0/0/index.html">3.0.0</a></li>
+          <li><a href="../../../2/0/0/index.html">2.0.0</a></li>
+          <li><a href="../../../1/1/0/index.html">1.1.0</a></li>
+          <li><a href="../../../1/0/0/index.html">1.0.0</a></li>
         </ul>
         <h4 style="margin-top:1.2rem;">MCIdentitySkill</h4>
         <ul>
-          <li><a href="skill/index.html">0.0.0 <span class="latest">Latest</span></a></li>
+          <li><a href="../../../skill/index.html">0.0.0 <span class="latest">Latest</span></a></li>
         </ul>
         <h4 style="margin-top:1.2rem;">MCIdentityRune</h4>
         <ul>
-          <li><a href="rune/index.html">0.0.0 <span class="latest">Latest</span></a></li>
+          <li><a href="../../../rune/index.html">0.0.0 <span class="latest">Latest</span></a></li>
         </ul>
         <h4 style="margin-top:1.2rem;">MCIdentityCosmetic</h4>
         <ul>
-          <li><a href="cosmetic/index.html">0.0.0 <span class="latest">Latest</span></a></li>
+          <li><a href="../../../cosmetic/index.html">0.0.0 <span class="latest">Latest</span></a></li>
         </ul>
+        <p style="margin:0.9rem 0 0;font-size:0.8rem;color:var(--ink-400);"><a href="../../../index.html">← Back to latest</a></p>
       </aside>
     </div>
   </main>
 
   <div id="site-footer"></div>
-  <script src="../js/site.js" defer></script>
+  <script src="../../../../js/site.js" defer></script>
 </body>
 </html>

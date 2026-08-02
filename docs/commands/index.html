@@ -47,6 +47,20 @@
           <p>Unequip your current identity.</p>
         </div>
         <div class="cmd">
+          <div class="cmd__sig">/identity alias</div>
+          <p>Show the alias of the identity you are currently wearing, or a hint on how to claim one when it has none.</p>
+        </div>
+        <div class="cmd">
+          <div class="cmd__sig">/identity alias &lt;name&gt;</div>
+          <p>Claim <code>&lt;name&gt;</code> as the alias of the identity you are currently wearing.</p>
+          <ul>
+            <li><strong>Alphanumeric only.</strong> A name may contain letters and digits only — <code>a-z</code>, <code>A-Z</code>, and <code>0-9</code> — and at most <strong>32</strong> of them. Spaces, underscores, hyphens, and symbols are rejected.</li>
+            <li><strong>Unique across the whole server, ignoring case.</strong> Two aliases that differ only in capitalisation are the same alias: if someone already holds <code>Alex</code>, then <code>alex</code> and <code>ALEX</code> are refused for everyone else.</li>
+            <li><strong>Your capitalisation is kept.</strong> The name is stored exactly as you typed it, so <code>Alex</code> stays <code>Alex</code> wherever it is shown.</li>
+            <li>Running the command again renames the identity, and a name you give up becomes available to everyone else.</li>
+          </ul>
+        </div>
+        <div class="cmd">
           <div class="cmd__sig">/identity stats</div>
           <p>View your remaining unspent stat points. A shortcut that behaves exactly like <code>/identity stats get</code>.</p>
         </div>
