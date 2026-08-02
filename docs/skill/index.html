@@ -162,9 +162,25 @@
             <tr><td><code>*</code></td><td><code>miner</code></td><td><span class="skill-verdict skill-verdict--deny">denied</span> — no wildcard</td></tr>
             <tr><td><em>(blank)</em></td><td><code>miner</code></td><td><span class="skill-verdict skill-verdict--deny">denied</span> — malformed item</td></tr>
             <tr><td><code>miner</code></td><td><em>(no active identity)</em></td><td><span class="skill-verdict skill-verdict--deny">denied</span></td></tr>
+            <tr><td><code>miner</code></td><td><code>player</code></td><td><span class="skill-verdict skill-verdict--deny">denied</span> — the base identity</td></tr>
+            <tr><td><code>player</code></td><td><code>player</code></td><td><span class="skill-verdict skill-verdict--deny">denied</span> — the base identity</td></tr>
           </tbody>
         </table>
       </div>
+
+      <h3>The base <code>player</code> identity owns no skills</h3>
+      <p>
+        <code>player</code> is the reserved profession of the base identity every player starts with,
+        and it is the one profession that <strong>never</strong> matches. While the base identity is
+        worn, a skill item cannot be equipped or used whatever profession it asks for, the
+        <code>/skill</code> menu does not open, and <code>/skill equip</code> refuses to fill a slot.
+      </p>
+      <p>
+        Stamping an item with <code>player</code> does not work around this — the base identity is
+        answered <em>before</em> the professions are compared, so no item can be built that gives it a
+        skill. Skills belong to a chosen profession, so a player picks one first.
+      </p>
+      <pre><code>[Skill] Your base player identity has no skills. Wear an identity with a profession to use one.</code></pre>
 
       <h3>When the check runs</h3>
       <div class="table-wrap">
@@ -202,8 +218,8 @@
           <p>
             The restriction <strong>fails closed and cannot be switched off</strong>. Anything that
             stops the add-on proving a player is allowed — unreadable item data, no active identity,
-            or an unreachable core plugin — denies the action. There is no config setting that makes
-            skill items work regardless of profession.
+            the base <code>player</code> identity, or an unreachable core plugin — denies the action.
+            There is no config setting that makes skill items work regardless of profession.
           </p>
         </div>
       </div>
@@ -348,6 +364,10 @@ database:
             never empty a filled one. The menu cancels every click, and the equip rules refuse to
             write to an occupied slot, so no command or API path can take a skill off either. Only
             an administrator can clear a slot, to correct a bad row.
+          </p>
+          <p>
+            The base <code>player</code> identity has no menu and no slots at all: wearing it, the
+            menu does not open and nothing can be equipped.
           </p>
         </div>
       </div>
