@@ -35,8 +35,9 @@ The site is plain, self-contained static HTML — no build step and no external 
 | [`docs/partials/`](docs/partials/) | Shared HTML fragments included on every page. |
 | [`docs/partials/header.html`](docs/partials/header.html) | Shared site header and primary navigation, with the Platforms and Add-ons dropdowns and the Donation link right-aligned. |
 | [`docs/partials/footer.html`](docs/partials/footer.html) | Shared site footer. |
+| [`docs/partials/logs-nav.html`](docs/partials/logs-nav.html) | The change-log version navigation, listed once and loaded by every log page. The only file a release edits. |
 | [`docs/js/`](docs/js/) | Client-side scripts. |
-| [`docs/js/site.js`](docs/js/site.js) | Include loader, favicon injection, active-nav, and mobile menu. |
+| [`docs/js/site.js`](docs/js/site.js) | Include loader, favicon injection, active-nav, mobile menu, and the log version navigation (marking the current release and its back link). |
 
 ### Stylesheets
 

@@ -37,6 +37,15 @@
   margin: 0 0 0.8rem;
   font-size: 0.74rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-400);
 }
+/* Space each product's heading off the list above it. Previously an inline
+   style repeated on every heading of all 24 log pages. */
+.logs-nav h4 + * + h4,
+.logs-nav ul + h4 { margin-top: 1.2rem; }
+.logs-nav__back {
+  margin: 0.9rem 0 0;
+  font-size: 0.8rem;
+  color: var(--ink-400);
+}
 .logs-nav ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.3rem; }
 .logs-nav a {
   display: flex; align-items: center; justify-content: space-between;

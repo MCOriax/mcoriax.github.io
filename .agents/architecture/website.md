@@ -19,9 +19,10 @@ example `home`, `api`, `logs`).
     ├── css/                          # OPTIONAL — only this repo's OWN custom styles
     │   └── {section}/{section}.css   #   per-section stylesheet (custom only)
     ├── js/                           # OPTIONAL — page scripts (e.g. site.js include loader)
-    └── partials/                     # OPTIONAL — shared header/footer fragments
+    └── partials/                     # OPTIONAL — shared fragments
         ├── header.html
-        └── footer.html
+        ├── footer.html
+        └── logs-nav.html             #   the one place change-log versions are listed
 ```
 
 ### Shared theme — vendored locally
@@ -93,17 +94,37 @@ version `X.Y.Z`:
    * Fill in the version, date, and change sections. Use the
      `log-tag--new` / `log-tag--improve` / `log-tag--note` labels for
      Added / Changed / Notes.
-2. **Update the right-side version navigation** (`.logs-nav`) so it lists every
-   version, newest first. Give the newest entry `class="is-current"` on its own
-   page and the `Latest` pill; remove the `Latest` pill from the previous
-   newest.
-3. **Refresh `docs/logs/index.html`** to show the new version's content as the
-   latest entry, mark it `badge--ok "Latest"`, and update its version list to
-   include the new version (pointing at `X/Y/Z/index.html`).
-4. **Content rule:** describe *what changed for users and integrators* —
+2. **Add the version to
+   [`docs/partials/logs-nav.html`](docs/partials/logs-nav.html)** — the one file
+   that lists versions. Every log page loads it, so this is the only place the
+   navigation is edited:
+   * Add an `<li>` for the version being **superseded**, pointing at its own
+     permalink.
+   * Move the product's newest entry forward: its label, and its
+     `data-permalink`. Its `href` keeps pointing at the product index, which
+     always mirrors the latest release.
+   * Do **not** write `class="is-current"` anywhere. `js/site.js` marks the
+     entry matching the page being read, so a hand-written marker would be a
+     second source of truth that goes stale.
+3. **Refresh the product's index** (`docs/logs/index.html` for the core plugin,
+   `docs/logs/{product}/index.html` for an add-on) to show the new version's
+   content as the latest entry, mark it `badge--ok "Latest"`, and point its
+   permalink line at `X/Y/Z/index.html`.
+4. **Remove the `Latest` badge from the superseded permalink.** The `.logs-nav`
+   pill is handled by the shared partial, but the `badge--ok` in the page's own
+   `log-entry__head` is not, and a page that keeps it claims to be current
+   forever.
+5. **Content rule:** describe *what changed for users and integrators* —
    features, fixes, config, and public-API changes only. Never paste internal
    implementation details (see Iron Rule 1).
-5. Update [`INDEX.md`](INDEX.md) with the new log path.
+6. Update [`INDEX.md`](INDEX.md) with the new log path.
+
+A new log page needs no navigation markup of its own. It carries an empty mount
+and the loader fills it:
+
+```html
+<aside class="logs-nav" id="logs-nav" aria-label="Log versions"></aside>
+```
 
 > Semantic Versioning: `Major.Minor.Patch`. Keep the directory numbers in sync
 > with the plugin's released version.

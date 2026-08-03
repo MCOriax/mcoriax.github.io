@@ -28,7 +28,7 @@ full structure. In short:
 | Path | Purpose |
 |---|---|
 | [`docs/index.html`](docs/index.html) | Central landing page with overview cards. |
-| [`docs/partials/`](docs/partials/) | Shared header and footer, included by every page. |
+| [`docs/partials/`](docs/partials/) | Shared fragments included at runtime: the header, the footer, and the change-log version list. |
 | [`docs/css/`](docs/css/) | Root, shared, and per-section stylesheets (this repository's own copy of the theme). |
 | [`docs/js/site.js`](docs/js/site.js) | Client-side include loader and navigation behaviour. |
 | [`docs/profession/`](docs/profession/) | One page per bundled profession. |
