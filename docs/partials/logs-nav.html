@@ -16,11 +16,14 @@
   in this file: add an <li> for the version being superseded, and move the
   newest entry's href label and data-permalink forward.
 
+  One heading per product, the core plugin included. The panel's own name is the
+  aside's aria-label, so a reader is not told "Versions" twice.
+
   data-product names the product's folder under logs/, and is how site.js knows
   which index a permalink should go "back" to. The core plugin's list has no
   data-product because it lives at the root of logs/.
 -->
-<h4>Versions</h4>
+<h4>MCIdentity</h4>
 <ul>
   <li><a href="{{ROOT}}logs/index.html" data-permalink="{{ROOT}}logs/4/6/0/index.html">4.6.0 <span class="latest">Latest</span></a></li>
   <li><a href="{{ROOT}}logs/4/5/1/index.html">4.5.1</a></li>
