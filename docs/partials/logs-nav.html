@@ -1,0 +1,57 @@
+<!--
+  Shared change-log version navigation. {{ROOT}} is replaced with the page's
+  relative root by js/site.js, which also marks the current page's entry and
+  appends the "back" link below.
+
+  THIS IS THE ONLY PLACE VERSIONS ARE LISTED. Publishing a release means adding
+  one <li> here — every log page reads this file, so nothing else needs editing.
+
+  Newest first. The newest entry of each product points at that product's index
+  (which always mirrors the latest release) and carries the "Latest" pill; every
+  older entry points at its own permalink.
+
+  The newest entry also carries data-permalink, naming its own versioned page.
+  That entry stands for two URLs — the index and the permalink — and both must
+  light up as "you are here", so publishing a release means editing three things
+  in this file: add an <li> for the version being superseded, and move the
+  newest entry's href label and data-permalink forward.
+
+  data-product names the product's folder under logs/, and is how site.js knows
+  which index a permalink should go "back" to. The core plugin's list has no
+  data-product because it lives at the root of logs/.
+-->
+<h4>Versions</h4>
+<ul>
+  <li><a href="{{ROOT}}logs/index.html" data-permalink="{{ROOT}}logs/4/6/0/index.html">4.6.0 <span class="latest">Latest</span></a></li>
+  <li><a href="{{ROOT}}logs/4/5/1/index.html">4.5.1</a></li>
+  <li><a href="{{ROOT}}logs/4/5/0/index.html">4.5.0</a></li>
+  <li><a href="{{ROOT}}logs/4/4/0/index.html">4.4.0</a></li>
+  <li><a href="{{ROOT}}logs/4/3/1/index.html">4.3.1</a></li>
+  <li><a href="{{ROOT}}logs/4/3/0/index.html">4.3.0</a></li>
+  <li><a href="{{ROOT}}logs/4/2/0/index.html">4.2.0</a></li>
+  <li><a href="{{ROOT}}logs/4/1/0/index.html">4.1.0</a></li>
+  <li><a href="{{ROOT}}logs/4/0/0/index.html">4.0.0</a></li>
+  <li><a href="{{ROOT}}logs/3/0/0/index.html">3.0.0</a></li>
+  <li><a href="{{ROOT}}logs/2/0/0/index.html">2.0.0</a></li>
+  <li><a href="{{ROOT}}logs/1/1/0/index.html">1.1.0</a></li>
+  <li><a href="{{ROOT}}logs/1/0/0/index.html">1.0.0</a></li>
+</ul>
+
+<h4>MCIdentitySkill</h4>
+<ul data-product="skill">
+  <li><a href="{{ROOT}}logs/skill/index.html" data-permalink="{{ROOT}}logs/skill/0/3/0/index.html">0.3.0 <span class="latest">Latest</span></a></li>
+  <li><a href="{{ROOT}}logs/skill/0/2/0/index.html">0.2.0</a></li>
+  <li><a href="{{ROOT}}logs/skill/0/1/0/index.html">0.1.0</a></li>
+  <li><a href="{{ROOT}}logs/skill/0/0/0/index.html">0.0.0</a></li>
+</ul>
+
+<h4>MCIdentityRune</h4>
+<ul data-product="rune">
+  <li><a href="{{ROOT}}logs/rune/index.html" data-permalink="{{ROOT}}logs/rune/0/1/0/index.html">0.1.0 <span class="latest">Latest</span></a></li>
+  <li><a href="{{ROOT}}logs/rune/0/0/0/index.html">0.0.0</a></li>
+</ul>
+
+<h4>MCIdentityCosmetic</h4>
+<ul data-product="cosmetic">
+  <li><a href="{{ROOT}}logs/cosmetic/index.html" data-permalink="{{ROOT}}logs/cosmetic/0/0/0/index.html">0.0.0 <span class="latest">Latest</span></a></li>
+</ul>
