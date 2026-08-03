@@ -52,6 +52,12 @@
   // How many versions the log navigation shows before it starts scrolling.
   var VISIBLE_VERSIONS = 5;
 
+  // How much of the row after them is left showing. Several platforms draw an
+  // overlay scrollbar that stays invisible until you scroll, so a cut-off row is
+  // what tells a reader there is more below — without it, five versions look
+  // like all of them.
+  var PEEK = 0.45;
+
   /**
    * Resolves a URL against the current page and drops a trailing "index.html",
    * so "/logs/skill/" and "/logs/skill/index.html" compare equal.
@@ -100,29 +106,100 @@
    * shown twice.
    */
   function buildProductPicker(nav, groups, here) {
-    var select = document.createElement("select");
-    select.className = "logs-nav__picker";
-    select.setAttribute("aria-label", "Choose a product");
+    // Built from elements rather than a <select>: a native select's option list
+    // is drawn by the operating system and no stylesheet can reach it, so it
+    // could never match the rest of the site. This mirrors the header's
+    // Platforms dropdown, and carries the keyboard behaviour a select gave for
+    // free — arrow keys, Enter, Escape, and focus returning to the toggle.
+    var picker = document.createElement("div");
+    picker.className = "logs-picker";
 
+    var toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "logs-picker__toggle";
+    toggle.setAttribute("aria-haspopup", "listbox");
+    toggle.setAttribute("aria-expanded", "false");
+
+    var menu = document.createElement("ul");
+    menu.className = "logs-picker__menu";
+    menu.setAttribute("role", "listbox");
+    menu.setAttribute("aria-label", "Choose a product");
+    menu.hidden = true;
+
+    var options = [];
     for (var i = 0; i < groups.length; i++) {
-      var option = document.createElement("option");
-      option.value = String(i);
+      var option = document.createElement("li");
+      option.className = "logs-picker__option";
+      option.setAttribute("role", "option");
+      option.setAttribute("tabindex", "-1");
       option.textContent = groups[i].heading.textContent.trim();
-      select.appendChild(option);
+      menu.appendChild(option);
+      options.push(option);
     }
 
+    var selected = 0;
+
     function show(index) {
+      selected = index;
+      toggle.textContent = options[index].textContent;
       for (var j = 0; j < groups.length; j++) {
         groups[j].heading.hidden = true;
         groups[j].list.hidden = j !== index;
+        options[j].setAttribute("aria-selected", j === index ? "true" : "false");
       }
       // Both need the list on screen: a hidden element measures zero.
       limitHeight(groups[index].list);
       revealCurrent(groups[index].list);
     }
 
-    select.addEventListener("change", function () { show(Number(select.value)); });
-    nav.insertBefore(select, nav.firstChild);
+    function setOpen(open, focusIndex) {
+      menu.hidden = !open;
+      picker.classList.toggle("is-open", open);
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      if (open) options[typeof focusIndex === "number" ? focusIndex : selected].focus();
+    }
+
+    function choose(index) {
+      show(index);
+      setOpen(false);
+      toggle.focus();
+    }
+
+    toggle.addEventListener("click", function () { setOpen(menu.hidden); });
+    toggle.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        e.preventDefault();
+        setOpen(true, e.key === "ArrowDown" ? 0 : options.length - 1);
+      }
+    });
+
+    menu.addEventListener("click", function (e) {
+      var index = options.indexOf(e.target);
+      if (index !== -1) choose(index);
+    });
+    menu.addEventListener("keydown", function (e) {
+      var at = options.indexOf(document.activeElement);
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        e.preventDefault();
+        var step = e.key === "ArrowDown" ? 1 : -1;
+        options[(at + step + options.length) % options.length].focus();
+      } else if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        if (at !== -1) choose(at);
+      } else if (e.key === "Escape" || e.key === "Tab") {
+        setOpen(false);
+        if (e.key === "Escape") toggle.focus();
+      }
+    });
+
+    // Anywhere outside closes it, the way every other menu on the web behaves.
+    document.addEventListener("click", function (e) {
+      if (!menu.hidden && !picker.contains(e.target)) setOpen(false);
+    });
+
+    picker.appendChild(toggle);
+    picker.appendChild(menu);
+    nav.insertBefore(picker, nav.firstChild);
 
     // Open on the product being read rather than on the first in the list.
     var relative = logsRelative(here);
@@ -131,7 +208,6 @@
     for (var k = 0; k < groups.length; k++) {
       if (groups[k].product && groups[k].product === product) start = k;
     }
-    select.value = String(start);
     show(start);
   }
 
@@ -147,8 +223,12 @@
    */
   function limitHeight(list) {
     if (list.children.length <= VISIBLE_VERSIONS || list.style.maxHeight) return;
-    var last = list.children[VISIBLE_VERSIONS - 1].getBoundingClientRect().bottom;
-    list.style.maxHeight = (last - list.getBoundingClientRect().top) + "px";
+    // Cut through the row after the last visible one rather than adding a gap
+    // to the row before it: the space between rows is margin plus grid gap, so
+    // measuring from the next row itself is what makes the cut land on it.
+    var next = list.children[VISIBLE_VERSIONS].getBoundingClientRect();
+    var cut = next.top + next.height * PEEK;
+    list.style.maxHeight = (cut - list.getBoundingClientRect().top) + "px";
     list.classList.add("is-scrollable");
   }
 
