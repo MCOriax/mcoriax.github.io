@@ -77,7 +77,7 @@ runtime dependency on another site); the design system is documented in
 | [`docs/commands/index.html`](docs/commands/index.html) | All command usages and permissions. |
 | [`docs/api/index.html`](docs/api/index.html) | Developer API usage of the provider class (accordion reference). |
 | [`docs/skill/index.html`](docs/skill/index.html) | The MCIdentitySkill add-on: the PDC based architecture, the profession restriction (including the base `player` identity owning no skills), MythicMobs casting, the single player command and its operator only subcommands, and its developer API. |
-| [`docs/rune/index.html`](docs/rune/index.html) | The MCIdentityRune add-on: identity-scoped rune slots, the menu layout, `/rune`, its own storage, and its developer API. |
+| [`docs/rune/index.html`](docs/rune/index.html) | The MCIdentityRune add-on: identity-scoped rune slots, the permanent held-once assignment rules, the menu layout, `/rune`, its own storage, and its developer API. |
 | [`docs/cosmetic/index.html`](docs/cosmetic/index.html) | The MCIdentityCosmetic add-on: the independent skin and aura fields, the menu layout, `/cosmetic`, its own storage, and its developer API. |
 | [`docs/listeners/index.html`](docs/listeners/index.html) | Custom Bukkit events and gameplay listeners. |
 | [`docs/donation/index.html`](docs/donation/index.html) | Donation page with the GitHub sponsor block. |
@@ -115,12 +115,14 @@ runtime dependency on another site); the design system is documented in
 | [`docs/logs/4/5/0/index.html`](docs/logs/4/5/0/index.html) | Permalink for version 4.5.0 (identities are named by their alias, with profession and level in the lore). |
 | [`docs/logs/4/5/1/index.html`](docs/logs/4/5/1/index.html) | Permalink for version 4.5.1 (the identity item is re-titled on alias claim and on equip). |
 | [`docs/logs/4/6/0/index.html`](docs/logs/4/6/0/index.html) | Permalink for version 4.6.0 (`/identity unuse` is renamed to `/identity unequip`, node included). |
-| [`docs/logs/skill/index.html`](docs/logs/skill/index.html) | Latest MCIdentitySkill change log (`0.2.0`), with its own version navigation. |
+| [`docs/logs/skill/index.html`](docs/logs/skill/index.html) | Latest MCIdentitySkill change log (`0.3.0`), with its own version navigation. |
 | [`docs/logs/skill/0/0/0/index.html`](docs/logs/skill/0/0/0/index.html) | Permalink for MCIdentitySkill version 0.0.0 (initial release). |
 | [`docs/logs/skill/0/1/0/index.html`](docs/logs/skill/0/1/0/index.html) | Permalink for MCIdentitySkill version 0.1.0 (the base `player` identity owns no skills and has no skill menu). |
 | [`docs/logs/skill/0/2/0/index.html`](docs/logs/skill/0/2/0/index.html) | Permalink for MCIdentitySkill version 0.2.0 (a player has one command, `/skill`, which opens the menu they equip in). |
-| [`docs/logs/rune/index.html`](docs/logs/rune/index.html) | Latest MCIdentityRune change log, with its own version navigation. |
+| [`docs/logs/skill/0/3/0/index.html`](docs/logs/skill/0/3/0/index.html) | Permalink for MCIdentitySkill version 0.3.0 (an identity holds a given skill in at most one slot). |
+| [`docs/logs/rune/index.html`](docs/logs/rune/index.html) | Latest MCIdentityRune change log (`0.1.0`), with its own version navigation. |
 | [`docs/logs/rune/0/0/0/index.html`](docs/logs/rune/0/0/0/index.html) | Permalink for MCIdentityRune version 0.0.0 (initial release). |
+| [`docs/logs/rune/0/1/0/index.html`](docs/logs/rune/0/1/0/index.html) | Permalink for MCIdentityRune version 0.1.0 (a rune assignment is permanent and held once). |
 | [`docs/logs/cosmetic/index.html`](docs/logs/cosmetic/index.html) | Latest MCIdentityCosmetic change log, with its own version navigation. |
 | [`docs/logs/cosmetic/0/0/0/index.html`](docs/logs/cosmetic/0/0/0/index.html) | Permalink for MCIdentityCosmetic version 0.0.0 (initial release). |
 

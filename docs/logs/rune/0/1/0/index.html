@@ -3,33 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Change Logs — MCIdentityRune</title>
-  <meta name="description" content="Release notes for MCIdentityRune, showing the latest version with a navigation bar for earlier logs.">
-  <link rel="stylesheet" href="../../css/main.css">
-  <link rel="stylesheet" href="../../css/shared/layout.css">
-  <link rel="stylesheet" href="../../css/shared/components.css">
-  <link rel="stylesheet" href="../../css/logs/logs.css">
-  <script>window.SITE_ROOT = "../../"; window.PAGE_SECTION = "logs";</script>
+  <title>Change Log 0.1.0 — MCIdentityRune</title>
+  <meta name="description" content="Release notes for MCIdentityRune version 0.1.0 — a rune assignment is permanent and held once.">
+  <link rel="stylesheet" href="../../../../../css/main.css">
+  <link rel="stylesheet" href="../../../../../css/shared/layout.css">
+  <link rel="stylesheet" href="../../../../../css/shared/components.css">
+  <link rel="stylesheet" href="../../../../../css/logs/logs.css">
+  <script>window.SITE_ROOT = "../../../../../"; window.PAGE_SECTION = "logs";</script>
 </head>
 <body>
   <div id="site-header"></div>
 
   <main class="container">
     <nav class="breadcrumbs" aria-label="Breadcrumb">
-      <a href="../../index.html">Home</a><span class="sep">/</span>
-      <a href="../index.html">Change Logs</a><span class="sep">/</span><span>MCIdentityRune</span>
+      <a href="../../../../../index.html">Home</a><span class="sep">/</span>
+      <a href="../../../../index.html">Change Logs</a><span class="sep">/</span>
+      <a href="../../../../rune/index.html">MCIdentityRune</a><span class="sep">/</span><span>0.1.0</span>
     </nav>
 
     <span class="eyebrow">Release notes · MCIdentityRune</span>
-    <h1>MCIdentityRune Change Logs</h1>
-    <p class="lead">The latest release of the rune add-on is shown below. Use the version list on the right to view a specific log. The core plugin's own logs live on the <a href="../index.html">main change log page</a>.</p>
+    <h1>Change Log — MCIdentityRune 0.1.0</h1>
+    <p class="lead">Permalink for MCIdentityRune version 0.1.0.</p>
 
     <div class="logs-layout">
       <article class="log-entry">
         <div class="log-entry__head">
           <span class="log-entry__version">0.1.0</span>
           <span class="badge badge--ok">Latest</span>
-          <span class="log-entry__date">2026-08-03 &middot; A rune assignment is permanent</span>
+          <span class="log-entry__date">2026-08-03 · A rune assignment is permanent</span>
         </div>
         <p class="lead">A rune has always been described as a permanent slot assignment on an identity. It now behaves like one: <code>/rune set</code> fills an empty slot and refuses to write over a filled one, and an identity holds a given rune in one slot or none.</p>
 
@@ -53,7 +54,7 @@
         <div class="log-section">
           <h3><span class="log-tag log-tag--improve">Changed</span> A refusal says which rule stopped it</h3>
           <ul>
-            <li><code>/rune set</code> and <code>/rune clear</code> now report the specific outcome &mdash; an occupied slot, a rune already held, no active identity, the base profession, or a listener's cancel &mdash; instead of one flat "that rune change was refused".</li>
+            <li><code>/rune set</code> and <code>/rune clear</code> now report the specific outcome — an occupied slot, a rune already held, no active identity, the base profession, or a listener's cancel — instead of one flat "that rune change was refused".</li>
             <li>The change event now fires <em>after</em> the rules have passed rather than before the write, so a listener is no longer told about a write that was refused.</li>
           </ul>
         </div>
@@ -68,49 +69,47 @@
             <li>While the database is unreachable the reads that back these rules return nothing, so the checks cannot see the filled slots. The rules hold in every normal case but are not absolute during an outage.</li>
           </ul>
         </div>
-
-        <p style="margin-top:1.2rem;"><a href="0/1/0/index.html">Permalink for 0.1.0 &rarr;</a></p>
       </article>
 
       <aside class="logs-nav" aria-label="Log versions">
         <h4>Versions</h4>
         <ul>
-          <li><a href="../index.html">4.6.0 <span class="latest">Latest</span></a></li>
-          <li><a href="../4/5/1/index.html">4.5.1</a></li>
-          <li><a href="../4/5/0/index.html">4.5.0</a></li>
-          <li><a href="../4/4/0/index.html">4.4.0</a></li>
-          <li><a href="../4/3/1/index.html">4.3.1</a></li>
-          <li><a href="../4/3/0/index.html">4.3.0</a></li>
-          <li><a href="../4/2/0/index.html">4.2.0</a></li>
-          <li><a href="../4/1/0/index.html">4.1.0</a></li>
-          <li><a href="../4/0/0/index.html">4.0.0</a></li>
-          <li><a href="../3/0/0/index.html">3.0.0</a></li>
-          <li><a href="../2/0/0/index.html">2.0.0</a></li>
-          <li><a href="../1/1/0/index.html">1.1.0</a></li>
-          <li><a href="../1/0/0/index.html">1.0.0</a></li>
+          <li><a href="../../../../index.html">4.6.0 <span class="latest">Latest</span></a></li>
+          <li><a href="../../../../4/5/1/index.html">4.5.1</a></li>
+          <li><a href="../../../../4/5/0/index.html">4.5.0</a></li>
+          <li><a href="../../../../4/4/0/index.html">4.4.0</a></li>
+          <li><a href="../../../../4/3/1/index.html">4.3.1</a></li>
+          <li><a href="../../../../4/3/0/index.html">4.3.0</a></li>
+          <li><a href="../../../../4/2/0/index.html">4.2.0</a></li>
+          <li><a href="../../../../4/1/0/index.html">4.1.0</a></li>
+          <li><a href="../../../../4/0/0/index.html">4.0.0</a></li>
+          <li><a href="../../../../3/0/0/index.html">3.0.0</a></li>
+          <li><a href="../../../../2/0/0/index.html">2.0.0</a></li>
+          <li><a href="../../../../1/1/0/index.html">1.1.0</a></li>
+          <li><a href="../../../../1/0/0/index.html">1.0.0</a></li>
         </ul>
         <h4 style="margin-top:1.2rem;">MCIdentitySkill</h4>
         <ul>
-          <li><a href="../skill/index.html">0.3.0 <span class="latest">Latest</span></a></li>
-          <li><a href="../skill/0/2/0/index.html">0.2.0</a></li>
-          <li><a href="../skill/0/1/0/index.html">0.1.0</a></li>
-          <li><a href="../skill/0/0/0/index.html">0.0.0</a></li>
+          <li><a href="../../../../skill/index.html">0.3.0 <span class="latest">Latest</span></a></li>
+          <li><a href="../../../../skill/0/2/0/index.html">0.2.0</a></li>
+          <li><a href="../../../../skill/0/1/0/index.html">0.1.0</a></li>
+          <li><a href="../../../../skill/0/0/0/index.html">0.0.0</a></li>
         </ul>
         <h4 style="margin-top:1.2rem;">MCIdentityRune</h4>
         <ul>
-          <li><a class="is-current" href="../rune/index.html">0.1.0 <span class="latest">Latest</span></a></li>
-          <li><a href="../rune/0/0/0/index.html">0.0.0</a></li>
+          <li><a class="is-current" href="../../../../rune/index.html">0.1.0 <span class="latest">Latest</span></a></li>
+          <li><a href="../../../../rune/0/0/0/index.html">0.0.0</a></li>
         </ul>
         <h4 style="margin-top:1.2rem;">MCIdentityCosmetic</h4>
         <ul>
-          <li><a href="../cosmetic/index.html">0.0.0 <span class="latest">Latest</span></a></li>
+          <li><a href="../../../../cosmetic/index.html">0.0.0 <span class="latest">Latest</span></a></li>
         </ul>
-        <p style="margin:0.9rem 0 0;font-size:0.8rem;color:var(--ink-400);"><a href="../index.html">← MCIdentity logs</a></p>
+        <p style="margin:0.9rem 0 0;font-size:0.8rem;color:var(--ink-400);"><a href="../../../../rune/index.html">← Back to latest</a></p>
       </aside>
     </div>
   </main>
 
   <div id="site-footer"></div>
-  <script src="../../js/site.js" defer></script>
+  <script src="../../../../../js/site.js" defer></script>
 </body>
 </html>
