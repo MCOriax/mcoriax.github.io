@@ -275,7 +275,9 @@
       </p>
       <p>
         A slot that already holds a skill refuses the click and says so: an equipped skill is
-        permanent. Wearing the base <code>player</code> identity, the menu does not open at all.
+        permanent. So does a skill you already have equipped somewhere else — a skill is held in
+        one slot or none. Wearing the base <code>player</code> identity, the menu does not open at
+        all.
       </p>
 
       <h3>Every command</h3>
@@ -401,6 +403,14 @@ database:
             a skill cannot be dragged back out, and the equip rules refuse to write to an occupied
             slot, so no command or API path can take a skill off either. Only an administrator can
             clear a slot, to correct a bad row.
+          </p>
+          <p>
+            <strong>A skill is held once.</strong> An identity may hold a given skill code in at
+            most one slot, so the slots are a set of distinct skills rather than somewhere to stack
+            one skill for extra effect. The check reads the code out of each filled slot's item,
+            because the item is where a skill's code lives — no column records it. Codes are
+            compared trimmed and lower-cased, so one skill cannot fill two slots under two
+            spellings.
           </p>
           <p>
             The base <code>player</code> identity has no menu and no slots at all: wearing it, the

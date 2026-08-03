@@ -202,13 +202,13 @@
       <h2>Commands &amp; permissions</h2>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Command</th><th>Description</th><th>Permission</th></tr></thead>
+          <thead><tr><th>Command</th><th>Description</th><th>Permission</th><th>Default</th></tr></thead>
           <tbody>
-            <tr><td><code>/rune</code></td><td>Open the rune menu for the identity you are wearing.</td><td>—</td></tr>
-            <tr><td><code>/rune list</code></td><td>List every registered rune type.</td><td>—</td></tr>
-            <tr><td><code>/rune register &lt;code&gt; &lt;display name&gt;</code></td><td>Register a rune type. Idempotent — registering an existing code keeps the original.</td><td><code>mcidentityrune.admin</code></td></tr>
-            <tr><td><code>/rune set &lt;slot&gt; &lt;code&gt;</code></td><td>Equip a rune into a slot of your active identity.</td><td><code>mcidentityrune.admin</code></td></tr>
-            <tr><td><code>/rune clear &lt;slot&gt;</code></td><td>Clear a slot.</td><td><code>mcidentityrune.admin</code></td></tr>
+            <tr><td><code>/rune</code></td><td>Open the rune menu for the identity you are wearing.</td><td><code>mcoriax.mcidentity.rune.command.use</code></td><td>everyone</td></tr>
+            <tr><td><code>/rune list</code></td><td>List every registered rune type.</td><td><code>mcoriax.mcidentity.rune.command.list</code></td><td>everyone</td></tr>
+            <tr><td><code>/rune register &lt;code&gt; &lt;display name&gt;</code></td><td>Register a rune type. Idempotent — registering an existing code keeps the original.</td><td><code>mcoriax.mcidentity.rune.command.register</code></td><td><code>op</code></td></tr>
+            <tr><td><code>/rune set &lt;slot&gt; &lt;code&gt;</code></td><td>Equip a rune into an <strong>empty</strong> slot of your active identity.</td><td><code>mcoriax.mcidentity.rune.command.set</code></td><td><code>op</code></td></tr>
+            <tr><td><code>/rune clear &lt;slot&gt;</code></td><td>Empty a slot. The only way an assignment is ever removed.</td><td><code>mcoriax.mcidentity.rune.command.clear</code></td><td><code>op</code></td></tr>
           </tbody>
         </table>
       </div>
@@ -221,6 +221,26 @@
         Rune codes are stored lower-cased and trimmed, so <code>Ember</code> and <code>ember</code>
         are the same rune. A slot number outside <code>1</code>–<code>10</code> is rejected before
         anything reaches the database.
+      </p>
+
+      <h3><code>/rune set</code> fills, it does not swap</h3>
+      <p>
+        An assignment is permanent, so <code>/rune set</code> refuses rather than writing over
+        what is already there:
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Case</th><th>Result</th></tr></thead>
+          <tbody>
+            <tr><td>The slot already holds a rune</td><td>Refused. Clear the slot first.</td></tr>
+            <tr><td>The identity already holds that rune in another slot</td><td>Refused. A rune is held in one slot or none.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        Moving a rune is therefore deliberate — <code>/rune clear &lt;slot&gt;</code>, then
+        <code>/rune set</code>. Clearing is the only way a slot is emptied, and it stays an
+        operator's command: it exists to correct a bad row, not to swap runes around.
       </p>
     </section>
 
