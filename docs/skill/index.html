@@ -173,7 +173,7 @@
         <code>player</code> is the reserved profession of the base identity every player starts with,
         and it is the one profession that <strong>never</strong> matches. While the base identity is
         worn, a skill item cannot be equipped or used whatever profession it asks for, the
-        <code>/skill</code> menu does not open, and <code>/skill equip</code> refuses to fill a slot.
+        <code>/skill</code> menu does not open, and no slot can be filled.
       </p>
       <p>
         Stamping an item with <code>player</code> does not work around this — the base identity is
@@ -261,17 +261,53 @@
     <!-- Commands -->
     <section class="section">
       <h2>Commands &amp; permissions</h2>
+      <p class="lead">
+        A player has one command and no arguments to remember. Everything else is an
+        operator's.
+      </p>
+
+      <h3>The player's command</h3>
+      <pre><code>/skill</code></pre>
+      <p>
+        Opens the skill menu of the identity you are wearing. Equipping happens inside that
+        menu — hold a skill item and click an empty slot to put it there. That is the whole of
+        what a player does with this add-on, so there is nothing else to learn.
+      </p>
+      <p>
+        A slot that already holds a skill refuses the click and says so: an equipped skill is
+        permanent. Wearing the base <code>player</code> identity, the menu does not open at all.
+      </p>
+
+      <h3>Every command</h3>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Command</th><th>Description</th><th>Permission</th></tr></thead>
+          <thead><tr><th>Command</th><th>Description</th><th>Permission</th><th>Default</th></tr></thead>
           <tbody>
-            <tr><td><code>/skill</code></td><td>Show the usage summary.</td><td>—</td></tr>
-            <tr><td><code>/skill info</code></td><td>Show what the item in your main hand stores, and whether you can use it.</td><td>—</td></tr>
-            <tr><td><code>/skill give &lt;player&gt; &lt;skill&gt; &lt;profession&gt; [cooldown]</code></td><td>Create a skill item and give it to a player.</td><td><code>mcidentityskill.admin</code></td></tr>
-            <tr><td><code>/skill clear</code></td><td>Strip skill data from the held item, turning it back into an ordinary item.</td><td><code>mcidentityskill.admin</code></td></tr>
+            <tr><td><code>/skill</code></td><td>Open your skill menu, and equip into it.</td><td><code>mcoriax.mcidentity.skill.command.gui</code></td><td>everyone</td></tr>
+            <tr><td><code>/skill info</code></td><td>Show what the item in your main hand stores, and whether you can use it.</td><td><code>mcoriax.mcidentity.skill.command.info</code></td><td><code>op</code></td></tr>
+            <tr><td><code>/skill equip &lt;slot&gt;</code></td><td>Fill an empty slot with the held skill item. Does what a click in the menu does, for the cases a click cannot cover.</td><td><code>mcoriax.mcidentity.skill.command.equip</code></td><td><code>op</code></td></tr>
+            <tr><td><code>/skill give &lt;player&gt; &lt;skill&gt; &lt;profession&gt; [cooldown]</code></td><td>Create a skill item and give it to a player.</td><td><code>mcoriax.mcidentity.skill.command.give</code></td><td><code>op</code></td></tr>
+            <tr><td><code>/skill clear</code></td><td>Strip skill data from the held item, turning it back into an ordinary item.</td><td><code>mcoriax.mcidentity.skill.command.clear</code></td><td><code>op</code></td></tr>
           </tbody>
         </table>
       </div>
+
+      <h3>Permission nodes</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Node</th><th>Default</th><th>Grants</th></tr></thead>
+          <tbody>
+            <tr><td><code>mcoriax.mcidentity.skill.command.gui</code></td><td>everyone</td><td><code>/skill</code>, the menu</td></tr>
+            <tr><td><code>mcoriax.mcidentity.skill.admin</code></td><td><code>op</code></td><td>Every subcommand at once</td></tr>
+            <tr><td><code>mcoriax.mcidentity.skill.*</code></td><td><code>op</code></td><td>Every command in the add-on</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        <code>mcoriax.mcidentity.skill.command.gui</code> is the only node a player holds.
+        Revoking it takes the add-on away from that player entirely; there is nothing smaller to
+        revoke, because there is nothing else they can run.
+      </p>
 
       <h3>Creating a skill item</h3>
       <pre><code>/skill give Steve quarry_sense miner 45</code></pre>
@@ -361,9 +397,10 @@ database:
         <div class="callout__body">
           <p>
             <strong>An equipped skill is permanent.</strong> A player may fill an empty slot and may
-            never empty a filled one. The menu cancels every click, and the equip rules refuse to
-            write to an occupied slot, so no command or API path can take a skill off either. Only
-            an administrator can clear a slot, to correct a bad row.
+            never empty a filled one. The menu cancels every click before deciding what it meant, so
+            a skill cannot be dragged back out, and the equip rules refuse to write to an occupied
+            slot, so no command or API path can take a skill off either. Only an administrator can
+            clear a slot, to correct a bad row.
           </p>
           <p>
             The base <code>player</code> identity has no menu and no slots at all: wearing it, the
