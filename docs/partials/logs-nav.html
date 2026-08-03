@@ -16,8 +16,9 @@
   in this file: add an <li> for the version being superseded, and move the
   newest entry's href label and data-permalink forward.
 
-  One heading per product, the core plugin included. The panel's own name is the
-  aside's aria-label, so a reader is not told "Versions" twice.
+  One heading per product, the core plugin included. Each heading is the label
+  of its option in the product dropdown that site.js builds, and is hidden once
+  it has been read — the dropdown names the product instead of repeating it.
 
   data-product names the product's folder under logs/, and is how site.js knows
   which index a permalink should go "back" to. The core plugin's list has no

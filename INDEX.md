@@ -37,7 +37,7 @@ The site is plain, self-contained static HTML — no build step and no external 
 | [`docs/partials/footer.html`](docs/partials/footer.html) | Shared site footer. |
 | [`docs/partials/logs-nav.html`](docs/partials/logs-nav.html) | The change-log version navigation, listed once and loaded by every log page. The only file a release edits. |
 | [`docs/js/`](docs/js/) | Client-side scripts. |
-| [`docs/js/site.js`](docs/js/site.js) | Include loader, favicon injection, active-nav, mobile menu, and the log version navigation (marking the current release and its back link). |
+| [`docs/js/site.js`](docs/js/site.js) | Include loader, favicon injection, active-nav, mobile menu, and the log version navigation (the product picker, the five-row scroll cap, the current release, and the back link). |
 
 ### Stylesheets
 

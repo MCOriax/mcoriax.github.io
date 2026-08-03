@@ -49,12 +49,133 @@
     if (y) y.textContent = new Date().getFullYear();
   }
 
+  // How many versions the log navigation shows before it starts scrolling.
+  var VISIBLE_VERSIONS = 5;
+
   /**
    * Resolves a URL against the current page and drops a trailing "index.html",
    * so "/logs/skill/" and "/logs/skill/index.html" compare equal.
    */
   function pagePath(href) {
     return new URL(href, location.href).pathname.replace(/index\.html$/, "");
+  }
+
+  /**
+   * This page's path relative to logs/, or null when it is not a log page.
+   */
+  function logsRelative(here) {
+    var root = pagePath(ROOT + "logs/");
+    return here.indexOf(root) === 0 ? here.slice(root.length) : null;
+  }
+
+  /**
+   * Reads the product groups out of the loaded partial.
+   *
+   * Each group is an <h4> naming a product followed by its <ul> of versions.
+   * Pairing them here rather than listing products in this file keeps the
+   * partial the only place a product is declared.
+   */
+  function readGroups(nav) {
+    var lists = nav.getElementsByTagName("ul");
+    var groups = [];
+    for (var i = 0; i < lists.length; i++) {
+      var heading = lists[i].previousElementSibling;
+      if (!heading || heading.tagName !== "H4") continue;
+      groups.push({
+        heading: heading,
+        list: lists[i],
+        // The core plugin's list has no data-product: it lives at logs/ itself.
+        product: lists[i].getAttribute("data-product") || ""
+      });
+    }
+    return groups;
+  }
+
+  /**
+   * Shows one product's versions at a time, chosen from a dropdown.
+   *
+   * Stacked, the four lists ran twenty rows down the page. The dropdown names
+   * the product, which is why each group's own heading is hidden once it is
+   * built — the partial's headings supply the option labels rather than being
+   * shown twice.
+   */
+  function buildProductPicker(nav, groups, here) {
+    var select = document.createElement("select");
+    select.className = "logs-nav__picker";
+    select.setAttribute("aria-label", "Choose a product");
+
+    for (var i = 0; i < groups.length; i++) {
+      var option = document.createElement("option");
+      option.value = String(i);
+      option.textContent = groups[i].heading.textContent.trim();
+      select.appendChild(option);
+    }
+
+    function show(index) {
+      for (var j = 0; j < groups.length; j++) {
+        groups[j].heading.hidden = true;
+        groups[j].list.hidden = j !== index;
+      }
+      // Both need the list on screen: a hidden element measures zero.
+      limitHeight(groups[index].list);
+      revealCurrent(groups[index].list);
+    }
+
+    select.addEventListener("change", function () { show(Number(select.value)); });
+    nav.insertBefore(select, nav.firstChild);
+
+    // Open on the product being read rather than on the first in the list.
+    var relative = logsRelative(here);
+    var product = relative ? relative.split("/")[0] : "";
+    var start = 0;
+    for (var k = 0; k < groups.length; k++) {
+      if (groups[k].product && groups[k].product === product) start = k;
+    }
+    select.value = String(start);
+    show(start);
+  }
+
+  /**
+   * Caps a long list at VISIBLE_VERSIONS rows and lets it scroll.
+   *
+   * The height is measured from where the last visible row actually sits rather
+   * than calculated from row heights and gaps. Spacing here comes from three
+   * stylesheets at once — including a global li margin that grid does not
+   * collapse — so measuring is the only way to stay right when one changes.
+   *
+   * @param list A list that is currently on screen.
+   */
+  function limitHeight(list) {
+    if (list.children.length <= VISIBLE_VERSIONS || list.style.maxHeight) return;
+    var last = list.children[VISIBLE_VERSIONS - 1].getBoundingClientRect().bottom;
+    list.style.maxHeight = (last - list.getBoundingClientRect().top) + "px";
+    list.classList.add("is-scrollable");
+  }
+
+  /**
+   * Scrolls a list so the entry for the page being read is visible.
+   *
+   * Scrolls the list itself rather than calling scrollIntoView, which would be
+   * free to scroll the whole window and jump the reader away from the top of
+   * the page they just opened.
+   *
+   * Moves by the smallest amount that brings the entry into view, and not at
+   * all when it is already there. Pinning it to the top instead would push the
+   * newer releases above it out of sight, which is the context a reader looking
+   * at an old version most wants.
+   */
+  function revealCurrent(list) {
+    if (!list.classList.contains("is-scrollable")) return;
+    var current = list.querySelector("a.is-current");
+    if (!current) return;
+
+    var view = list.getBoundingClientRect();
+    var entry = current.getBoundingClientRect();
+    if (entry.top < view.top) {
+      list.scrollTop -= view.top - entry.top;
+    } else if (entry.bottom > view.bottom) {
+      list.scrollTop += entry.bottom - view.bottom;
+    }
   }
 
   /**
@@ -81,20 +202,20 @@
       }
     }
 
+    var groups = readGroups(nav);
+    if (groups.length > 1) buildProductPicker(nav, groups, here);
+
     // Where "back" goes depends on where this page sits under logs/. The
     // product folders come from the partial's own data-product attributes, so
     // adding a product needs no change here.
-    var logsRoot = pagePath(ROOT + "logs/");
-    if (here.indexOf(logsRoot) !== 0) return;
-
-    var rest = here.slice(logsRoot.length);
+    var rest = logsRelative(here);
+    if (rest === null) return;
     if (rest === "") return; // The logs index is already the top of this tree.
 
     var product = rest.split("/")[0];
-    var lists = nav.querySelectorAll("ul[data-product]");
     var known = false;
-    for (var j = 0; j < lists.length; j++) {
-      if (lists[j].getAttribute("data-product") === product) known = true;
+    for (var j = 0; j < groups.length; j++) {
+      if (groups[j].product && groups[j].product === product) known = true;
     }
 
     var back = document.createElement("p");

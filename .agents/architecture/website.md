@@ -106,6 +106,9 @@ version `X.Y.Z`:
    * Do **not** write `class="is-current"` anywhere. `js/site.js` marks the
      entry matching the page being read, so a hand-written marker would be a
      second source of truth that goes stale.
+   * Nothing else is needed for the product picker or the scrolling. `site.js`
+     builds the dropdown from the `<h4>` above each list and caps a list at five
+     visible rows, so a list simply growing longer needs no other change.
 3. **Refresh the product's index** (`docs/logs/index.html` for the core plugin,
    `docs/logs/{product}/index.html` for an add-on) to show the new version's
    content as the latest entry, mark it `badge--ok "Latest"`, and point its
