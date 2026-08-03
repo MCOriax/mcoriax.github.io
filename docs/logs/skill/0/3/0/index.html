@@ -3,33 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Change Logs — MCIdentitySkill</title>
-  <meta name="description" content="Release notes for MCIdentitySkill, showing the latest version with a navigation bar for earlier logs.">
-  <link rel="stylesheet" href="../../css/main.css">
-  <link rel="stylesheet" href="../../css/shared/layout.css">
-  <link rel="stylesheet" href="../../css/shared/components.css">
-  <link rel="stylesheet" href="../../css/logs/logs.css">
-  <script>window.SITE_ROOT = "../../"; window.PAGE_SECTION = "logs";</script>
+  <title>Change Log 0.3.0 — MCIdentitySkill</title>
+  <meta name="description" content="Release notes for MCIdentitySkill version 0.3.0 — an identity holds a given skill in at most one slot.">
+  <link rel="stylesheet" href="../../../../../css/main.css">
+  <link rel="stylesheet" href="../../../../../css/shared/layout.css">
+  <link rel="stylesheet" href="../../../../../css/shared/components.css">
+  <link rel="stylesheet" href="../../../../../css/logs/logs.css">
+  <script>window.SITE_ROOT = "../../../../../"; window.PAGE_SECTION = "logs";</script>
 </head>
 <body>
   <div id="site-header"></div>
 
   <main class="container">
     <nav class="breadcrumbs" aria-label="Breadcrumb">
-      <a href="../../index.html">Home</a><span class="sep">/</span>
-      <a href="../index.html">Change Logs</a><span class="sep">/</span><span>MCIdentitySkill</span>
+      <a href="../../../../../index.html">Home</a><span class="sep">/</span>
+      <a href="../../../../index.html">Change Logs</a><span class="sep">/</span>
+      <a href="../../../index.html">MCIdentitySkill</a><span class="sep">/</span><span>0.3.0</span>
     </nav>
 
     <span class="eyebrow">Release notes · MCIdentitySkill</span>
-    <h1>MCIdentitySkill Change Logs</h1>
-    <p class="lead">The latest release of the skill add-on is shown below. Use the version list on the right to view a specific log. The core plugin's own logs live on the <a href="../index.html">main change log page</a>.</p>
+    <h1>Change Log — 0.3.0</h1>
+    <p class="lead">Permalink for MCIdentitySkill version 0.3.0.</p>
 
     <div class="logs-layout">
       <article class="log-entry">
         <div class="log-entry__head">
           <span class="log-entry__version">0.3.0</span>
           <span class="badge badge--ok">Latest</span>
-          <span class="log-entry__date">2026-08-03 &middot; A skill is held once</span>
+          <span class="log-entry__date">2026-08-03 · A skill is held once</span>
         </div>
         <p class="lead">An identity may now hold a given skill in at most one slot. Equipping a skill it already has equipped elsewhere is refused, so the slots are a set of distinct skills rather than somewhere to stack one skill for extra effect.</p>
 
@@ -37,7 +38,7 @@
           <h3><span class="log-tag log-tag--new">Added</span> A skill is held once</h3>
           <ul>
             <li>Equipping a skill the identity already holds in another slot is refused, in the menu and through <code>/skill equip</code> alike. The refusal names the reason rather than looking like a failed click.</li>
-            <li>The check reads the skill code out of each filled slot's item. The item is where a skill's code lives and no column records it, so nothing was added to storage &mdash; the rows and the items cannot drift apart.</li>
+            <li>The check reads the skill code out of each filled slot's item. The item is where a skill's code lives and no column records it, so nothing was added to storage — the rows and the items cannot drift apart.</li>
             <li>Codes are compared trimmed and lower-cased. A code is a MythicMobs ID typed by hand into <code>/skill give</code>, so <code>Quarry_Sense</code> and <code>quarry_sense</code> are one skill; treating them as two would let the rule be sidestepped with the shift key.</li>
           </ul>
         </div>
@@ -46,7 +47,7 @@
           <h3><span class="log-tag log-tag--note">Note</span> When a slot cannot be read</h3>
           <ul>
             <li>A filled slot whose item cannot be decoded refuses the equip. Its code is unknowable, so allowing would assert the slots differ without having checked, and a restriction that cannot be proved denies.</li>
-            <li>The practical cost: one corrupt row blocks equipping for that identity until an administrator clears that slot. The alternative &mdash; letting an unreadable slot pass silently &mdash; is worse.</li>
+            <li>The practical cost: one corrupt row blocks equipping for that identity until an administrator clears that slot. The alternative — letting an unreadable slot pass silently — is worse.</li>
           </ul>
         </div>
 
@@ -59,50 +60,47 @@
             <li>Library coordinates move with the release: <code>io.github.mcoriax:mcidentity-skill-api:0.3.0</code>, <code>-common:0.3.0</code>, and <code>-bukkit:0.3.0</code>. A plugin constructing the equip service directly now passes the item codec to it.</li>
           </ul>
         </div>
-
-        <p style="margin-top:1.2rem;"><a href="0/3/0/index.html">Permalink for 0.3.0 &rarr;</a></p>
-        <p style="margin-top:1.2rem;"><a href="0/3/0/index.html">Permalink for 0.3.0 &rarr;</a></p>
       </article>
 
       <aside class="logs-nav" aria-label="Log versions">
         <h4>Versions</h4>
         <ul>
-          <li><a href="../index.html">4.6.0 <span class="latest">Latest</span></a></li>
-          <li><a href="../4/5/1/index.html">4.5.1</a></li>
-          <li><a href="../4/5/0/index.html">4.5.0</a></li>
-          <li><a href="../4/4/0/index.html">4.4.0</a></li>
-          <li><a href="../4/3/1/index.html">4.3.1</a></li>
-          <li><a href="../4/3/0/index.html">4.3.0</a></li>
-          <li><a href="../4/2/0/index.html">4.2.0</a></li>
-          <li><a href="../4/1/0/index.html">4.1.0</a></li>
-          <li><a href="../4/0/0/index.html">4.0.0</a></li>
-          <li><a href="../3/0/0/index.html">3.0.0</a></li>
-          <li><a href="../2/0/0/index.html">2.0.0</a></li>
-          <li><a href="../1/1/0/index.html">1.1.0</a></li>
-          <li><a href="../1/0/0/index.html">1.0.0</a></li>
+          <li><a href="../../../../index.html">4.6.0 <span class="latest">Latest</span></a></li>
+          <li><a href="../../../../4/5/1/index.html">4.5.1</a></li>
+          <li><a href="../../../../4/5/0/index.html">4.5.0</a></li>
+          <li><a href="../../../../4/4/0/index.html">4.4.0</a></li>
+          <li><a href="../../../../4/3/1/index.html">4.3.1</a></li>
+          <li><a href="../../../../4/3/0/index.html">4.3.0</a></li>
+          <li><a href="../../../../4/2/0/index.html">4.2.0</a></li>
+          <li><a href="../../../../4/1/0/index.html">4.1.0</a></li>
+          <li><a href="../../../../4/0/0/index.html">4.0.0</a></li>
+          <li><a href="../../../../3/0/0/index.html">3.0.0</a></li>
+          <li><a href="../../../../2/0/0/index.html">2.0.0</a></li>
+          <li><a href="../../../../1/1/0/index.html">1.1.0</a></li>
+          <li><a href="../../../../1/0/0/index.html">1.0.0</a></li>
         </ul>
         <h4 style="margin-top:1.2rem;">MCIdentitySkill</h4>
         <ul>
-          <li><a class="is-current" href="../skill/index.html">0.3.0 <span class="latest">Latest</span></a></li>
-          <li><a href="../skill/0/2/0/index.html">0.2.0</a></li>
-          <li><a href="../skill/0/1/0/index.html">0.1.0</a></li>
-          <li><a href="../skill/0/0/0/index.html">0.0.0</a></li>
+          <li><a class="is-current" href="../../../../skill/index.html">0.3.0 <span class="latest">Latest</span></a></li>
+          <li><a href="../../../../skill/0/2/0/index.html">0.2.0</a></li>
+          <li><a href="../../../../skill/0/1/0/index.html">0.1.0</a></li>
+          <li><a href="../../../../skill/0/0/0/index.html">0.0.0</a></li>
         </ul>
         <h4 style="margin-top:1.2rem;">MCIdentityRune</h4>
         <ul>
-          <li><a href="../rune/index.html">0.1.0 <span class="latest">Latest</span></a></li>
-          <li><a href="../rune/0/0/0/index.html">0.0.0</a></li>
+          <li><a href="../../../../rune/index.html">0.1.0 <span class="latest">Latest</span></a></li>
+          <li><a href="../../../../rune/0/0/0/index.html">0.0.0</a></li>
         </ul>
         <h4 style="margin-top:1.2rem;">MCIdentityCosmetic</h4>
         <ul>
-          <li><a href="../cosmetic/index.html">0.0.0 <span class="latest">Latest</span></a></li>
+          <li><a href="../../../../cosmetic/index.html">0.0.0 <span class="latest">Latest</span></a></li>
         </ul>
-        <p style="margin:0.9rem 0 0;font-size:0.8rem;color:var(--ink-400);"><a href="../index.html">← MCIdentity logs</a></p>
+        <p style="margin:0.9rem 0 0;font-size:0.8rem;color:var(--ink-400);"><a href="../../../../skill/index.html">← Back to latest</a></p>
       </aside>
     </div>
   </main>
 
   <div id="site-footer"></div>
-  <script src="../../js/site.js" defer></script>
+  <script src="../../../../../js/site.js" defer></script>
 </body>
 </html>
