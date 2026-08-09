@@ -1,13 +1,20 @@
+---
+name: repository-rules
+description: Rules specific to this documentation site — never expose internal source, stay self-contained, follow the existing conventions.
+---
+
 # Repository-specific rules — mcoriax.github.io
 
 This repository is the **static documentation website** for the MCIdentity
-Minecraft plugin, published with GitHub Pages from the [`docs/`](docs/) folder.
-Read [`INDEX.md`](INDEX.md) for the file structure and [`DESIGN.md`](DESIGN.md)
-for the design system before making changes. `DESIGN.md` is this repository's own
+Minecraft plugin, published with GitHub Pages from the [`docs/`](../../docs/) folder.
+Read [`../../wiki/reference/site-structure.md`](../../wiki/reference/site-structure.md)
+for the file structure and [`../../DESIGN.md`](../../DESIGN.md) for the design
+system before making changes. `DESIGN.md` is this repository's own
 copy of the shared MCEngine "Silver Glass" design system; keep it aligned with
 the canonical copy in `MCEngine/mcengine.github.io`. The theme CSS is vendored
 locally under `docs/css/` — this site has no runtime dependency on another
-repository (see [Website repository structure](#website-repository-structure)).
+repository (see
+[`../../wiki/information/architecture.md`](../../wiki/information/architecture.md)).
 
 ---
 
@@ -51,8 +58,8 @@ the site fast, private, and CSP-friendly.
   `docs/css/shared/` (`layout.css`, `components.css`), and one folder per section
   (`docs/css/{section}/`). This site's header/footer extras (brand logo, donation
   link, Platforms dropdown, footer bar) live in `docs/css/shared/layout.css`.
-* Use the design tokens and components from [`DESIGN.md`](DESIGN.md); do not
-  invent new colors or one-off styles.
+* Use the design tokens and components from [`../../DESIGN.md`](../../DESIGN.md);
+  do not invent new colors or one-off styles.
 * Keep files focused (one page = one folder). Prefer editing shared partials
   over duplicating markup.
 
@@ -71,3 +78,11 @@ starting work, so the documentation site stays in sync with the plugin it
 documents and the backend server it describes. This is a development-time
 requirement only and adds no runtime dependency; the published site remains
 fully self-contained (see Iron Rule 2).
+
+---
+
+## Versions
+
+Never publish a new change-log version or edit `docs/partials/logs-nav.html` to
+claim a release without explicit user approval. See
+[`versioning.md`](versioning.md).

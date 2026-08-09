@@ -1,136 +1,18 @@
+---
+name: root-index
+description: Root router — points to every other index in the mcoriax.github.io repository.
+---
+
 # Repository Index
 
-This file is the entry point for understanding the project structure. Agents MUST read it first, and keep it updated whenever the structure or indexed content of this repository changes. It reflects only the files and directories that exist in this repository.
+| Index | Scope | Load when |
+|---|---|---|
+| [`.agents/INDEX.md`](.agents/INDEX.md) | Agent instruction set | You need a rule, convention, or creator before doing work. |
+| [`wiki/INDEX.md`](wiki/INDEX.md) | Site documentation | You need to read or write docs about how the site is built. |
+| [`wiki/logs/INDEX.md`](wiki/logs/INDEX.md) | Versioned change logs | You need release history or must record a change. |
 
-Agent rules are not kept in this repository. They live in the portable `.agents` instruction set used alongside it.
-
-This repository is the **static documentation website** for the MCIdentity Minecraft plugin and its **MCIdentitySkill**, **MCIdentityRune**, and **MCIdentityCosmetic** add-ons, published with GitHub Pages from the [`docs/`](docs/) directory.
-
-## Root Files
-
-| Directory / File | Purpose |
-|---|---|
-| [`./`](./) | Repository root directory. |
-| [`INDEX.md`](INDEX.md) | This project structure index. |
-| [`README.md`](README.md) | Human-facing project overview. |
-| [`AGENTS.md`](AGENTS.md) | Universal pointer to the portable `.agents/` instruction set. |
-| [`.agents/`](.agents/) | Portable agent instruction set (rules, git workflow, architecture). See [`.agents/INDEX.md`](.agents/INDEX.md). |
-| [`DESIGN.md`](DESIGN.md) | This repository's copy of the shared "Silver Glass" design system (tokens, components, reuse guide). |
-| [`.nojekyll`](.nojekyll) | Disables Jekyll processing so files are served as-is. |
-| [`.gitignore`](.gitignore) | Keeps the build scripts' `__pycache__/` out of the repository. |
-| [`docs/`](docs/) | GitHub Pages site root (set the Pages source to this folder). |
-| [`scripts/`](scripts/) | Build tooling used to generate repetitive pages. |
-
-## Site Architecture
-
-The site is plain, self-contained static HTML — no build step and no external fonts, scripts, or stylesheets. Every page injects a shared header and footer at runtime via [`docs/js/site.js`](docs/js/site.js), which fetches the partials in [`docs/partials/`](docs/partials/) and resolves navigation links relative to each page's depth.
-
-### Entry & shared assets
-
-| Directory / File | Purpose |
-|---|---|
-| [`docs/`](docs/) | Site root directory. |
-| [`docs/.nojekyll`](docs/.nojekyll) | Disables Jekyll when the Pages source is `/docs`. |
-| [`docs/index.html`](docs/index.html) | Central landing page with the project overview and clickable cards. |
-| [`docs/partials/`](docs/partials/) | Shared HTML fragments included on every page. |
-| [`docs/partials/header.html`](docs/partials/header.html) | Shared site header and primary navigation, with the Platforms and Add-ons dropdowns and the Donation link right-aligned. |
-| [`docs/partials/footer.html`](docs/partials/footer.html) | Shared site footer. |
-| [`docs/partials/logs-nav.html`](docs/partials/logs-nav.html) | The change-log version navigation, listed once and loaded by every log page. The only file a release edits. |
-| [`docs/js/`](docs/js/) | Client-side scripts. |
-| [`docs/js/site.js`](docs/js/site.js) | Include loader, favicon injection, active-nav, mobile menu, and the log version navigation (the product picker, the five-row scroll cap, the current release, and the back link). |
-
-### Stylesheets
-
-The shared "Silver Glass" theme is vendored locally in this repository (no
-runtime dependency on another site); the design system is documented in
-[`DESIGN.md`](DESIGN.md).
-
-| Directory / File | Purpose |
-|---|---|
-| [`docs/css/`](docs/css/) | Root CSS directory. |
-| [`docs/css/main.css`](docs/css/main.css) | Root theme tokens (white / silver / transparent) and base styles. |
-| [`docs/css/shared/`](docs/css/shared/) | Shared CSS used across multiple pages. |
-| [`docs/css/shared/layout.css`](docs/css/shared/layout.css) | Header, navigation, footer, breadcrumbs, and this site's header/footer extras (brand logo, donation link, Platforms dropdown, footer bar). |
-| [`docs/css/shared/components.css`](docs/css/shared/components.css) | Cards, accordions, tables, code, badges, buttons, callouts. |
-| [`docs/css/home/`](docs/css/home/) | Home page styles. |
-| [`docs/css/features/`](docs/css/features/) | Features page styles. |
-| [`docs/css/installation/`](docs/css/installation/) | Installation page styles. |
-| [`docs/css/storage/`](docs/css/storage/) | Data storage page styles. |
-| [`docs/css/gui/`](docs/css/gui/) | GUI page styles. |
-| [`docs/css/profession/`](docs/css/profession/) | Profession pages styles. |
-| [`docs/css/commands/`](docs/css/commands/) | Commands page styles. |
-| [`docs/css/api/`](docs/css/api/) | API page styles. |
-| [`docs/css/listeners/`](docs/css/listeners/) | Listeners page styles. |
-| [`docs/css/platforms/`](docs/css/platforms/) | Platform pages styles. |
-| [`docs/css/donation/`](docs/css/donation/) | Donation page styles. |
-| [`docs/css/logs/`](docs/css/logs/) | Change logs page styles. |
-| [`docs/css/skill/`](docs/css/skill/) | Skill add-on page styles. |
-| [`docs/css/addon/`](docs/css/addon/) | Shared add-on page styles (hero badges, ownership split, slot maps, backend chips), used by the rune and cosmetic pages. |
-
-### Content pages
-
-| Directory / File | Purpose |
-|---|---|
-| [`docs/features/index.html`](docs/features/index.html) | Key features overview. |
-| [`docs/installation/index.html`](docs/installation/index.html) | Installation, death behaviour, requirements, and testing. |
-| [`docs/storage/index.html`](docs/storage/index.html) | Data storage backends and schema, including the `identity_properties` column reference and the unique `alias`. |
-| [`docs/gui/index.html`](docs/gui/index.html) | The multi-tier GUI system. |
-| [`docs/commands/index.html`](docs/commands/index.html) | All command usages and permissions. |
-| [`docs/api/index.html`](docs/api/index.html) | Developer API usage of the provider class (accordion reference). |
-| [`docs/skill/index.html`](docs/skill/index.html) | The MCIdentitySkill add-on: the PDC based architecture, the profession restriction (including the base `player` identity owning no skills), MythicMobs casting, the single player command and its operator only subcommands, and its developer API. |
-| [`docs/rune/index.html`](docs/rune/index.html) | The MCIdentityRune add-on: identity-scoped rune slots, the permanent held-once assignment rules, the menu layout, `/rune`, its own storage, and its developer API. |
-| [`docs/cosmetic/index.html`](docs/cosmetic/index.html) | The MCIdentityCosmetic add-on: the independent skin and aura fields, the menu layout, `/cosmetic`, its own storage, and its developer API. |
-| [`docs/listeners/index.html`](docs/listeners/index.html) | Custom Bukkit events and gameplay listeners. |
-| [`docs/donation/index.html`](docs/donation/index.html) | Donation page with the GitHub sponsor block. |
-
-### Profession pages
-
-| Directory / File | Purpose |
-|---|---|
-| [`docs/profession/index.html`](docs/profession/index.html) | Professions overview, the per-action EXP gain reference (one accordion with a worked example per action key), and the full profession table. |
-| [`docs/profession/{profession_name}/index.html`](docs/profession/) | Detail page per bundled profession (max level, stats, how to level up). Covers `acrobat`, `archaeologist`, `archer`, `builder`, `chef`, `crafter`, `enchanter`, `engineer`, `explorer`, `farmer`, `fighter`, `fisher`, `gatherer`, `guard`, `lumberjack`, `mariner`, `merchant`, `miner`, `supporter`, `tamer`, and `tanker`. |
-
-### Platform pages
-
-| Directory / File | Purpose |
-|---|---|
-| [`docs/platforms/spigotmc/index.html`](docs/platforms/spigotmc/index.html) | How the plugin works on SpigotMC. |
-| [`docs/platforms/papermc/index.html`](docs/platforms/papermc/index.html) | How the plugin works on PaperMC. |
-| [`docs/platforms/foliamc/index.html`](docs/platforms/foliamc/index.html) | How the plugin works on FoliaMC. |
-
-### Change logs
-
-| Directory / File | Purpose |
-|---|---|
-| [`docs/logs/index.html`](docs/logs/index.html) | Latest MCIdentity change log (`4.6.0`) with a right-side version navigation bar. Each add-on keeps its own version tree under `logs/skill/`, `logs/rune/`, and `logs/cosmetic/`, so the products' versions never collide. |
-| [`docs/logs/1/0/0/index.html`](docs/logs/1/0/0/index.html) | Permalink for version 1.0.0 (versioned `major/minor/patch` structure). |
-| [`docs/logs/1/1/0/index.html`](docs/logs/1/1/0/index.html) | Permalink for version 1.1.0 (universal JAR architecture). |
-| [`docs/logs/2/0/0/index.html`](docs/logs/2/0/0/index.html) | Permalink for version 2.0.0 (developer API namespace move). |
-| [`docs/logs/3/0/0/index.html`](docs/logs/3/0/0/index.html) | Permalink for version 3.0.0 (skill decoupling; the ability tables are dropped). |
-| [`docs/logs/4/0/0/index.html`](docs/logs/4/0/0/index.html) | Permalink for version 4.0.0 (rune and cosmetic decoupling; those tables are dropped). |
-| [`docs/logs/4/1/0/index.html`](docs/logs/4/1/0/index.html) | Permalink for version 4.1.0 (identity aliases: the `alias` column and `/identity alias`). |
-| [`docs/logs/4/2/0/index.html`](docs/logs/4/2/0/index.html) | Permalink for version 4.2.0 (one supported way in: the provider owns storage, the manager owns RAM state). |
-| [`docs/logs/4/3/0/index.html`](docs/logs/4/3/0/index.html) | Permalink for version 4.3.0 (a claimed alias names the player in chat and the tab list). |
-| [`docs/logs/4/3/1/index.html`](docs/logs/4/3/1/index.html) | Permalink for version 4.3.1 (the profession prefix is kept in chat alongside the alias). |
-| [`docs/logs/4/4/0/index.html`](docs/logs/4/4/0/index.html) | Permalink for version 4.4.0 (an alias is claimed once; the base `Player` identity keeps the Minecraft name). |
-| [`docs/logs/4/5/0/index.html`](docs/logs/4/5/0/index.html) | Permalink for version 4.5.0 (identities are named by their alias, with profession and level in the lore). |
-| [`docs/logs/4/5/1/index.html`](docs/logs/4/5/1/index.html) | Permalink for version 4.5.1 (the identity item is re-titled on alias claim and on equip). |
-| [`docs/logs/4/6/0/index.html`](docs/logs/4/6/0/index.html) | Permalink for version 4.6.0 (`/identity unuse` is renamed to `/identity unequip`, node included). |
-| [`docs/logs/skill/index.html`](docs/logs/skill/index.html) | Latest MCIdentitySkill change log (`0.3.0`), with its own version navigation. |
-| [`docs/logs/skill/0/0/0/index.html`](docs/logs/skill/0/0/0/index.html) | Permalink for MCIdentitySkill version 0.0.0 (initial release). |
-| [`docs/logs/skill/0/1/0/index.html`](docs/logs/skill/0/1/0/index.html) | Permalink for MCIdentitySkill version 0.1.0 (the base `player` identity owns no skills and has no skill menu). |
-| [`docs/logs/skill/0/2/0/index.html`](docs/logs/skill/0/2/0/index.html) | Permalink for MCIdentitySkill version 0.2.0 (a player has one command, `/skill`, which opens the menu they equip in). |
-| [`docs/logs/skill/0/3/0/index.html`](docs/logs/skill/0/3/0/index.html) | Permalink for MCIdentitySkill version 0.3.0 (an identity holds a given skill in at most one slot). |
-| [`docs/logs/rune/index.html`](docs/logs/rune/index.html) | Latest MCIdentityRune change log (`0.1.0`), with its own version navigation. |
-| [`docs/logs/rune/0/0/0/index.html`](docs/logs/rune/0/0/0/index.html) | Permalink for MCIdentityRune version 0.0.0 (initial release). |
-| [`docs/logs/rune/0/1/0/index.html`](docs/logs/rune/0/1/0/index.html) | Permalink for MCIdentityRune version 0.1.0 (a rune assignment is permanent and held once). |
-| [`docs/logs/cosmetic/index.html`](docs/logs/cosmetic/index.html) | Latest MCIdentityCosmetic change log, with its own version navigation. |
-| [`docs/logs/cosmetic/0/0/0/index.html`](docs/logs/cosmetic/0/0/0/index.html) | Permalink for MCIdentityCosmetic version 0.0.0 (initial release). |
-
-## Tooling
-
-| Directory / File | Purpose |
-|---|---|
-| [`scripts/`](scripts/) | Build scripts (not served by the site). |
-| [`scripts/generate_professions.py`](scripts/generate_professions.py) | Generates the profession listing and detail pages from embedded profession data. |
-| [`scripts/exp_actions.py`](scripts/exp_actions.py) | Catalog of every EXP gain action key with its trigger, accepted value shapes, and YAML examples; rendered onto the profession listing page. |
+This file lists indexes only — never rules, never documentation, never leaf
+content links. The published site's own file map is reached through the wiki
+index above. Adding, removing, or renaming any `INDEX.md` in the repository
+updates this table in the same commit. Read exactly one branch per task; do not
+preload the others.

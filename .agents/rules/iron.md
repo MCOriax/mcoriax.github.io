@@ -1,3 +1,8 @@
+---
+name: iron-rules
+description: Platform specification and project-hosting validation rules that must never be violated.
+---
+
 # Iron Rules
 
 * **Platform Specification:** Whether working with a single repository or multiple repositories, the user must explicitly specify the cloud hosting platform for each repository. For example:
