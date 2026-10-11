@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Central Server — MCIdentity</title>
+  <meta name="description" content="The MCIdentity Central Server: a standalone web service that owns all identity data for a network of Minecraft servers, so no game server needs a database of its own.">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/shared/layout.css">
+  <link rel="stylesheet" href="../css/shared/components.css">
+  <script>window.SITE_ROOT = "../"; window.PAGE_SECTION = "server";</script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container narrow">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="../index.html">Home</a><span class="sep">/</span><span>Central Server</span>
+    </nav>
+
+    <span class="eyebrow">Network storage</span>
+    <h1>MCIdentity Central Server</h1>
+    <p class="lead">The Central Server is a standalone web service that owns all MCIdentity data for a whole network. Game servers running MCIdentity do not connect to a database at all: they ask the Central Server for everything they need and send it every change. One deployment can back any number of game servers, so every player sees the same identities wherever they join.</p>
+
+    <section class="section">
+      <h2>What it is</h2>
+      <ul>
+        <li>A separate program you run once for your network, next to your game servers rather than inside them. The current version is <strong>3.4.5</strong>.</li>
+        <li>The single owner of identities, professions, stats, sessions, base identity slots, aliases, and the audit log.</li>
+        <li>A home for the add-ons' data too: runes, cosmetics, and equipped skills can live on it when those add-ons are pointed at the central server. MCIdentityPerks keeps its own database and does not use it.</li>
+        <li>An optional choice. A single server, or a network happy to share one ordinary database, does not need it. See <a href="../storage/index.html">Data Storage</a> for the alternatives.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>How it works</h2>
+      <ol class="steps">
+        <li><p>You start the Central Server with a secret API token, and give the same token to each game server in its MCIdentity configuration, together with the server's address.</p></li>
+        <li><p>When a player logs in, the game server first checks that the Central Server is reachable. That check also wakes up a deployment that sleeps when idle, and players are politely asked to wait while it starts.</p></li>
+        <li><p>From then on, every read and write MCIdentity makes goes to the Central Server over the network, in the background, so the game never pauses for it. Data in use is still cached in the game server's memory.</p></li>
+        <li><p>The Central Server checks every request, saves the change in its own database, and answers. Because there is only one copy of the data, two game servers can never disagree about a player.</p></li>
+      </ol>
+    </section>
+
+    <section class="section">
+      <h2>Storage</h2>
+      <p>The Central Server keeps its data in one of two databases, both with exactly the same layout:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Database</th><th>Best for</th></tr></thead>
+          <tbody>
+            <tr><td>SQLite (default)</td><td>Getting started. A single local file, built in, with nothing extra to install.</td></tr>
+            <tr><td>PostgreSQL</td><td>Production networks and larger deployments.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The layout also matches the SQLite file the MCIdentity plugin writes on its own, so an existing server's data file can be moved onto the Central Server as it is.</p>
+    </section>
+
+    <section class="section">
+      <h2>Security</h2>
+      <p>The Central Server holds every player's data, so it is locked down by default:</p>
+      <ul>
+        <li><strong>Tokens with roles.</strong> Game servers use a read and write token. An optional second token can only read, for things like a public stats page, and every write made with it is refused.</li>
+        <li><strong>Address allow-list.</strong> It can be told to accept requests only from your game servers' addresses.</li>
+        <li><strong>Brute-force protection.</strong> Failed logins are counted separately, and an address that keeps guessing is shut out for a while.</li>
+        <li><strong>Rate and size limits.</strong> Each address can only send so many requests per minute, and oversized requests are refused.</li>
+        <li><strong>Strict input checks.</strong> Every value is checked before it is stored, and stat names must come from the fixed list of nine.</li>
+        <li><strong>Hardened defaults.</strong> Browser access is allowed only from addresses you name, standard protective headers are always sent, and the container never runs with administrator rights.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Running it</h2>
+      <ul>
+        <li>It runs on <strong>Node.js 22.13 or newer</strong>, or from the ready-made container image, which keeps its database in a persistent volume and reports its own health.</li>
+        <li>All settings, including the token and the database choice, are given as environment settings when it starts. No secret is ever built into the image.</li>
+        <li>In production it sits behind a reverse proxy that provides the secure connection.</li>
+        <li>An open health check, which needs no token, lets the plugin and the container platform see that it is up.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Compatibility</h2>
+      <p>Each Central Server release is checked against the requests every plugin actually sends.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Central Server</th><th>MCIdentity</th><th>MCIdentityRune</th><th>MCIdentitySkill</th><th>MCIdentityCosmetic</th></tr></thead>
+          <tbody>
+            <tr><td>3.4.x</td><td>4.6.x and 4.7.x</td><td>0.1.x</td><td>0.3.x</td><td>0.0.x</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The add-ons reach the Central Server through the core plugin's own connection, so an add-on stored on the central server needs MCIdentity 4.7.0 or newer.</p>
+      <div class="callout callout--info">
+        <span class="callout__icon" aria-hidden="true">➡️</span>
+        <div class="callout__body"><p>To point a game server at it, see <a href="../installation/index.html">Installation &amp; Setup</a>.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="../js/site.js" defer></script>
+</body>
+</html>
