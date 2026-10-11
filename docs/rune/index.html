@@ -25,14 +25,14 @@
       <p class="lead">
         <strong>MCIdentityRune</strong> is a standalone add-on that gives every MCIdentity identity
         its own set of <strong>rune slots</strong>. It ships as its own jar, keeps its own database,
-        and installs alongside the core plugin. Open it with <code>/rune</code>.
+        and installs alongside the core plugin. Open it with /rune.
       </p>
       <div class="addon-hero__badges">
         <span class="badge badge--ok">SpigotMC</span>
         <span class="badge badge--ok">PaperMC</span>
         <span class="badge badge--ok">Folia</span>
         <span class="badge badge--accent">Own database</span>
-        <span class="badge">Requires MCIdentity 4.0.0+</span>
+        <span class="badge">Requires MCIdentity 4.2.0+</span>
       </div>
     </section>
 
@@ -41,7 +41,7 @@
       <h2>What changed: runes left the core plugin</h2>
       <p class="lead">
         The rune system used to live inside MCIdentity, sharing its tables and its GUI.
-        MCIdentity <code>4.0.0</code> removed it, and this add-on picked it up — along with the
+        MCIdentity 4.0.0 removed it, and this add-on picked it up — along with the
         storage, which it now owns outright.
       </p>
 
@@ -50,9 +50,9 @@
           <span class="addon-split__tag addon-split__tag--was">Previously</span>
           <h3>Runes inside MCIdentity</h3>
           <ul>
-            <li>An <code>identity_runes</code> registry and an <code>identity_equipped_runes</code> slot table, both living in the core plugin's schema.</li>
+            <li>The list of rune types and every identity's rune slots lived in the core plugin's own database.</li>
             <li>Slot 6 of the main identity menu opened a rune GUI the core plugin drew.</li>
-            <li><code>/identity rune get</code> was a core admin sub-command.</li>
+            <li>Handing out runes was an admin command of the core plugin.</li>
             <li>Every rune change meant a release of the whole identity plugin.</li>
           </ul>
         </div>
@@ -60,8 +60,8 @@
           <span class="addon-split__tag addon-split__tag--now">Now</span>
           <h3>Runes in MCIdentityRune</h3>
           <ul>
-            <li>The add-on creates and owns both tables, in <strong>its own</strong> database — with no foreign key onto anything the core plugin owns.</li>
-            <li>Its own <code>/rune</code> command and its own menu, on its own version line.</li>
+            <li>The add-on creates and owns its data in <strong>its own</strong> database, with no link to anything the core plugin stores.</li>
+            <li>Its own /rune command and its own menu, on its own version line.</li>
             <li>It reads one thing from the core: which identity you are currently wearing.</li>
             <li>Either plugin can be upgraded without waiting for the other.</li>
           </ul>
@@ -72,9 +72,7 @@
         <span class="callout__icon" aria-hidden="true">⚠️</span>
         <div class="callout__body">
           <p>
-            Upgrading the core to <code>4.0.0</code> <strong>drops</strong> <code>identity_runes</code>
-            and <code>identity_equipped_runes</code> from its database, and this add-on starts with
-            empty tables rather than migrating them. Existing rune assignments are
+            Upgrading the core to 4.0.0 <strong>deletes</strong> the old rune data from its database, and this add-on starts empty rather than importing it. Existing rune assignments are
             <strong>not recoverable</strong> — back the database up first if you want to keep them.
           </p>
         </div>
@@ -91,8 +89,7 @@
       </p>
       <p>
         This is the invariant the whole add-on is built around: every read and every write is
-        keyed by the identity UUID resolved from the core plugin's session cache, never by the
-        player UUID. A player with no active identity has nothing to read and nothing to write to.
+        tied to the identity the core plugin says you are wearing, never to the player. A player with no active identity has nothing to read and nothing to write to.
       </p>
 
       <div class="table-wrap">
@@ -100,7 +97,7 @@
           <thead><tr><th>Situation</th><th>Result</th></tr></thead>
           <tbody>
             <tr><td>Wearing a profession identity</td><td><span class="addon-verdict addon-verdict--allow">allowed</span> — reads and writes that identity's slots</td></tr>
-            <tr><td>Wearing the base <code>player</code> profession</td><td><span class="addon-verdict addon-verdict--deny">denied</span> — the base profession may not use runes</td></tr>
+            <tr><td>Wearing the base Player profession</td><td><span class="addon-verdict addon-verdict--deny">denied</span> — the base profession may not use runes</td></tr>
             <tr><td>No active identity</td><td><span class="addon-verdict addon-verdict--deny">denied</span> — there is nothing to key the row by</td></tr>
             <tr><td>Core plugin unreachable</td><td><span class="addon-verdict addon-verdict--deny">denied</span> — the add-on fails closed rather than guessing</td></tr>
             <tr><td>Identity swapped mid-interaction</td><td>The write still lands on the identity that was resolved when the action started, never on the new one.</td></tr>
@@ -123,7 +120,7 @@
     <section class="section">
       <h2>The rune menu</h2>
       <p>
-        <code>/rune</code> with no arguments opens a six-row menu for the identity you are wearing.
+        /rune with no arguments opens a six-row menu for the identity you are wearing.
         Equipped slots show the rune's display name; empty slots show a placeholder. The layout is
         fixed, because the slot numbers are stored in the database and existing rows reference them.
       </p>
@@ -204,28 +201,30 @@
         <table>
           <thead><tr><th>Command</th><th>Description</th><th>Permission</th><th>Default</th></tr></thead>
           <tbody>
-            <tr><td><code>/rune</code></td><td>Open the rune menu for the identity you are wearing.</td><td><code>mcoriax.mcidentity.rune.command.use</code></td><td>everyone</td></tr>
-            <tr><td><code>/rune list</code></td><td>List every registered rune type.</td><td><code>mcoriax.mcidentity.rune.command.list</code></td><td>everyone</td></tr>
-            <tr><td><code>/rune register &lt;code&gt; &lt;display name&gt;</code></td><td>Register a rune type. Idempotent — registering an existing code keeps the original.</td><td><code>mcoriax.mcidentity.rune.command.register</code></td><td><code>op</code></td></tr>
-            <tr><td><code>/rune set &lt;slot&gt; &lt;code&gt;</code></td><td>Equip a rune into an <strong>empty</strong> slot of your active identity.</td><td><code>mcoriax.mcidentity.rune.command.set</code></td><td><code>op</code></td></tr>
-            <tr><td><code>/rune clear &lt;slot&gt;</code></td><td>Empty a slot. The only way an assignment is ever removed.</td><td><code>mcoriax.mcidentity.rune.command.clear</code></td><td><code>op</code></td></tr>
+            <tr><td>/rune</td><td>Open the rune menu for the identity you are wearing.</td><td>mcoriax.mcidentity.rune.command.use</td><td>everyone</td></tr>
+            <tr><td>/rune list</td><td>List every registered rune type.</td><td>mcoriax.mcidentity.rune.command.list</td><td>everyone</td></tr>
+            <tr><td>/rune register &lt;code&gt; &lt;display name&gt;</td><td>Register a rune type. Idempotent — registering an existing code keeps the original.</td><td>mcoriax.mcidentity.rune.command.register</td><td>operators</td></tr>
+            <tr><td>/rune set &lt;slot&gt; &lt;code&gt;</td><td>Equip a rune into an <strong>empty</strong> slot of your active identity.</td><td>mcoriax.mcidentity.rune.command.set</td><td>operators</td></tr>
+            <tr><td>/rune clear &lt;slot&gt;</td><td>Empty a slot. The only way an assignment is ever removed.</td><td>mcoriax.mcidentity.rune.command.clear</td><td>operators</td></tr>
           </tbody>
         </table>
       </div>
+      <p>mcoriax.mcidentity.rune.admin grants every operator command at once, and mcoriax.mcidentity.rune.* grants everything.</p>
 
       <h3>Registering and equipping a rune</h3>
-      <pre><code>/rune register ember Ember Sigil
-/rune set 1 ember
-/rune clear 1</code></pre>
       <p>
-        Rune codes are stored lower-cased and trimmed, so <code>Ember</code> and <code>ember</code>
-        are the same rune. A slot number outside <code>1</code>–<code>10</code> is rejected before
-        anything reaches the database.
+        An operator first registers a rune type with a short code and a display name, for example
+        the code ember with the name Ember Sigil. They can then place it into a numbered slot of the
+        identity they are wearing, and clear that slot again later.
+      </p>
+      <p>
+        Rune codes ignore capital letters and surrounding spaces, so Ember and ember are the same
+        rune. A slot number outside 1 to 10 is refused before anything is saved.
       </p>
 
-      <h3><code>/rune set</code> fills, it does not swap</h3>
+      <h3>Setting a rune fills a slot, it does not swap</h3>
       <p>
-        An assignment is permanent, so <code>/rune set</code> refuses rather than writing over
+        An assignment is permanent, so setting a rune refuses rather than writing over
         what is already there:
       </p>
       <div class="table-wrap">
@@ -238,8 +237,7 @@
         </table>
       </div>
       <p>
-        Moving a rune is therefore deliberate — <code>/rune clear &lt;slot&gt;</code>, then
-        <code>/rune set</code>. Clearing is the only way a slot is emptied, and it stays an
+        Moving a rune is therefore deliberate: clear the slot, then set the rune again. Clearing is the only way a slot is emptied, and it stays an
         operator's command: it exists to correct a bad row, not to swap runes around.
       </p>
     </section>
@@ -249,43 +247,35 @@
       <h2>Storage</h2>
       <p class="lead">
         The add-on keeps its own storage and picks its backend the same way the core plugin does,
-        with <code>database.type</code> in its own <code>config.yml</code>.
+        in its own configuration file.
       </p>
       <ul class="addon-backends">
         <li class="is-default">SQLite — default, zero configuration</li>
         <li>MySQL / MariaDB</li>
         <li>PostgreSQL</li>
         <li>MongoDB</li>
-        <li>Central REST server</li>
+        <li>MCIdentity Central Server (needs MCIdentity 4.7.0 or newer)</li>
       </ul>
 
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Table</th><th>Contents</th></tr></thead>
-          <tbody>
-            <tr><td><code>identity_runes</code></td><td>The registry of rune types: system code, display name, and an optional Base64 <code>item</code> template.</td></tr>
-            <tr><td><code>identity_equipped_runes</code></td><td>Which rune sits in which slot, keyed by identity UUID.</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h3>The item template</h3>
       <p>
-        A rune type may carry an <code>item</code> template: a whole item serialised to Base64.
-        <code>/rune register</code> stores whatever the admin is holding, so a rune is registered by
-        holding what it should look like. An empty hand registers the type without one.
+        It stores two things: the list of rune types, each with its code, display name, and an
+        optional item that shows what the rune looks like; and which rune sits in which slot of
+        each identity.
       </p>
+
+      <h3>What a rune looks like</h3>
       <p>
-        The template describes what a rune <em>is</em>, not what anyone has equipped — slot
-        assignments stay a slot-to-code mapping. It exists so a rune can be handed out, inspected,
-        or browsed as a real item later.
+        When an operator registers a rune while holding an item, that item is saved as the rune's
+        look. An empty hand registers the rune without one. The look describes what a rune
+        <em>is</em>, not what anyone has equipped, so a rune can later be handed out, inspected, or
+        browsed as a real item.
       </p>
 
       <p>
-        Neither table carries a foreign key onto a core plugin table. That is deliberate: it is what
-        lets the two plugins be upgraded, and even backed by different databases, independently.
-        Schema creation is idempotent and runs on every start; every query binds its parameters, and
-        the only identifiers ever interpolated come from a frozen allow-list.
+        Nothing in the add-on's storage depends on the core plugin's storage. That is deliberate:
+        it lets the two plugins be upgraded, and even kept in different databases, independently.
+        Storage is set up automatically on every start, and every query is built safely from fixed
+        templates.
       </p>
 
       <div class="callout callout--info">
@@ -307,35 +297,25 @@
         <table>
           <thead><tr><th>Requirement</th><th>Why</th></tr></thead>
           <tbody>
-            <tr><td>Java 25 or newer</td><td>Matches the core plugin's toolchain.</td></tr>
-            <tr><td>SpigotMC, PaperMC, or Folia</td><td>One universal jar; the server type is detected at enable time.</td></tr>
-            <tr><td><strong>MCIdentity 4.0.0 or newer</strong></td><td>Hard dependency. It owns the identity a rune is attached to, and <code>4.0.0</code> is the release where it stopped shipping a competing rune system of its own.</td></tr>
-            <tr><td>A database</td><td>Optional in practice — SQLite is the default and needs no setup.</td></tr>
+            <tr><td>Java 25 or newer</td><td>Matches the core plugin.</td></tr>
+            <tr><td>SpigotMC, PaperMC, or Folia</td><td>One universal jar; the server type is detected at startup.</td></tr>
+            <tr><td><strong>MCIdentity 4.2.0 or newer</strong></td><td>Hard dependency. It owns the identity a rune is attached to, and 4.2.0 is the first release that shares its scheduling with the add-ons. On an older core the add-on logs an error and switches itself off.</td></tr>
+            <tr><td>MCIdentity 4.7.0 or newer</td><td>Only when the add-on stores its data on the central server, because it reuses the core plugin's connection to it.</td></tr>
+            <tr><td>A database</td><td>Optional in practice: SQLite is the default and needs no setup.</td></tr>
           </tbody>
         </table>
       </div>
 
       <ol class="addon-flow">
-        <li>Drop <code>MCIdentityRune-&lt;version&gt;.jar</code> into <code>plugins/</code>, alongside MCIdentity.</li>
-        <li>Start the server once. It writes <code>plugins/MCIdentityRune/config.yml</code> and then disables itself, because <code>enable</code> defaults to <code>false</code>.</li>
-        <li>Set <code>enable: true</code>, and pick a <code>database.type</code> if you do not want SQLite.</li>
+        <li>Put the MCIdentityRune jar into your server's plugins folder, alongside MCIdentity.</li>
+        <li>Start the server once. The add-on writes its configuration file and then switches itself off, because it ships disabled so it never does anything you did not ask for.</li>
+        <li>Turn the add-on on in that file, and choose a different storage backend if you do not want SQLite.</li>
         <li>Restart the server.</li>
       </ol>
 
-      <pre><code># Master switch. The plugin generates no data files and registers nothing
-# until this is turned on.
-enable: false
-
-# Storage backend for runes.
-database:
-  type: sqlite
-  sqlite:
-    file: "mcidentityrune.db"</code></pre>
-
       <p>
-        On an older core the add-on logs a warning at startup rather than refusing to enable — but
-        that core still ships its own rune GUI, so players would see two competing rune systems.
-        Upgrade the core plugin.
+        If MCIdentity is missing, the add-on logs an error and switches itself off. It never runs
+        with runes attached to nothing.
       </p>
     </section>
 
@@ -343,27 +323,24 @@ database:
     <section class="section">
       <h2>For developers</h2>
       <p>
-        The add-on publishes its own library modules under the <code>io.github.mcoriax</code> group:
-        <code>mcidentity-rune-api</code>, <code>mcidentity-rune-common</code>, and
-        <code>mcidentity-rune-bukkit</code>. Declare them <code>compileOnly</code> and add
-        <code>MCIdentityRune</code> to your <code>plugin.yml</code>:
+        The add-on publishes its own developer library, in the same three-part shape as the core
+        plugin's. Plugins that build on it should list MCIdentityRune as a dependency so it loads
+        first.
       </p>
-      <pre><code>depend:
-  - MCIdentityRune</code></pre>
 
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Event</th><th>Fired when</th></tr></thead>
+          <thead><tr><th>Event</th><th>Fires when</th></tr></thead>
           <tbody>
-            <tr><td><code>MCIdentityRuneSetEvent</code></td><td>A rune is about to be equipped into, or cleared from, a slot. Cancellable — cancelling refuses the change before it reaches the database.</td></tr>
+            <tr><td><strong>Rune set</strong></td><td>A rune is about to be equipped into, or cleared from, a slot. Cancellable — cancelling refuses the change before it reaches the database.</td></tr>
           </tbody>
         </table>
       </div>
 
       <p>
-        The event carries the player, the <strong>identity UUID</strong> the change targets, the slot
-        number, and the rune code (<code>null</code> when the slot is being cleared). Bind your own
-        data to the identity UUID, never to the player UUID — that is the key the add-on itself uses.
+        The event tells you the player, the <strong>identity</strong> the change targets, the slot
+        number, and the rune (none when the slot is being cleared). Store your own data against
+        the identity, never the player — that is the key the add-on itself uses.
       </p>
 
       <div class="callout callout--info">

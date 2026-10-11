@@ -26,14 +26,14 @@
         <strong>MCIdentityCosmetic</strong> is a standalone add-on that gives every MCIdentity
         identity its own <strong>skin</strong> and <strong>aura</strong>. It ships as its own jar,
         keeps its own database, and installs alongside the core plugin. Open it with
-        <code>/cosmetic</code>.
+        /cosmetic.
       </p>
       <div class="addon-hero__badges">
         <span class="badge badge--ok">SpigotMC</span>
         <span class="badge badge--ok">PaperMC</span>
         <span class="badge badge--ok">Folia</span>
         <span class="badge badge--accent">Own database</span>
-        <span class="badge">Requires MCIdentity 4.0.0+</span>
+        <span class="badge">Requires MCIdentity 4.2.0+</span>
       </div>
     </section>
 
@@ -42,7 +42,7 @@
       <h2>What changed: cosmetics left the core plugin</h2>
       <p class="lead">
         Skins and auras used to be columns on the core plugin's own tables, drawn by a menu the core
-        plugin owned. MCIdentity <code>4.0.0</code> removed them, and this add-on picked them up
+        plugin owned. MCIdentity 4.0.0 removed them, and this add-on picked them up
         &mdash; storage included.
       </p>
 
@@ -51,7 +51,7 @@
           <span class="addon-split__tag addon-split__tag--was">Previously</span>
           <h3>Cosmetics inside MCIdentity</h3>
           <ul>
-            <li>An <code>identity_equipped_cosmetics</code> table in the core plugin's schema, plus <code>getSkin()</code> and <code>getAura()</code> on its identity properties.</li>
+            <li>Each identity's skin and aura were stored in the core plugin's own database, as part of the identity itself.</li>
             <li>Slot 8 of the main identity menu opened a cosmetic GUI the core plugin drew.</li>
             <li>Loading a session fetched cosmetics whether anything used them or not.</li>
             <li>Every cosmetic change meant a release of the whole identity plugin.</li>
@@ -62,7 +62,7 @@
           <h3>Cosmetics in MCIdentityCosmetic</h3>
           <ul>
             <li>The add-on creates and owns its table, in <strong>its own</strong> database &mdash; with no foreign key onto anything the core plugin owns.</li>
-            <li>Its own <code>/cosmetic</code> command and its own menu, on its own version line.</li>
+            <li>Its own /cosmetic command and its own menu, on its own version line.</li>
             <li>It reads one thing from the core: which identity you are currently wearing.</li>
             <li>Either plugin can be upgraded without waiting for the other.</li>
           </ul>
@@ -73,8 +73,8 @@
         <span class="callout__icon" aria-hidden="true">&#9888;&#65039;</span>
         <div class="callout__body">
           <p>
-            Upgrading the core to <code>4.0.0</code> <strong>drops</strong>
-            <code>identity_equipped_cosmetics</code> from its database, and this add-on starts with an
+            Upgrading the core to 4.0.0 <strong>deletes</strong> the old cosmetic data from its
+            database, and this add-on starts with an
             empty table rather than migrating it. Existing skins and auras are
             <strong>not recoverable</strong> &mdash; back the database up first if you want to keep them.
           </p>
@@ -92,10 +92,10 @@
 
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Field</th><th>Value</th><th>Notes</th></tr></thead>
+          <thead><tr><th>Field</th><th>What it holds</th><th>Notes</th></tr></thead>
           <tbody>
-            <tr><td><code>skin</code></td><td>A Base64 texture blob</td><td>Deliberately not length-capped &mdash; a full profile-property texture is a large value, and truncating it would produce a broken skin rather than a rejected one.</td></tr>
-            <tr><td><code>aura</code></td><td>A system code</td><td>Trimmed and capped at 255 characters, the same shape every other code in the ecosystem uses.</td></tr>
+            <tr><td>Skin</td><td>A Minecraft skin texture</td><td>Kept at full length on purpose: a skin texture is a large value, and cutting it short would produce a broken skin.</td></tr>
+            <tr><td>Aura</td><td>A short aura code</td><td>Surrounding spaces are removed and it is limited to 255 characters, like every other code in the project.</td></tr>
           </tbody>
         </table>
       </div>
@@ -110,10 +110,8 @@
         <span class="callout__icon" aria-hidden="true">&#128161;</span>
         <div class="callout__body">
           <p>
-            Each field is written by its own statement, so a skin save can never blank an aura and an
-            aura save can never blank a skin &mdash; even when two changes race. The column a write
-            targets comes from a frozen two-entry allow-list; anything else is rejected before a
-            statement is built.
+            Each field is saved on its own, so saving a skin can never erase an aura and saving an aura
+            can never erase a skin, even when two changes happen at the same moment.
           </p>
         </div>
       </div>
@@ -127,8 +125,8 @@
         same person can look completely different, and swapping identity swaps the look with it.
       </p>
       <p>
-        Every read and every write is keyed by the identity UUID resolved from the core plugin's
-        session cache, never by the player UUID. A player with no active identity has nothing to
+        Every read and every write is tied to the identity the core plugin says you are wearing,
+        never to the player. A player with no active identity has nothing to
         read and nothing to write to.
       </p>
 
@@ -137,7 +135,7 @@
           <thead><tr><th>Situation</th><th>Result</th></tr></thead>
           <tbody>
             <tr><td>Wearing a profession identity</td><td><span class="addon-verdict addon-verdict--allow">allowed</span></td></tr>
-            <tr><td>Wearing the base <code>player</code> profession</td><td><span class="addon-verdict addon-verdict--allow">allowed</span> &mdash; the base profession may wear cosmetics like any other</td></tr>
+            <tr><td>Wearing the base Player profession</td><td><span class="addon-verdict addon-verdict--allow">allowed</span> &mdash; the base profession may wear cosmetics like any other</td></tr>
             <tr><td>No active identity</td><td><span class="addon-verdict addon-verdict--deny">denied</span> &mdash; there is nothing to key the row by</td></tr>
             <tr><td>Core plugin unreachable</td><td><span class="addon-verdict addon-verdict--deny">denied</span> &mdash; the add-on fails closed rather than guessing</td></tr>
             <tr><td>Identity swapped mid-interaction</td><td>The write still lands on the identity that was resolved when the action started, never on the new one.</td></tr>
@@ -150,7 +148,7 @@
         <div class="callout__body">
           <p>
             Unlike <a href="../rune/index.html">runes</a>, cosmetics are <strong>not</strong> restricted
-            by profession. The base <code>player</code> identity is a real identity that may wear a
+            by profession. The base Player identity is a real identity that may wear a
             skin and an aura like any other &mdash; the restriction that applies to runes was never a
             cosmetic rule.
           </p>
@@ -162,7 +160,7 @@
     <section class="section">
       <h2>The cosmetic menu</h2>
       <p>
-        <code>/cosmetic</code> with no arguments opens a one-row menu for the identity you are
+        /cosmetic with no arguments opens a one-row menu for the identity you are
         wearing, showing what it currently wears in each of the two slots.
       </p>
 
@@ -194,23 +192,26 @@
       <h2>Commands &amp; permissions</h2>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Command</th><th>Description</th><th>Permission</th></tr></thead>
+          <thead><tr><th>Command</th><th>Description</th><th>Permission</th><th>Default</th></tr></thead>
           <tbody>
-            <tr><td><code>/cosmetic</code></td><td>Open the cosmetic menu for the identity you are wearing.</td><td>&mdash;</td></tr>
-            <tr><td><code>/cosmetic info</code></td><td>Show what your active identity currently wears.</td><td>&mdash;</td></tr>
-            <tr><td><code>/cosmetic skin &lt;texture_base64|clear&gt;</code></td><td>Set or clear the skin.</td><td><code>mcidentitycosmetic.admin</code></td></tr>
-            <tr><td><code>/cosmetic aura &lt;code|clear&gt;</code></td><td>Set or clear the aura.</td><td><code>mcidentitycosmetic.admin</code></td></tr>
+            <tr><td>/cosmetic</td><td>Open the cosmetic menu for the identity you are wearing.</td><td>mcoriax.mcidentity.cosmetic.command.use</td><td>everyone</td></tr>
+            <tr><td>/cosmetic info</td><td>Show what your active identity currently wears.</td><td>mcoriax.mcidentity.cosmetic.command.info</td><td>everyone</td></tr>
+            <tr><td>/cosmetic skin &lt;texture|clear&gt;</td><td>Set or clear the skin.</td><td>mcoriax.mcidentity.cosmetic.command.skin</td><td>operators</td></tr>
+            <tr><td>/cosmetic aura &lt;code|clear&gt;</td><td>Set or clear the aura.</td><td>mcoriax.mcidentity.cosmetic.command.aura</td><td>operators</td></tr>
           </tbody>
         </table>
       </div>
 
+      <p>mcoriax.mcidentity.cosmetic.admin grants both operator commands at once, and mcoriax.mcidentity.cosmetic.* grants everything.</p>
+
       <h3>Setting and clearing</h3>
-      <pre><code>/cosmetic aura ember
-/cosmetic skin eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6...
-/cosmetic aura clear</code></pre>
       <p>
-        Clearing one field leaves the other exactly as it was. <code>/cosmetic info</code> reads the
-        stored row back, so it is the way to confirm what an identity actually wears.
+        An operator sets an aura by its code, such as ember, sets a skin by giving its texture, and
+        clears either one with the word clear.
+      </p>
+      <p>
+        Clearing one field leaves the other exactly as it was. /cosmetic info reads the saved
+        values back, so it is the way to confirm what an identity actually wears.
       </p>
     </section>
 
@@ -219,30 +220,25 @@
       <h2>Storage</h2>
       <p class="lead">
         The add-on keeps its own storage and picks its backend the same way the core plugin does,
-        with <code>database.type</code> in its own <code>config.yml</code>.
+        in its own configuration file.
       </p>
       <ul class="addon-backends">
         <li class="is-default">SQLite &mdash; default, zero configuration</li>
         <li>MySQL / MariaDB</li>
         <li>PostgreSQL</li>
         <li>MongoDB</li>
-        <li>Central REST server</li>
+        <li>MCIdentity Central Server (needs MCIdentity 4.7.0 or newer)</li>
       </ul>
 
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Table</th><th>Contents</th></tr></thead>
-          <tbody>
-            <tr><td><code>identity_equipped_cosmetics</code></td><td>One row per identity: its skin and its aura, either of which may be absent.</td></tr>
-          </tbody>
-        </table>
-      </div>
+      <p>
+        It stores one record per identity: its skin and its aura, either of which may be empty.
+      </p>
 
       <p>
-        The table carries no foreign key onto a core plugin table. That is deliberate: it is what lets
-        the two plugins be upgraded, and even backed by different databases, independently. Schema
-        creation is idempotent and runs on every start; every query binds its parameters, and the only
-        identifiers ever interpolated come from a frozen allow-list.
+        Nothing in the add-on's storage depends on the core plugin's storage. That is deliberate:
+        it lets the two plugins be upgraded, and even kept in different databases, independently.
+        Storage is set up automatically on every start, and every query is built safely from fixed
+        templates.
       </p>
     </section>
 
@@ -253,57 +249,48 @@
         <table>
           <thead><tr><th>Requirement</th><th>Why</th></tr></thead>
           <tbody>
-            <tr><td>Java 25 or newer</td><td>Matches the core plugin's toolchain.</td></tr>
-            <tr><td>SpigotMC, PaperMC, or Folia</td><td>One universal jar; the server type is detected at enable time.</td></tr>
-            <tr><td><strong>MCIdentity 4.0.0 or newer</strong></td><td>Hard dependency. It owns the identity a cosmetic is attached to, and <code>4.0.0</code> is the release where it stopped shipping a competing cosmetic system of its own.</td></tr>
-            <tr><td>A database</td><td>Optional in practice &mdash; SQLite is the default and needs no setup.</td></tr>
+            <tr><td>Java 25 or newer</td><td>Matches the core plugin.</td></tr>
+            <tr><td>SpigotMC, PaperMC, or Folia</td><td>One universal jar; the server type is detected at startup.</td></tr>
+            <tr><td><strong>MCIdentity 4.2.0 or newer</strong></td><td>Hard dependency. It owns the identity a cosmetic is attached to, and 4.2.0 is the first release that shares its scheduling with the add-ons. On an older core the add-on logs an error and switches itself off.</td></tr>
+            <tr><td>MCIdentity 4.7.0 or newer</td><td>Only when the add-on stores its data on the central server, because it reuses the core plugin's connection to it.</td></tr>
+            <tr><td>A database</td><td>Optional in practice: SQLite is the default and needs no setup.</td></tr>
           </tbody>
         </table>
       </div>
 
       <ol class="addon-flow">
-        <li>Drop <code>MCIdentityCosmetic-&lt;version&gt;.jar</code> into <code>plugins/</code>, alongside MCIdentity.</li>
-        <li>Start the server once. It writes <code>plugins/MCIdentityCosmetic/config.yml</code> and then disables itself, because <code>enable</code> defaults to <code>false</code>.</li>
-        <li>Set <code>enable: true</code>, and pick a <code>database.type</code> if you do not want SQLite.</li>
+        <li>Put the MCIdentityCosmetic jar into your server's plugins folder, alongside MCIdentity.</li>
+        <li>Start the server once. The add-on writes its configuration file and then switches itself off, because it ships disabled so it never does anything you did not ask for.</li>
+        <li>Turn the add-on on in that file, and choose a different storage backend if you do not want SQLite.</li>
         <li>Restart the server.</li>
       </ol>
 
-      <pre><code># Master switch. The plugin generates no data files and registers nothing
-# until this is turned on.
-enable: false
-
-# Storage backend for cosmetics.
-database:
-  type: sqlite
-  sqlite:
-    file: "mcidentitycosmetic.db"</code></pre>
+      <p>
+        If MCIdentity is missing, the add-on logs an error and switches itself off.
+      </p>
     </section>
 
     <!-- Developer API -->
     <section class="section">
       <h2>For developers</h2>
       <p>
-        The add-on publishes its own library modules under the <code>io.github.mcoriax</code> group:
-        <code>mcidentity-cosmetic-api</code>, <code>mcidentity-cosmetic-common</code>, and
-        <code>mcidentity-cosmetic-bukkit</code>. Declare them <code>compileOnly</code> and add
-        <code>MCIdentityCosmetic</code> to your <code>plugin.yml</code>:
+        The add-on publishes its own developer library, in the same three-part shape as the core
+        plugin's. Plugins that build on it should list MCIdentityCosmetic as a dependency so it loads first.
       </p>
-      <pre><code>depend:
-  - MCIdentityCosmetic</code></pre>
 
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Event</th><th>Fired when</th></tr></thead>
+          <thead><tr><th>Event</th><th>Fires when</th></tr></thead>
           <tbody>
-            <tr><td><code>MCIdentityCosmeticSetEvent</code></td><td>A skin or an aura is about to be set or cleared. Cancellable &mdash; cancelling refuses the change before it reaches the database.</td></tr>
+            <tr><td><strong>Cosmetic set</strong></td><td>A skin or an aura is about to be set or cleared. Cancellable &mdash; cancelling refuses the change before it reaches the database.</td></tr>
           </tbody>
         </table>
       </div>
 
       <p>
-        The event carries the player, the <strong>identity UUID</strong> the change targets, which of
-        the two fields is changing, and the new value (<code>null</code> when the field is being
-        cleared). Bind your own data to the identity UUID, never to the player UUID &mdash; that is the
+        The event tells you the player, the <strong>identity</strong> the change targets, which of the
+        two fields is changing, and the new value (none when the field is being cleared). Store your
+        own data against the identity, never the player &mdash; that is the
         key the add-on itself uses.
       </p>
 
