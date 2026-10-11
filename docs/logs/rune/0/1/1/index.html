@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Change Log 0.1.1 — MCIdentityRune</title>
+  <meta name="description" content="Release notes for MCIdentityRune version 0.1.1 — a maintenance release with no change in behaviour.">
+  <link rel="stylesheet" href="../../../../../css/main.css">
+  <link rel="stylesheet" href="../../../../../css/shared/layout.css">
+  <link rel="stylesheet" href="../../../../../css/shared/components.css">
+  <link rel="stylesheet" href="../../../../../css/logs/logs.css">
+  <script>window.SITE_ROOT = "../../../../../"; window.PAGE_SECTION = "logs";</script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="../../../../../index.html">Home</a><span class="sep">/</span>
+      <a href="../../../../../logs/index.html">Change Logs</a><span class="sep">/</span>
+      <a href="../../../../../logs/rune/index.html">MCIdentityRune</a><span class="sep">/</span><span>0.1.1</span>
+    </nav>
+
+    <span class="eyebrow">Release notes · MCIdentityRune</span>
+    <h1>Change Log — MCIdentityRune 0.1.1</h1>
+    <p class="lead">Permalink for MCIdentityRune version 0.1.1.</p>
+
+    <div class="logs-layout">
+      <article class="log-entry">
+        <div class="log-entry__head">
+          <span class="log-entry__version">0.1.1</span>
+          <span class="badge badge--ok">Latest</span>
+          <span class="log-entry__date">2026-08-27 &middot; Maintenance</span>
+        </div>
+        <p class="lead">A maintenance release that removes duplicated text settings from the add-on's storage code and tidies the project's housekeeping. Runes behave exactly as before.</p>
+
+        <div class="log-section">
+          <h3><span class="log-tag log-tag--improve">Changed</span> Under the hood</h3>
+          <ul>
+            <li>Storage settings and the rune code field are each named in one place, so they can never drift between the places that use them.</li>
+          </ul>
+        </div>
+
+        <div class="log-section">
+          <h3><span class="log-tag log-tag--note">Note</span> Server owners</h3>
+          <ul>
+            <li>No behaviour, configuration, or storage change.</li>
+            <li>Nothing to do on upgrade: drop the new jar in and restart.</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Version list lives in partials/logs-nav.html; js/site.js fills this in. -->
+      <aside class="logs-nav" id="logs-nav" aria-label="Log versions"></aside>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="../../../../../js/site.js" defer></script>
+</body>
+</html>

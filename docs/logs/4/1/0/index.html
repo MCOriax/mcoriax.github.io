@@ -31,33 +31,33 @@
           <span class="badge badge--ok">Latest</span>
           <span class="log-entry__date">2026-08-02 &middot; Identity aliases</span>
         </div>
-        <p class="lead">Every identity can now carry a name of its own. <code>/identity alias &lt;name&gt;</code> claims one for the identity you are wearing: alphanumeric only, unique across the whole server, and matched without regard to capitalisation, while the name is stored exactly as you typed it.</p>
+        <p class="lead">Every identity can now carry a name of its own. /identity alias &lt;name&gt; claims one for the identity you are wearing: alphanumeric only, unique across the whole server, and matched without regard to capitalisation, while the name is stored exactly as you typed it.</p>
 
         <div class="callout callout--info">
           <span class="callout__icon" aria-hidden="true">&#8505;&#65039;</span>
           <div class="callout__body">
-            <p><strong>Nothing is dropped by this update.</strong> <code>identity_properties</code> gains a new <code>alias</code> column on the first start after upgrading, and every existing identity simply starts without an alias. No backup dance is required this time.</p>
+            <p><strong>Nothing is deleted by this update.</strong> Identities gain an alias field on the first start after upgrading, and every existing identity simply starts without an alias. No backup dance is required this time.</p>
           </div>
         </div>
 
         <div class="log-section">
-          <h3><span class="log-tag log-tag--new">Added</span> The <code>/identity alias</code> command</h3>
+          <h3><span class="log-tag log-tag--new">Added</span> The /identity alias command</h3>
           <ul>
-            <li><code>/identity alias</code> shows the alias of the identity you are currently wearing, or tells you how to claim one when it has none.</li>
-            <li><code>/identity alias &lt;name&gt;</code> claims that name. Running it again renames the identity, and a name you give up becomes available to everyone else.</li>
-            <li>A name may contain <strong>letters and digits only</strong> (<code>a-z</code>, <code>A-Z</code>, <code>0-9</code>) and at most <strong>32</strong> of them. Spaces, underscores, hyphens, and symbols are rejected with a message explaining the rule.</li>
-            <li>An alias is <strong>unique across every identity on the server</strong>, and the check <strong>ignores case</strong>: once someone holds <code>Alex</code>, both <code>alex</code> and <code>ALEX</code> are refused for everyone else. Your own capitalisation is preserved, so <code>Alex</code> is shown as <code>Alex</code>.</li>
-            <li>Available to all players by default, under the new <code>mcoriax.mcidentity.command.alias</code> node. Tab completion lists the sub-command and hints at the argument.</li>
+            <li>/identity alias shows the alias of the identity you are currently wearing, or tells you how to claim one when it has none.</li>
+            <li>/identity alias &lt;name&gt; claims that name. Running it again renames the identity, and a name you give up becomes available to everyone else.</li>
+            <li>A name may contain <strong>letters and digits only</strong> (a-z, A-Z, 0-9) and at most <strong>32</strong> of them. Spaces, underscores, hyphens, and symbols are rejected with a message explaining the rule.</li>
+            <li>An alias is <strong>unique across every identity on the server</strong>, and the check <strong>ignores case</strong>: once someone holds Alex, both alex and ALEX are refused for everyone else. Your own capitalisation is preserved, so Alex is shown as Alex.</li>
+            <li>Available to all players by default, under the new mcoriax.mcidentity.command.alias permission. Tab completion lists the sub-command and hints at the argument.</li>
             <li>See <a href="../../../../commands/index.html">Commands &amp; Permissions</a> for the full reference.</li>
           </ul>
         </div>
 
         <div class="log-section">
-          <h3><span class="log-tag log-tag--new">Added</span> The <code>alias</code> column</h3>
+          <h3><span class="log-tag log-tag--new">Added</span> The alias column</h3>
           <ul>
-            <li><code>identity_properties</code> gains a nullable <code>alias</code> column, placed directly after <code>identity_uuid</code> on a freshly created schema.</li>
-            <li>Every backend enforces the same rule its own way: a unique index over the folded value on SQLite and PostgreSQL, a case-insensitive collation on MySQL and MariaDB, a sparse unique index on MongoDB, and the server's own check &mdash; answering <code>409 Conflict</code> &mdash; on the central server.</li>
-            <li>A database created before this release gains the column automatically on the next start. MySQL and MariaDB place it after <code>identity_uuid</code>; SQLite and PostgreSQL can only append it, so there it sits last. Both positions behave identically.</li>
+            <li>Every identity gains an optional alias field.</li>
+            <li>Every backend enforces the same rule its own way: a unique index over the folded value on SQLite and PostgreSQL, a case-insensitive collation on MySQL and MariaDB, a sparse unique index on MongoDB, and the server's own check &mdash; answering 409 Conflict &mdash; on the central server.</li>
+            <li>A database created before this release gains the field automatically on the next start.</li>
             <li>See <a href="../../../../storage/index.html">Data Storage</a> for the column reference and the per-backend details.</li>
           </ul>
         </div>
@@ -65,8 +65,8 @@
         <div class="log-section">
           <h3><span class="log-tag log-tag--new">Added</span> Developer API</h3>
           <ul>
-            <li><code>MCIdentityProvider</code> gains <code>getIdentityByAlias(String)</code>, resolving an alias to the identity holding it in any capitalisation, and <code>setIdentityAlias(UUID, String)</code>, claiming one (or releasing it with <code>null</code>). The latter answers <code>false</code> when the name is malformed or already taken.</li>
-            <li><code>IdentityProperties</code> gains <code>getAlias()</code>, so an identity's name comes back with every properties read.</li>
+            <li>The provider can now find the identity holding an alias, in any capitalisation, and can claim or release an alias. A claim is refused when the name is malformed or already taken.</li>
+            <li>An identity's alias now comes back with every read of its properties.</li>
             <li>See <a href="../../../../api/index.html">Developer API</a> for the usage reference.</li>
           </ul>
         </div>
@@ -75,15 +75,15 @@
           <h3><span class="log-tag log-tag--improve">Changed</span> Property writes</h3>
           <ul>
             <li>An alias is claimed through its own operation rather than through a general property update, so the uniqueness check and the write always happen together and two identities can never end up sharing a name.</li>
-            <li>Because of that, <code>updateProperties</code> deliberately leaves the alias alone: it can neither bypass the check nor clear someone's name by leaving the field out.</li>
-            <li><code>MutableIdentityProperties</code> takes the alias as its <strong>first</strong> constructor argument, matching the column order. Integrating plugins that build one directly need to add it; passing <code>null</code> keeps the previous behaviour.</li>
+            <li>Because of that, updateProperties deliberately leaves the alias alone: it can neither bypass the check nor clear someone's name by leaving the field out.</li>
+            <li>Plugins that build identity properties themselves now supply an alias as well; supplying none keeps the previous behaviour.</li>
           </ul>
         </div>
 
         <div class="log-section">
           <h3><span class="log-tag log-tag--note">Note</span> Server owners</h3>
           <ul>
-            <li>If you run <code>database.type: central</code>, update the MCIdentity central server to <code>3.3.0</code> or newer as well &mdash; that is the release where it learned the alias endpoints. On any other backend nothing outside the plugin has to change.</li>
+            <li>If you store data on the central server, update the MCIdentity central server to 3.3.0 or newer as well &mdash; that is the release where it learned the alias endpoints. On any other backend nothing outside the plugin has to change.</li>
             <li>Aliases are purely a naming feature: they do not affect professions, stats, sessions, or any add-on.</li>
           </ul>
         </div>

@@ -26,43 +26,32 @@
     <div class="logs-layout">
       <article class="log-entry">
         <div class="log-entry__head">
-          <span class="log-entry__version">4.6.0</span>
+          <span class="log-entry__version">4.7.0</span>
           <span class="badge badge--ok">Latest</span>
-          <span class="log-entry__date">2026-08-02 &middot; Unequip means unequip</span>
+          <span class="log-entry__date">2026-10-11 &middot; One shared central server connection</span>
         </div>
-        <p class="lead">The command that takes an identity off is now called what it does. <code>/identity unuse</code> becomes <code>/identity unequip</code>, matching the wording used everywhere else in the plugin and in this documentation.</p>
-
-        <div class="callout callout--warn">
-          <span class="callout__icon" aria-hidden="true">&#9888;&#65039;</span>
-          <div class="callout__body">
-            <p><strong>The old command is gone, not deprecated.</strong> <code>/identity unuse</code> no longer runs. A player who types it gets the help listing, which shows the new name &mdash; but any macro, command block, or script calling the old form needs updating. So does anything referencing the old permission node, renamed below.</p>
-          </div>
-        </div>
+        <p class="lead">The connection MCIdentity uses to talk to the central server is now part of its published developer library, so the add-ons can share it instead of each carrying a copy. Nothing changes in game.</p>
 
         <div class="log-section">
-          <h3><span class="log-tag log-tag--improve">Changed</span> <code>/identity unuse</code> is now <code>/identity unequip</code></h3>
+          <h3><span class="log-tag log-tag--new">Added</span> A shared central server connection</h3>
           <ul>
-            <li>The command behaves exactly as before: the same identity-swap cooldown check, the same hand-back of your identity key, and the same return to the base <code>Player</code> profession.</li>
-            <li>Tab completion after <code>/identity</code> suggests <code>unequip</code>, and the <code>/identity help</code> listing shows the new name.</li>
-            <li>See <a href="../commands/index.html">Commands &amp; Permissions</a> for the full reference.</li>
+            <li>The developer library now includes the central server connection itself: authentication, reading, writing, and the health check that wakes a sleeping server.</li>
+            <li>The add-ons use it when they store their data on the central server, which is why that setup needs MCIdentity 4.7.0 or newer.</li>
           </ul>
         </div>
 
         <div class="log-section">
-          <h3><span class="log-tag log-tag--improve">Changed</span> The permission node was renamed with it</h3>
+          <h3><span class="log-tag log-tag--improve">Changed</span> A new name in the log</h3>
           <ul>
-            <li><code>mcoriax.mcidentity.command.unuse</code> is now <code>mcoriax.mcidentity.command.unequip</code>, so the node matches the command it guards.</li>
-            <li>It is still granted to every player by default, and still inherited by the standard player-commands parent, so a server that never touched it has nothing to do.</li>
-            <li><strong>A server that explicitly granted or revoked the old node must update it.</strong> A revocation written against the old name no longer applies, which means the command comes back as allowed until the node is renamed in your permissions plugin.</li>
+            <li>Problems talking to the central server are now logged under the connection's own name. A server that filters its log by the old name needs to update that filter.</li>
           </ul>
         </div>
 
         <div class="log-section">
-          <h3><span class="log-tag log-tag--note">Note</span> Server owners</h3>
+          <h3><span class="log-tag log-tag--note">Note</span> Releases</h3>
           <ul>
-            <li>Drop the new jar in and restart. No schema change, no configuration change, and nothing to migrate on any backend.</li>
-            <li>Behaviour is identical on SpigotMC, PaperMC, and Folia; the permission is declared in each platform's own <code>plugin.yml</code> and all four were updated.</li>
-            <li>Nothing else changed in this release &mdash; identities, aliases, professions, stats, and every add-on are untouched.</li>
+            <li>This is the first release published to GitHub Packages and tagged automatically the moment it reached the main branch, so the library on GitHub Packages always matches the plugin.</li>
+            <li>Nothing to do on upgrade: drop the new jar in and restart.</li>
           </ul>
         </div>
       </article>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Change Log 2.0.0 — MCIdentity</title>
-  <meta name="description" content="Release notes for MCIdentity version 2.0.0 — the developer API moves under the io.github.mcoriax.mcidentity namespace.">
+  <meta name="description" content="Release notes for MCIdentity version 2.0.0 — the developer library moves under the plugin's own name.">
   <link rel="stylesheet" href="../../../../css/main.css">
   <link rel="stylesheet" href="../../../../css/shared/layout.css">
   <link rel="stylesheet" href="../../../../css/shared/components.css">
@@ -31,13 +31,13 @@
           <span class="badge">Archived</span>
           <span class="log-entry__date">2026-07-18 · API namespace</span>
         </div>
-        <p class="lead">A tidier home for the developer API. Every class now lives under the plugin's own <code>io.github.mcoriax.mcidentity</code> namespace.</p>
+        <p class="lead">A tidier home for the developer API. Every part of the library now sits under the plugin's own name.</p>
 
         <div class="log-section">
           <h3><span class="log-tag log-tag--improve">Changed</span> Developer API namespace</h3>
           <ul>
-            <li>All public API packages moved from <code>io.github.mcoriax.*</code> to <code>io.github.mcoriax.mcidentity.*</code> — for example <code>io.github.mcoriax.common.MCIdentityProvider</code> is now <code>io.github.mcoriax.mcidentity.common.MCIdentityProvider</code>, and the events package is now <code>io.github.mcoriax.mcidentity.bukkit.event</code>.</li>
-            <li>Integrating plugins should update their <code>import</code> statements to the new package paths and bump the dependency version to <code>2.0.0</code>. The published Maven group id is unchanged (<code>io.github.mcoriax</code>), so only the version and your imports need to change.</li>
+            <li>Every public part of the developer library, including the provider and the events, moved under a location named after MCIdentity itself.</li>
+            <li>Plugins built on MCIdentity need to point at the new locations and move to version 2.0.0 of the library. The publisher name is unchanged, so nothing else has to change.</li>
           </ul>
         </div>
 

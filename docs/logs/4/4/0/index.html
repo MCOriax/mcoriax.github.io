@@ -31,31 +31,31 @@
           <span class="badge badge--ok">Latest</span>
           <span class="log-entry__date">2026-08-02 &middot; A name you keep</span>
         </div>
-        <p class="lead">An alias becomes something you settle on rather than something you swap. A name is claimed once and kept for the life of the identity, and the base <code>Player</code> identity steps out of the system entirely &mdash; it is your own character, so it always goes by your Minecraft name.</p>
+        <p class="lead">An alias becomes something you settle on rather than something you swap. A name is claimed once and kept for the life of the identity, and the base Player identity steps out of the system entirely &mdash; it is your own character, so it always goes by your Minecraft name.</p>
 
         <div class="callout callout--warn">
           <span class="callout__icon" aria-hidden="true">&#9888;&#65039;</span>
           <div class="callout__body">
-            <p><strong>This changes what <code>/identity alias</code> allows.</strong> Up to 4.3.1 a player could run the command again to rename an identity. They no longer can. Nothing stored is altered by upgrading &mdash; every alias already claimed stays exactly as it is &mdash; but tell your players to choose deliberately, because the name sticks.</p>
+            <p><strong>This changes what /identity alias allows.</strong> Up to 4.3.1 a player could run the command again to rename an identity. They no longer can. Nothing stored is altered by upgrading &mdash; every alias already claimed stays exactly as it is &mdash; but tell your players to choose deliberately, because the name sticks.</p>
           </div>
         </div>
 
         <div class="log-section">
           <h3><span class="log-tag log-tag--improve">Changed</span> An alias is claimed once</h3>
           <ul>
-            <li>Running <code>/identity alias &lt;name&gt;</code> on an identity that already carries an alias is refused with <em>"This identity alias is already set as ..."</em>, and the name already claimed is left untouched.</li>
+            <li>Running /identity alias &lt;name&gt; on an identity that already carries an alias is refused with <em>"This identity alias is already set as ..."</em>, and the name already claimed is left untouched.</li>
             <li>Claiming a name on an identity that has none works exactly as before, including the alphanumeric rule, the 32 character limit, and the server-wide uniqueness check that ignores capitalisation.</li>
-            <li><code>/identity alias</code> with no arguments still reports the current alias.</li>
+            <li>/identity alias with no arguments still reports the current alias.</li>
             <li>Because a name is never released, one that is taken now stays taken. See <a href="../../../../commands/index.html">Commands &amp; Permissions</a> for the full reference.</li>
           </ul>
         </div>
 
         <div class="log-section">
-          <h3><span class="log-tag log-tag--improve">Changed</span> The base <code>Player</code> identity keeps your Minecraft name</h3>
+          <h3><span class="log-tag log-tag--improve">Changed</span> The base Player identity keeps your Minecraft name</h3>
           <ul>
-            <li>The base <code>player</code> profession is your own character rather than a role you put on, so it is never renamed. Chat and the tab list show your Minecraft name, as <code>[Player] Steve</code>.</li>
-            <li><code>/identity alias &lt;name&gt;</code> is refused on that identity, and <code>/identity alias</code> reports that it always goes by your Minecraft name instead of offering to claim one.</li>
-            <li><strong>Alternative base identities are not affected.</strong> They carry ordinary professions rather than the reserved <code>player</code> one, so they claim and show aliases like any other identity.</li>
+            <li>The base player profession is your own character rather than a role you put on, so it is never renamed. Chat and the tab list show your Minecraft name, as [Player] Steve.</li>
+            <li>/identity alias &lt;name&gt; is refused on that identity, and /identity alias reports that it always goes by your Minecraft name instead of offering to claim one.</li>
+            <li><strong>Alternative base identities are not affected.</strong> They carry ordinary professions rather than the reserved player one, so they claim and show aliases like any other identity.</li>
             <li>If an earlier release let someone put an alias on their base identity, that value is simply no longer shown. It is not deleted, so nothing is lost.</li>
           </ul>
         </div>
@@ -63,9 +63,9 @@
         <div class="log-section">
           <h3><span class="log-tag log-tag--note">Note</span> Developers</h3>
           <ul>
-            <li><code>MCIdentityProvider.setIdentityAlias(UUID, String)</code> is <strong>unchanged</strong> and still renames an identity or releases its name with <code>null</code>. Both new rules live in the <code>/identity alias</code> command, not in the provider or the database column.</li>
+            <li>The provider's alias method is <strong>unchanged</strong> and still renames an identity or releases its name. Both new rules live in the /identity alias command, not in the provider or the database column.</li>
             <li>That leaves the door open for an administrative tool or an integrating plugin to correct a name a player cannot change themselves.</li>
-            <li>See <a href="../../../../api/index.html">Developer API</a> for the provider reference and <a href="../../../../storage/index.html">Data Storage</a> for the <code>alias</code> column.</li>
+            <li>See <a href="../../../../api/index.html">Developer API</a> for the provider reference and <a href="../../../../storage/index.html">Data Storage</a> for the alias column.</li>
           </ul>
         </div>
 

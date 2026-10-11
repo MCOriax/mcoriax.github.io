@@ -31,14 +31,14 @@
           <span class="log-entry__version">0.2.0</span>
           <span class="log-entry__date">2026-08-03 · One command for players</span>
         </div>
-        <p class="lead">A player now has one command. <code>/skill</code> opens their skill menu, equipping happens inside that menu, and every subcommand became an operator's. There is nothing else for a player to learn.</p>
+        <p class="lead">A player now has one command. /skill opens their skill menu, equipping happens inside that menu, and every subcommand became an operator's. There is nothing else for a player to learn.</p>
 
         <div class="log-section">
-          <h3><span class="log-tag log-tag--improve">Changed</span> <code>/skill</code> opens the menu</h3>
+          <h3><span class="log-tag log-tag--improve">Changed</span> /skill opens the menu</h3>
           <ul>
-            <li>A bare <code>/skill</code> now opens the skill menu of the identity you are wearing. It previously printed a list of subcommands.</li>
-            <li><code>/skill gui</code> is gone. The bare command replaces it, so a player has no argument to remember.</li>
-            <li>The base <code>player</code> identity still has no menu, and <code>/skill</code> refuses for it and says which fix applies: wear an identity with a profession first.</li>
+            <li>A bare /skill now opens the skill menu of the identity you are wearing. It previously printed a list of subcommands.</li>
+            <li>/skill gui is gone. The bare command replaces it, so a player has no argument to remember.</li>
+            <li>The base player identity still has no menu, and /skill refuses for it and says which fix applies: wear an identity with a profession first.</li>
           </ul>
         </div>
 
@@ -48,28 +48,28 @@
             <li>Hold a skill item and click an empty slot in the menu to equip it there. That one action is the whole of what a player does with this add-on.</li>
             <li>The menu is redrawn from storage after a successful equip, so the slot shows the skill it now holds.</li>
             <li>Clicking a slot with nothing relevant in hand explains what the slot is instead of looking like a failed click.</li>
-            <li>Every rule is unchanged and still decided in one place: an occupied slot is refused because an equipped skill is permanent, and the base <code>player</code> identity and a missing identity are refused exactly as they were.</li>
+            <li>Every rule is unchanged and still decided in one place: an occupied slot is refused because an equipped skill is permanent, and the base player identity and a missing identity are refused exactly as they were.</li>
           </ul>
         </div>
 
         <div class="log-section">
           <h3><span class="log-tag log-tag--improve">Changed</span> Every subcommand is an operator's</h3>
           <ul>
-            <li><code>/skill info</code> and <code>/skill equip &lt;slot&gt;</code> now default to <code>op</code>. <code>/skill give</code> and <code>/skill clear</code> already did.</li>
-            <li>All four sit under <code>mcoriax.mcidentity.skill.admin</code>, so one node grants the administrative surface.</li>
-            <li><code>mcoriax.mcidentity.skill.command.gui</code> is now the only node granted to everyone — it opens the menu, and it is the whole of what a player holds.</li>
+            <li>/skill info and /skill equip &lt;slot&gt; now default to op. /skill give and /skill clear already did.</li>
+            <li>All four sit under mcoriax.mcidentity.skill.admin, so one node grants the administrative surface.</li>
+            <li>mcoriax.mcidentity.skill.command.gui is now the only node granted to everyone — it opens the menu, and it is the whole of what a player holds.</li>
             <li>Tab completion returns nothing without the admin node, and the usage summary lists the subcommands only to a sender who can run them.</li>
-            <li><code>/skill equip &lt;slot&gt;</code> stays as an administrative command for the cases a click cannot cover. It obeys the same rules and still has no inverse.</li>
+            <li>/skill equip &lt;slot&gt; stays as an administrative command for the cases a click cannot cover. It obeys the same rules and still has no inverse.</li>
           </ul>
         </div>
 
         <div class="log-section">
           <h3><span class="log-tag log-tag--note">Note</span> For server owners</h3>
           <ul>
-            <li><strong>Re-check your permissions.</strong> A server that granted <code>mcoriax.mcidentity.skill.command.info</code> or <code>.command.equip</code> to players explicitly keeps granting them. A server relying on the old defaults loses them for players, which is the intent.</li>
-            <li><strong>Update any <code>/skill gui</code> you have written down.</strong> A command block, sign, NPC, or menu plugin pointing at it must now point at <code>/skill</code>.</li>
+            <li><strong>Re-check your permissions.</strong> A server that granted mcoriax.mcidentity.skill.command.info or mcoriax.mcidentity.skill.command.equip to players explicitly keeps granting them. A server relying on the old defaults loses them for players, which is the intent.</li>
+            <li><strong>Update any /skill gui you have written down.</strong> A command block, sign, NPC, or menu plugin pointing at it must now point at /skill.</li>
             <li>Nothing about the item changed. Skill items already in players' inventories carry the same data and keep working.</li>
-            <li>Library coordinates move with the release: <code>io.github.mcoriax:mcidentity-skill-api:0.2.0</code>, <code>-common:0.2.0</code>, and <code>-bukkit:0.2.0</code>.</li>
+            <li>The developer library moves to version 0.2.0.</li>
           </ul>
         </div>
       </article>

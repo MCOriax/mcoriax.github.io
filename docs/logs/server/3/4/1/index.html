@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Change Log 3.4.1 — MCIdentity Central Server</title>
+  <meta name="description" content="Release notes for MCIdentity Central Server version 3.4.1 — two security hardenings, no API change.">
+  <link rel="stylesheet" href="../../../../../css/main.css">
+  <link rel="stylesheet" href="../../../../../css/shared/layout.css">
+  <link rel="stylesheet" href="../../../../../css/shared/components.css">
+  <link rel="stylesheet" href="../../../../../css/logs/logs.css">
+  <script>window.SITE_ROOT = "../../../../../"; window.PAGE_SECTION = "logs";</script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="../../../../../index.html">Home</a><span class="sep">/</span>
+      <a href="../../../../../logs/index.html">Change Logs</a><span class="sep">/</span>
+      <a href="../../../../../logs/server/index.html">MCIdentity Central Server</a><span class="sep">/</span><span>3.4.1</span>
+    </nav>
+
+    <span class="eyebrow">Release notes · MCIdentity Central Server</span>
+    <h1>Change Log — MCIdentity Central Server 3.4.1</h1>
+    <p class="lead">Permalink for MCIdentity Central Server version 3.4.1.</p>
+
+    <div class="logs-layout">
+      <article class="log-entry">
+        <div class="log-entry__head">
+          <span class="log-entry__version">3.4.1</span>
+          <span class="log-entry__date">2026-08-28 &middot; Two security hardenings</span>
+        </div>
+        <p class="lead">Two findings from automated security analysis are closed. Neither could be reached through the running API, and both are now fixed where the risk lives.</p>
+
+        <div class="log-section">
+          <h3><span class="log-tag log-tag--improve">Security</span> Hardening</h3>
+          <ul>
+            <li>Stat names are checked at the storage layer as well as when a request arrives, so only the nine known stats can ever reach the database.</li>
+            <li>The container image installs its dependencies without running any of their install scripts.</li>
+          </ul>
+        </div>
+
+        <div class="log-section">
+          <h3><span class="log-tag log-tag--improve">Fixed</span> Stat changes</h3>
+          <ul>
+            <li>Adding to a stat now reports its outcome consistently on every path.</li>
+          </ul>
+        </div>
+
+        <div class="log-section">
+          <h3><span class="log-tag log-tag--note">Note</span> Operators</h3>
+          <ul>
+            <li>No change to the API, the storage, or the settings. Both databases behave identically.</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Version list lives in partials/logs-nav.html; js/site.js fills this in. -->
+      <aside class="logs-nav" id="logs-nav" aria-label="Log versions"></aside>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="../../../../../js/site.js" defer></script>
+</body>
+</html>

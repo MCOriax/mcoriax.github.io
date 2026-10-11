@@ -31,13 +31,13 @@
           <span class="log-entry__version">0.0.0</span>
           <span class="log-entry__date">2026-07-31 · Initial release</span>
         </div>
-        <p class="lead">The first release of <a href="../../../../../rune/index.html">MCIdentityRune</a>, the standalone rune add-on for MCIdentity. Every identity gets its own rune slots, stored in the add-on's own database and opened with <code>/rune</code>.</p>
+        <p class="lead">The first release of <a href="../../../../../rune/index.html">MCIdentityRune</a>, the standalone rune add-on for MCIdentity. Every identity gets its own rune slots, stored in the add-on's own database and opened with /rune.</p>
 
         <div class="log-section">
           <h3><span class="log-tag log-tag--new">Added</span> Rune slots keyed by identity</h3>
           <ul>
             <li>Ten slots per identity, the last reserved for the <strong>ultimate</strong> rune. The slot numbering is stored, so the menu layout is fixed and existing rows keep their meaning.</li>
-            <li>Every read and write is keyed by the <strong>identity UUID</strong> resolved from MCIdentity's session cache, never by the player UUID. Two identities owned by one player wear entirely separate runes.</li>
+            <li>Every read and write is tied to the <strong>identity</strong> MCIdentity says the player is wearing, never to the player. Two identities owned by one player wear entirely separate runes.</li>
             <li>The identity is resolved once at the start of an interaction, so a player who swaps identity mid-action cannot write to the identity they just left.</li>
             <li>Reads <strong>fail closed</strong>: an unresolvable identity or an unreachable core plugin yields an empty result, never another identity's runes.</li>
           </ul>
@@ -46,8 +46,8 @@
         <div class="log-section">
           <h3><span class="log-tag log-tag--new">Added</span> Its own storage</h3>
           <ul>
-            <li><code>identity_runes</code> (the rune type registry) and <code>identity_equipped_runes</code> (slot assignments) are created and owned by this add-on, with no foreign key onto any MCIdentity table.</li>
-            <li>Backends: <strong>SQLite</strong> (default, zero configuration), MySQL, PostgreSQL, MongoDB, or the shared central REST server — selected with <code>database.type</code>.</li>
+            <li>The list of rune types and every identity's slot assignments are created and owned by this add-on, with no link to anything MCIdentity stores.</li>
+            <li>Backends: <strong>SQLite</strong> (default, zero configuration), MySQL, PostgreSQL, MongoDB, or the shared central server, chosen in the add-on's configuration file.</li>
             <li>Schema creation is idempotent and runs on every start. Every query binds its parameters; the only identifiers ever interpolated come from a frozen allow-list.</li>
             <li>All database work runs off the game thread on the add-on's own worker pool.</li>
           </ul>
@@ -56,19 +56,19 @@
         <div class="log-section">
           <h3><span class="log-tag log-tag--new">Added</span> Menu, commands, and developer API</h3>
           <ul>
-            <li><code>/rune</code> opens the six-row rune menu for the identity you are wearing. <code>/rune list</code> lists registered rune types.</li>
-            <li><code>/rune register &lt;code&gt; &lt;display name&gt;</code>, <code>/rune set &lt;slot&gt; &lt;code&gt;</code>, and <code>/rune clear &lt;slot&gt;</code> require <code>mcidentityrune.admin</code>.</li>
-            <li>Cancellable <code>MCIdentityRuneSetEvent</code>, carrying the player, the identity UUID, the slot, and the rune code (<code>null</code> when clearing).</li>
-            <li>Published library modules: <code>mcidentity-rune-api</code>, <code>mcidentity-rune-common</code>, and <code>mcidentity-rune-bukkit</code>.</li>
+            <li>/rune opens the six-row rune menu for the identity you are wearing. /rune list lists registered rune types.</li>
+            <li>/rune register &lt;code&gt; &lt;display name&gt;, /rune set &lt;slot&gt; &lt;code&gt;, and /rune clear &lt;slot&gt; require mcidentityrune.admin.</li>
+            <li>A cancellable rune set event, telling listeners the player, the identity, the slot, and the rune (none when clearing).</li>
+            <li>A published developer library in three modules, matching the core plugin's shape.</li>
           </ul>
         </div>
 
         <div class="log-section">
           <h3><span class="log-tag log-tag--note">Note</span> Requirements</h3>
           <ul>
-            <li>One universal jar for <strong>SpigotMC</strong>, <strong>PaperMC</strong>, and <strong>Folia</strong>; the server type is detected at enable time.</li>
+            <li>One universal jar for <strong>SpigotMC</strong>, <strong>PaperMC</strong>, and <strong>Folia</strong>; the server type is detected at startup.</li>
             <li><strong>MCIdentity 4.0.0</strong> or newer is a hard dependency — that is the release where the core stopped shipping a rune system of its own. An older core logs a warning at startup, because the two rune systems would sit side by side.</li>
-            <li>The base <code>player</code> profession may <strong>not</strong> equip runes. Cosmetics carry no such restriction — see <a href="../../../../../cosmetic/index.html">MCIdentityCosmetic</a>.</li>
+            <li>The base player profession may <strong>not</strong> equip runes. Cosmetics carry no such restriction — see <a href="../../../../../cosmetic/index.html">MCIdentityCosmetic</a>.</li>
             <li>Rune assignments from MCIdentity 3.x are <strong>not</strong> migrated. The core drops its own tables on upgrade and this add-on starts empty.</li>
           </ul>
         </div>

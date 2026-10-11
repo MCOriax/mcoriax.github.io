@@ -30,7 +30,7 @@
           <span class="log-entry__version">4.0.0</span>
           <span class="log-entry__date">2026-07-31 · Rune and cosmetic decoupling</span>
         </div>
-        <p class="lead">Runes and cosmetics leave the core plugin, completing the split that started with skills in <code>3.0.0</code>. MCIdentity now owns identity, stats, and session management and nothing else; runes ship as <a href="../../../../rune/index.html">MCIdentityRune</a> and skins and auras as <a href="../../../../cosmetic/index.html">MCIdentityCosmetic</a>, each with its own storage.</p>
+        <p class="lead">Runes and cosmetics leave the core plugin, completing the split that started with skills in 3.0.0. MCIdentity now owns identity, stats, and session management and nothing else; runes ship as <a href="../../../../rune/index.html">MCIdentityRune</a> and skins and auras as <a href="../../../../cosmetic/index.html">MCIdentityCosmetic</a>, each with its own storage.</p>
 
         <div class="callout callout--warn">
           <span class="callout__icon" aria-hidden="true">⚠️</span>
@@ -43,8 +43,8 @@
           <h3><span class="log-tag log-tag--improve">Changed</span> Runes and cosmetics moved to standalone add-ons</h3>
           <ul>
             <li>Runes now live in <a href="../../../../rune/index.html">MCIdentityRune</a> and skins and auras in <a href="../../../../cosmetic/index.html">MCIdentityCosmetic</a> — separate jars installed alongside this one, each on its own version line.</li>
-            <li>Each add-on creates and owns its own tables, keyed by identity UUID, with <strong>no foreign key</strong> onto this plugin's tables. Either side can be upgraded, or backed by a different database, without waiting for the other.</li>
-            <li>Each add-on decides its own profession rules: MCIdentityRune blocks the base <code>player</code> profession from equipping runes, while MCIdentityCosmetic allows every profession, base included.</li>
+            <li>Each add-on creates and owns its own data, stored against the identity, with <strong>no link</strong> to anything this plugin stores. Either side can be upgraded, or backed by a different database, without waiting for the other.</li>
+            <li>Each add-on decides its own profession rules: MCIdentityRune blocks the base player profession from equipping runes, while MCIdentityCosmetic allows every profession, base included.</li>
             <li>Nothing about identities, professions, stats, or sessions changed. Those still live in your chosen storage backend exactly as before.</li>
           </ul>
         </div>
@@ -52,26 +52,26 @@
         <div class="log-section">
           <h3><span class="log-tag log-tag--improve">Removed</span> Database tables</h3>
           <ul>
-            <li><code>identity_runes</code>, <code>identity_equipped_runes</code>, and <code>identity_equipped_cosmetics</code> are no longer created, and are <strong>dropped on the first start</strong> after upgrading. On MongoDB the <code>identity_runes</code> collection is dropped and the per-identity <code>equipped_runes</code> and <code>cosmetics</code> fields are unset.</li>
-            <li>The central server drops the same tables on startup; its <code>/v1/runes</code>, <code>/v1/identities/:uuid/runes</code>, and <code>/v1/identities/:uuid/cosmetics</code> endpoints now answer 404.</li>
+            <li>The rune and cosmetic data is no longer created, and is <strong>deleted on the first start</strong> after upgrading, on every backend including MongoDB.</li>
+            <li>The central server drops the same tables on startup; its /v1/runes, /v1/identities/:uuid/runes, and /v1/identities/:uuid/cosmetics endpoints now answer 404.</li>
           </ul>
         </div>
 
         <div class="log-section">
           <h3><span class="log-tag log-tag--improve">Removed</span> Commands, GUI, and resources</h3>
           <ul>
-            <li><code>/identity rune get</code> is gone, along with its tab completion and its line in the admin help. Use <code>/rune</code> from the add-on instead.</li>
-            <li>The <strong>Rune GUI</strong> and <strong>Cosmetic GUI</strong> and their buttons in slots 6 and 8 of the main identity menu were removed. The add-ons open their own menus with <code>/rune</code> and <code>/cosmetic</code>.</li>
-            <li>The <code>gui.buttons.rune</code> and <code>gui.buttons.cosmetic</code> entries in <code>textures.yml</code> are no longer read and can be deleted.</li>
+            <li>/identity rune get is gone, along with its tab completion and its line in the admin help. Use /rune from the add-on instead.</li>
+            <li>The <strong>Rune GUI</strong> and <strong>Cosmetic GUI</strong> and their buttons in slots 6 and 8 of the main identity menu were removed. The add-ons open their own menus with /rune and /cosmetic.</li>
+            <li>The rune and cosmetic button textures in the menu texture file are no longer read and can be deleted.</li>
           </ul>
         </div>
 
         <div class="log-section">
           <h3><span class="log-tag log-tag--improve">Removed</span> Developer API surface</h3>
           <ul>
-            <li>Dropped from <code>MCIdentityProvider</code>: <code>getRunes()</code>, <code>getRunes(UUID)</code>, <code>setRune</code>, <code>getCosmetics</code>, <code>saveSkin</code>, and <code>saveAura</code>.</li>
-            <li>Deleted model type: <code>Rune</code>. <code>IdentityProperties</code> no longer exposes <code>getSkin()</code>, <code>setSkin()</code>, <code>getAura()</code>, or <code>setAura()</code>, so <code>MutableIdentityProperties</code> takes two fewer constructor arguments.</li>
-            <li>Deleted events: <code>IdentityRuneSetEvent</code>, <code>IdentitySkinSetEvent</code>, and <code>IdentityAuraSetEvent</code>. The add-ons fire their own <code>MCIdentityRuneSetEvent</code> and <code>MCIdentityCosmeticSetEvent</code>.</li>
+            <li>The provider no longer offers any way to list or set runes, or to read or save skins and auras.</li>
+            <li>The rune data type is gone, and an identity's properties no longer include a skin or an aura.</li>
+            <li>The rune, skin, and aura set events are gone. The add-ons fire their own rune set and cosmetic set events.</li>
             <li>Integrating plugins that used any of these must depend on the relevant add-on and move to its API. Everything else in the provider is source-compatible with 3.0.0.</li>
           </ul>
         </div>
@@ -79,9 +79,9 @@
         <div class="log-section">
           <h3><span class="log-tag log-tag--note">Note</span> Server owners</h3>
           <ul>
-            <li>Install <a href="../../../../rune/index.html">MCIdentityRune</a> and <a href="../../../../cosmetic/index.html">MCIdentityCosmetic</a> alongside this plugin if you use either feature. Both require MCIdentity <code>4.0.0</code> or newer.</li>
-            <li>Each add-on ships its own <code>config.yml</code> with its own <code>database</code> section, and each defaults to a local SQLite file. They do not have to share a backend with this plugin, or with each other.</li>
-            <li>Both add-ons default to <code>enable: false</code>, so the first start writes the config file and stops there. Set <code>enable: true</code> and restart.</li>
+            <li>Install <a href="../../../../rune/index.html">MCIdentityRune</a> and <a href="../../../../cosmetic/index.html">MCIdentityCosmetic</a> alongside this plugin if you use either feature. Both require MCIdentity 4.0.0 or newer.</li>
+            <li>Each add-on has its own configuration file with its own storage settings, and each defaults to a local SQLite file. They do not have to share a backend with this plugin, or with each other.</li>
+            <li>Both add-ons ship switched off, so the first start writes the configuration file and stops there. Switch the add-on on and restart.</li>
           </ul>
         </div>
       </article>
