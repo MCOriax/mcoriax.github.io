@@ -21,4 +21,5 @@ new version directory requires user approval — see
 
 | Version | Summary | Files |
 |---|---|---|
+| [`1/1/0`](1/1/0/CHANGELOG.md) | Every site page rewritten without code; Perks and Central Server pages and missing change logs added. | `CHANGELOG.md` |
 | [`1/0/0`](1/0/0/CHANGELOG.md) | Agent instruction and documentation architecture added to the repository. | `CHANGELOG.md` |
