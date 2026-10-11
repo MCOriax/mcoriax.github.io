@@ -36,9 +36,9 @@
 
     <section class="section">
       <h2>How it runs</h2>
-      <p>The <code>platforms:spigotmc</code> module supplies a concrete plugin entry point that extends MCIdentity's shared Bukkit core. On Spigot, all gameplay code runs on the single main server thread, and the plugin's <code>PlatformScheduler</code> abstraction maps directly onto the standard <code>BukkitScheduler</code>.</p>
+      <p>MCIdentity ships as one jar for every platform. When it starts, it detects that it is running on SpigotMC and uses Spigot's standard scheduler. On Spigot all gameplay runs on the single main server thread.</p>
       <ul>
-        <li>Commands (<code>/identity</code>), tab completion, GUIs, and the EXP-gain listeners all use the standard Bukkit event and scheduling model.</li>
+        <li>Commands, tab completion, GUIs, and the EXP-gain listeners all use the standard Bukkit event and scheduling model.</li>
         <li>Every database operation still runs asynchronously on a dedicated worker pool, so the main thread is never blocked by storage I/O.</li>
         <li>Custom MCIdentity events are fired on the main thread and behave as ordinary synchronous Bukkit events.</li>
       </ul>
@@ -53,7 +53,7 @@
       <h2>Requirements</h2>
       <ul>
         <li><strong>Java 25</strong> or newer.</li>
-        <li>A SpigotMC server on the <code>26.1.x</code> API line.</li>
+        <li>A SpigotMC server on the 26.1 API line.</li>
       </ul>
       <div class="callout callout--info">
         <span class="callout__icon" aria-hidden="true">➡️</span>

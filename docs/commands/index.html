@@ -21,7 +21,7 @@
 
     <span class="eyebrow">Reference</span>
     <h1>Commands &amp; Permissions</h1>
-    <p class="lead">Every <code>/identity</code> command, what it does, and the permission it needs.</p>
+    <p class="lead">Every /identity command, what it does, and the permission it needs.</p>
 
     <section class="section">
       <h2>Player commands</h2>
@@ -36,7 +36,7 @@
         </div>
         <div class="cmd">
           <div class="cmd__sig">/identity wiki</div>
-          <p>Send clickable links to the project wiki, one per line (<code>https://mcoriax.github.io</code> and <code>https://mcoriax.gitlab.io</code>); clicking a line opens it in your browser.</p>
+          <p>Send clickable links to the project wiki, one per line, for the GitHub and GitLab copies of this site; clicking a line opens it in your browser.</p>
         </div>
         <div class="cmd">
           <div class="cmd__sig">/identity check</div>
@@ -48,23 +48,23 @@
         </div>
         <div class="cmd">
           <div class="cmd__sig">/identity alias</div>
-          <p>Show the alias of the identity you are currently wearing, or a hint on how to claim one when it has none. On the base <code>Player</code> identity it reports that the identity always goes by your Minecraft name.</p>
+          <p>Show the alias of the identity you are currently wearing, or a hint on how to claim one when it has none. On the base Player identity it reports that the identity always goes by your Minecraft name.</p>
         </div>
         <div class="cmd">
           <div class="cmd__sig">/identity alias &lt;name&gt;</div>
-          <p>Claim <code>&lt;name&gt;</code> as the alias of the identity you are currently wearing.</p>
+          <p>Claim the given name as the alias of the identity you are currently wearing.</p>
           <ul>
-            <li><strong>Alphanumeric only.</strong> A name may contain letters and digits only — <code>a-z</code>, <code>A-Z</code>, and <code>0-9</code> — and at most <strong>32</strong> of them. Spaces, underscores, hyphens, and symbols are rejected.</li>
-            <li><strong>Unique across the whole server, ignoring case.</strong> Two aliases that differ only in capitalisation are the same alias: if someone already holds <code>Alex</code>, then <code>alex</code> and <code>ALEX</code> are refused for everyone else.</li>
-            <li><strong>Your capitalisation is kept.</strong> The name is stored exactly as you typed it, so <code>Alex</code> stays <code>Alex</code> wherever it is shown.</li>
+            <li><strong>Alphanumeric only.</strong> A name may contain English letters and digits only, and at most <strong>32</strong> of them. Spaces, underscores, hyphens, and symbols are rejected.</li>
+            <li><strong>Unique across the whole server, ignoring case.</strong> Two aliases that differ only in capitalisation are the same alias: if someone already holds Alex, then alex and ALEX are refused for everyone else.</li>
+            <li><strong>Your capitalisation is kept.</strong> The name is stored exactly as you typed it, so Alex stays Alex wherever it is shown.</li>
             <li><strong>An alias is permanent.</strong> Once an identity carries one it is never renamed &mdash; running the command again is refused with <em>"This identity alias is already set as ..."</em>. Choose the name you want to keep.</li>
-            <li><strong>The base <code>Player</code> identity has no alias.</strong> It is your own character rather than a role you put on, so it always goes by your Minecraft name and the command is refused there. Every other identity can claim one, alternative base identities included.</li>
+            <li><strong>The base Player identity has no alias.</strong> It is your own character rather than a role you put on, so it always goes by your Minecraft name and the command is refused there. Every other identity can claim one, alternative base identities included.</li>
             <li><strong>Your alias is the name everyone sees.</strong> While that identity is equipped, the alias replaces your Minecraft name in chat and in the tab list, shown after the profession of the identity you are wearing. Unequip it, or wear an identity with no alias, and your Minecraft name comes straight back.</li>
           </ul>
         </div>
         <div class="cmd">
           <div class="cmd__sig">/identity stats</div>
-          <p>View your remaining unspent stat points. A shortcut that behaves exactly like <code>/identity stats get</code>.</p>
+          <p>View your remaining unspent stat points. A shortcut that behaves exactly like /identity stats get.</p>
         </div>
         <div class="cmd">
           <div class="cmd__sig">/identity stats get</div>
@@ -72,41 +72,51 @@
         </div>
         <div class="cmd">
           <div class="cmd__sig">/identity stats add &lt;stat_type&gt; &lt;amount&gt;</div>
-          <p>Spend your stat points to upgrade specific attributes. Available stats are <code>energy</code>, <code>health</code>, <code>food</code>, <code>strength</code>, <code>defense</code>, <code>wisdom</code>, <code>luck</code>, <code>agility</code>, and <code>resilience</code> (e.g. <code>/identity stats add food 5</code>). Tab completion suggests every stat, including <code>food</code>.</p>
+          <p>Spend your stat points to upgrade specific attributes. Available stats are energy, health, food, strength, defense, wisdom, luck, agility, and resilience. For example, typing /identity stats add food 5 spends five points on food. Tab completion suggests every stat.</p>
         </div>
       </div>
     </section>
 
     <section class="section">
-      <h2>Admin commands <span class="badge badge--warn">mcidentity.admin</span></h2>
+      <h2>Admin commands <span class="badge badge--warn">Operators</span></h2>
       <div class="cmd-list">
         <div class="cmd">
           <div class="cmd__sig">/identity get &lt;profession|random&gt; [texture]</div>
-          <p>Admin tool to give a new identity key. Provide a profession code or <code>random</code> to have one assigned upon first use. You can optionally provide a Base64 texture string.</p>
+          <p>Admin tool to give a new identity key. Name a profession, or choose random to have one assigned the first time the key is used. You can optionally give it a custom head texture.</p>
         </div>
         <div class="cmd">
           <div class="cmd__sig">/identity base add &lt;player&gt; &lt;amount&gt;</div>
-          <p>Grant a player additional <strong>alternative base identities</strong>, assigning each new slot a <strong>random non-player profession</strong>. For example, <code>/identity base add MCOriax 2</code> adds 2 alternative identity slots, each a random class.</p>
+          <p>Grant a player additional <strong>alternative base identities</strong>, assigning each new slot a <strong>random non-player profession</strong>. For example, /identity base add MCOriax 2 gives the player MCOriax two extra identities, each of a random class.</p>
         </div>
         <div class="cmd">
           <div class="cmd__sig">/identity base add &lt;player&gt; &lt;profession&gt; &lt;amount&gt;</div>
-          <p>The same grant, but every new slot is assigned the specific <code>&lt;profession&gt;</code> you name (e.g. <code>/identity base add MCOriax warrior 3</code>). The <code>player</code> profession <strong>cannot</strong> be added as a sub-identity — it is reserved for the primary identity, so the command is rejected and the sender is notified. The slot count is stored in the database and the new identities are registered immediately under deterministic UUIDs, so they appear in the <a href="../gui/index.html">Player Identity GUI</a> right away.</p>
+          <p>The same grant, but every new slot is assigned the profession you name, for example three Miner identities. The Player profession <strong>cannot</strong> be added as a sub-identity — it is reserved for the primary identity, so the command is rejected and the sender is notified. The new identities are saved straight away, so they appear in the <a href="../gui/index.html">Player Identity GUI</a> right away.</p>
         </div>
       </div>
     </section>
 
     <section class="section">
       <h2>Permissions</h2>
-      <div class="deflist">
-        <div class="deflist__row">
-          <div class="deflist__term">Standard player commands</div>
-          <div>Commands like <code>/identity</code>, <code>/identity stats</code>, and <code>/identity unequip</code> are available to <strong>all players by default</strong>. They do not require any permission nodes.</div>
-        </div>
-        <div class="deflist__row">
-          <div class="deflist__term"><code>mcidentity.admin</code></div>
-          <div>Required for all administrative sub-commands, including <code>/identity get</code> and <code>/identity base</code>.</div>
-        </div>
+      <p>Every command has its own permission node, so a server can switch any single command on or off with a permission plugin. Servers that never touch permissions get the sensible defaults below: players can use every player command, and only operators can use the admin commands.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Permission</th><th>Allows</th><th>Default</th></tr></thead>
+          <tbody>
+            <tr><td>mcoriax.mcidentity.command.use</td><td>Opening the Identity menu with /identity</td><td>Everyone</td></tr>
+            <tr><td>mcoriax.mcidentity.command.help</td><td>/identity help</td><td>Everyone</td></tr>
+            <tr><td>mcoriax.mcidentity.command.wiki</td><td>/identity wiki</td><td>Everyone</td></tr>
+            <tr><td>mcoriax.mcidentity.command.check</td><td>/identity check</td><td>Everyone</td></tr>
+            <tr><td>mcoriax.mcidentity.command.unequip</td><td>/identity unequip</td><td>Everyone</td></tr>
+            <tr><td>mcoriax.mcidentity.command.stats</td><td>Viewing and spending stat points</td><td>Everyone</td></tr>
+            <tr><td>mcoriax.mcidentity.command.alias</td><td>Showing and claiming an alias</td><td>Everyone</td></tr>
+            <tr><td>mcoriax.mcidentity.command.get</td><td>/identity get</td><td>Operators</td></tr>
+            <tr><td>mcoriax.mcidentity.command.base</td><td>/identity base add</td><td>Operators</td></tr>
+            <tr><td>mcoriax.mcidentity.admin</td><td>Every admin command at once</td><td>Operators</td></tr>
+            <tr><td>mcoriax.mcidentity.*</td><td>Every command, player and admin alike</td><td>Operators</td></tr>
+          </tbody>
+        </table>
       </div>
+      <p>Players without the admin permission do not see the admin commands in tab completion.</p>
     </section>
   </main>
 

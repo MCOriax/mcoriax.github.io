@@ -25,7 +25,7 @@
 
     <section class="section">
       <h2>Main Identity GUI <span class="badge">1-row</span></h2>
-      <p>Accessed via <code>/identity</code> without arguments. It provides:</p>
+      <p>Opened by typing /identity on its own. It provides:</p>
       <div class="slotmap" aria-hidden="true">
         <div class="slot is-filled"><small>0</small>🧑</div>
         <div class="slot is-empty"><small>1</small></div>
@@ -41,17 +41,17 @@
         <li><strong>Slot 0</strong> — a button rendered as your own player head, named <em>"Player Identity"</em>. Opens the <strong>Player Identity GUI</strong>.</li>
         <li><strong>Slot 4</strong> — interactive slot to equip / unequip your <strong>Identity Key</strong>.</li>
       </ul>
-      <p>Runes and cosmetics have their own menus in their own plugins, opened with <code>/rune</code> and <code>/cosmetic</code> — see the <a href="../rune/index.html">Rune add-on</a> and the <a href="../cosmetic/index.html">Cosmetic add-on</a>.</p>
+      <p>Runes and cosmetics have their own menus in their own plugins, opened with /rune and /cosmetic — see the <a href="../rune/index.html">Rune add-on</a> and the <a href="../cosmetic/index.html">Cosmetic add-on</a>.</p>
     </section>
 
     <section class="section">
       <h2>Player Identity GUI <span class="badge">dynamic · paginated</span></h2>
       <p>Opened from Slot 0 of the Main Identity GUI. It lists every base "player" identity you own — the always-available <strong>Primary</strong> identity plus every unlocked <strong>Alternative</strong> identity (see <a href="../features/index.html">Key Features</a>) — and lets you switch between them.</p>
       <ul>
-        <li><strong>Title:</strong> <code>Player Identity - Page {page number}</code>.</li>
+        <li><strong>Title:</strong> "Player Identity - Page" followed by the page number.</li>
         <li><strong>Alternative identities:</strong> listed from <strong>Slot 0</strong> upward (index 1…n), up to 45 per page across the content rows. Each is shown as a head textured with a texture picked at random from its own profession's available textures (stable per identity), <strong>named by that identity's alias</strong>, with its <strong>profession</strong> and <strong>level</strong> on the lines below in the lore. An identity that has not claimed an alias yet is named after its profession, so a head is never blank. Clicking an alternative identity head equips that identity.</li>
         <li><strong>Dynamic sizing:</strong> the content area scales with your unlocked identities — 9 alternatives need one content row, 10 need two, and so on. A bottom control row is always appended below the content.</li>
-        <li><strong>Primary identity:</strong> shown as your own player head at the center of the control row, keeping its fixed <em>"Primary Identity"</em> name — the base <code>player</code> identity always goes by your Minecraft name and never carries an alias — with its profession and level in the lore like every other head. On any multi-page view the GUI uses the full six rows, placing the primary identity permanently at <strong>Slot 49</strong>. Clicking it equips the Primary identity.</li>
+        <li><strong>Primary identity:</strong> shown as your own player head at the center of the control row, keeping its fixed <em>"Primary Identity"</em> name — the base Player identity always goes by your Minecraft name and never carries an alias — with its profession and level in the lore like every other head. On any multi-page view the GUI uses the full six rows, placing the primary identity permanently at <strong>Slot 49</strong>. Clicking it equips the Primary identity.</li>
         <li><strong>No identity UUIDs:</strong> neither the alternative heads nor the primary head print an identity UUID. Which identity a head stands for is carried in the item's persistent data rather than in its text, so a click resolves the same way whatever the head is labelled.</li>
         <li><strong>Equipped marker:</strong> the currently equipped base identity shows <em>"Currently equipped."</em> in its lore; every other head shows <em>"Click to equip."</em></li>
         <li><strong>Back button:</strong> the first slot of the control row (Slot 45 on six-row views) returns to the Main Identity GUI.</li>
@@ -64,8 +64,8 @@
       <h2>Menus owned by the add-ons</h2>
       <p>The Rune GUI and the Cosmetic GUI are <strong>not</strong> part of this plugin. They ship with, and are documented by, the add-ons that own the data behind them:</p>
       <ul>
-        <li><a href="../rune/index.html">MCIdentityRune</a> — the six-row Rune GUI, opened with <code>/rune</code>.</li>
-        <li><a href="../cosmetic/index.html">MCIdentityCosmetic</a> — the one-row Cosmetic GUI for skins and auras, opened with <code>/cosmetic</code>.</li>
+        <li><a href="../rune/index.html">MCIdentityRune</a> — the six-row Rune GUI, opened with /rune.</li>
+        <li><a href="../cosmetic/index.html">MCIdentityCosmetic</a> — the one-row Cosmetic GUI for skins and auras, opened with /cosmetic.</li>
       </ul>
       <p>Both add-ons read the equipped identity from this plugin's session cache, so they are only usable while an identity is equipped.</p>
     </section>

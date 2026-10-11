@@ -34,27 +34,27 @@
       </div>
       <div class="feature-item">
         <h3><span class="ic" aria-hidden="true">✦</span> Skills, Runes, and Cosmetics as Separate Add-ons</h3>
-        <p>Skills live in <a href="../skill/index.html">MCIdentitySkill</a>, runes in <a href="../rune/index.html">MCIdentityRune</a>, and skins and auras in <a href="../cosmetic/index.html">MCIdentityCosmetic</a>. Each add-on owns its own storage, keyed by identity UUID. This plugin owns identity, stats, and sessions only — the ability tables were removed in <code>3.0.0</code> and the rune and cosmetic tables in <code>4.0.0</code>.</p>
+        <p>Skills live in <a href="../skill/index.html">MCIdentitySkill</a>, runes in <a href="../rune/index.html">MCIdentityRune</a>, and skins and auras in <a href="../cosmetic/index.html">MCIdentityCosmetic</a>. Each add-on owns its own storage, always saved against the identity. The core plugin owns identities, stats, and sessions only: abilities left it in version 3.0.0, and runes and cosmetics in version 4.0.0.</p>
       </div>
       <div class="feature-item">
         <h3><span class="ic" aria-hidden="true">🧵</span> Regionalized Threading</h3>
-        <p>Fully compatible with Folia's <code>RegionScheduler</code> and <code>GlobalRegionScheduler</code>.</p>
+        <p>Fully compatible with Folia's region threading, so every task runs on the thread that owns the region it touches.</p>
       </div>
       <div class="feature-item">
         <h3><span class="ic" aria-hidden="true">🗄️</span> Multi-Database Storage</h3>
-        <p>Identity data can live in SQLite (the zero-configuration default), MySQL, PostgreSQL, or MongoDB, selected with <code>database.type</code> in <code>config.yml</code>. All backends run fully asynchronously behind the same contract. See <a href="../storage/index.html">Data Storage</a>.</p>
+        <p>Identity data can live in SQLite (the zero-configuration default), MySQL, PostgreSQL, or MongoDB, chosen in the configuration file, or on the MCIdentity Central Server. Every backend behaves the same and runs in the background. See <a href="../storage/index.html">Data Storage</a>.</p>
       </div>
       <div class="feature-item">
         <h3><span class="ic" aria-hidden="true">🌐</span> Central Server Storage</h3>
-        <p>Alternatively, all identity data can live on the MCIdentity central server, accessed through an authenticated REST API over a pooled HTTP client — so every game server on the network shares one consistent data set.</p>
+        <p>Alternatively, all identity data can live on the MCIdentity central server, reached over an authenticated web API, so every game server on the network shares one consistent data set.</p>
       </div>
       <div class="feature-item">
         <h3><span class="ic" aria-hidden="true">🧩</span> Extensible API</h3>
-        <p>Provides a central <code>MCIdentityProvider</code> for third-party plugins to interact with the identity system. See the <a href="../api/index.html">Developer API</a>.</p>
+        <p>Gives other plugins one supported way to read and change identities, and a set of events to react to. See the <a href="../api/index.html">Developer API</a>.</p>
       </div>
       <div class="feature-item">
         <h3><span class="ic" aria-hidden="true">🔐</span> Secure Commands</h3>
-        <p>Role-based permissions for administrative actions.</p>
+        <p>Every command has its own permission node. Player commands are open to everyone by default and admin commands to operators only, and a permission plugin can change either. See <a href="../commands/index.html">Commands &amp; Permissions</a>.</p>
       </div>
       <div class="feature-item">
         <h3><span class="ic" aria-hidden="true">🪪</span> Visual Identity Keys</h3>
@@ -63,20 +63,20 @@
       </div>
       <div class="feature-item">
         <h3><span class="ic" aria-hidden="true">🔓</span> Unbound Identities</h3>
-        <p>Identity items created via <code>/identity get</code> are initially "unbound" — they lack a unique ID and database entry. Both the unique ID and the identity's initial stats are generated and registered in the database only when the item is first used.</p>
+        <p>Identity items created with /identity get are initially "unbound" — they lack a unique ID and database entry. Both the unique ID and the identity's initial stats are generated and registered in the database only when the item is first used.</p>
       </div>
       <div class="feature-item">
         <h3><span class="ic" aria-hidden="true">👤</span> Base "Player" Profession</h3>
-        <p>Every player permanently owns a built-in <code>player</code> profession, created automatically on first join and keyed by the player's own UUID. It is the fallback state whenever an identity is unequipped, dropped on death (only when <code>drop_on_death</code> is enabled — <code>false</code> by default), or fails to equip, so a player is never without a profession. It can never be deleted or turned into an identity key item.</p>
-        <p><strong>Note:</strong> the base profession is strictly hardcoded in memory. It does <strong>not</strong> generate a <code>professions/player.yml</code> file and cannot be modified via YAML.</p>
+        <p>Every player permanently owns a built-in Player profession, created automatically on first join and tied to the player's own account. It is the fallback state whenever an identity is unequipped, dropped on death (only when the drop on death option is turned on, which it is not by default), or fails to equip, so a player is never without a profession. It can never be deleted or turned into an identity key item.</p>
+        <p><strong>Note:</strong> the base profession is built into the plugin. Unlike the other professions it has no profession file and cannot be changed by server owners.</p>
       </div>
       <div class="feature-item">
         <h3><span class="ic" aria-hidden="true">🎭</span> Alternative Base Identities</h3>
-        <p>On top of the <strong>Primary</strong> base identity — the one <code>player</code> profession, which keeps the player's own UUID — players can unlock additional, fully independent identities of any other profession (random or chosen). They are indexed 1…n and keyed by deterministic UUIDs derived from the player UUID and index. Admins grant slots with <code>/identity base add</code>; all owned base identities appear in the paginated Player Identity GUI and can be equipped by clicking their heads.</p>
+        <p>On top of the <strong>Primary</strong> base identity — the one Player profession, tied to the player's own account, players can unlock additional, fully independent identities of any other profession (random or chosen). Each one is numbered and always gets the same ID, so it survives across servers and restarts. Admins grant them with /identity base add; all owned base identities appear in the paginated Player Identity GUI and can be equipped by clicking their heads.</p>
       </div>
       <div class="feature-item">
         <h3><span class="ic" aria-hidden="true">❄️</span> Cold-Boot Login Protection</h3>
-        <p>When <code>database.type</code> is <code>central</code>, the plugin pings the central server's <code>/health</code> endpoint during the async pre-login phase — the ping doubles as the wake-up signal for a cold-started server. Players are politely refused while storage initialization has not finished, or while the server is offline, so nobody joins with unreachable data. Initialization retries automatically every 10 seconds. All checks run off the main game thread.</p>
+        <p>When the central server is the backend, the plugin checks that the server is reachable while each player is logging in. That check also wakes up a central server that was sleeping. Players are politely refused while storage initialization has not finished, or while the server is offline, so nobody joins with unreachable data. Initialization retries automatically every 10 seconds. All checks run off the main game thread.</p>
       </div>
       <div class="feature-item">
         <h3><span class="ic" aria-hidden="true">📈</span> Passive Base Leveling</h3>
@@ -88,7 +88,7 @@
       </div>
       <div class="feature-item">
         <h3><span class="ic" aria-hidden="true">🎒</span> Always-On Storage Isolation</h3>
-        <p>Each identity's inventory and ender chest are always isolated and stored with the identity; the previous <code>features.inventory</code> / <code>features.enderchest</code> config toggles have been removed.</p>
+        <p>Each identity's inventory and ender chest are always isolated and stored with the identity; the old options to turn this off have been removed.</p>
       </div>
     </div>
 
