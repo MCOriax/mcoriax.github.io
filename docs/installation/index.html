@@ -30,7 +30,7 @@
         <li><p>Start the server once. The plugin writes its default configuration file, config.yml, into its own folder.</p></li>
         <li>
           <p>Choose where identity data is stored (see <a href="../storage/index.html">Data Storage</a>). The default is <strong>SQLite</strong>, a local file that needs no setup at all, so most servers can skip this step.</p>
-          <p>MySQL, PostgreSQL, and MongoDB each have their own connection section in the configuration: fill in the host, database name, and login for the one you pick. To share data across a whole network through the MCIdentity Central Server instead, switch the storage type to the central server and give the plugin two things: the address of your deployment and the API token that deployment was started with. An optional timeout controls how long the plugin waits for an answer.</p>
+          <p>MySQL, PostgreSQL, and MongoDB each have their own connection section in the configuration: fill in the host, database name, and login for the one you pick. To share data across a whole network through the <a href="../server/index.html">MCIdentity Central Server</a> instead, switch the storage type to the central server and give the plugin two things: the address of your deployment and the API token that deployment was started with. An optional timeout controls how long the plugin waits for an answer.</p>
         </li>
         <li><p>Restart the server. The plugin connects to the selected storage on startup and logs a clear error if it cannot reach it.</p></li>
       </ol>
