@@ -1165,18 +1165,21 @@ def actions_by_group():
 
 
 def shape_note(action):
-    """Builds the sentence that states which value shapes an action accepts.
+    """Builds the plain-language sentence that states how an action can be rewarded.
 
     :param action: A catalog entry.
-    :return: A sentence with inline ``<code>`` markup.
+    :return: A sentence with no markup.
     """
     mode = action["mode"]
     if mode == "flat":
-        return ("Takes a single value. The action reports neither a target nor an amount, "
-                "so a nested map is ignored.")
+        return ("Takes a single amount. There is nothing to vary it by, so every time "
+                "earns the same.")
     if mode == "amount":
-        return ("Takes a single value, or a map of range keys written "
-                "<code>\"min-max\"</code> or <code>\"min~max\"</code> and matched against %s. "
-                "An amount outside every range awards nothing." % action["keyed_by"])
-    return ("Takes a single value that rewards every case equally, or a map keyed by %s in "
-            "lowercase. Keys you leave out award nothing." % action["keyed_by"])
+        return ("Takes one amount for every case, or different amounts for different ranges "
+                "of %s, such as 1 to 10 and 11 to 50. Anything outside every range earns "
+                "nothing." % action["keyed_by"])
+    target = action["keyed_by"]
+    if target.startswith("the "):
+        target = target[len("the "):]
+    return ("Takes one amount for every case, or a different amount for each %s. Anything "
+            "you leave out earns nothing." % target)

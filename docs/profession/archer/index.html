@@ -22,7 +22,7 @@
       <div>
         <span class="eyebrow">Profession</span>
         <h1>Archer</h1>
-        <p class="lead">Theme: <strong>Ranged combat</strong>. System code <code>archer</code>.</p>
+        <p class="lead">Theme: <strong>Ranged combat</strong>.</p>
       </div>
     </div>
     <section class="section">
@@ -35,16 +35,16 @@
     </section>
     <section class="section">
       <h2>How to level up</h2>
-      <p>Every level takes <strong>150 EXP</strong>, and the class caps at <strong>level 100</strong>. Earn experience by performing the actions below — each is configured in this profession's YAML file. Ranges such as <code>a~b</code> award a random amount between <code>a</code> and <code>b</code>; numeric conditions such as <code>1-10</code> match the amount involved (for example damage dealt or survived).</p>
+      <p>Every level takes <strong>150 EXP</strong>, and the class caps at <strong>level 100</strong>. Earn experience by performing the actions below, each set in this profession's file. Where the EXP is a range, such as 60 to 100, a random amount in that range is awarded each time. Where an action lists ranges of its own, such as 1 to 5, the reward depends on the amount involved, for example the damage dealt or survived.</p>
       <div class="table-wrap">
         <table>
           <thead><tr><th>Action</th><th>How it triggers</th><th>EXP</th></tr></thead>
           <tbody>
-        <tr><td><span class="action-key">deal_ranged_damage</span></td><td>Deal damage with a projectile such as a bow (by damage dealt)</td><td><span class="sub-key">1-10</span> &rarr; 3~6 EXP<br><span class="sub-key">11-50</span> &rarr; 12~22 EXP<br><span class="sub-key">51-100</span> &rarr; 35~55 EXP</td></tr>
+        <tr><td><span class="action-key">Deal projectile damage</span></td><td>Deal damage with a projectile such as a bow (by damage dealt)</td><td><span class="sub-key">1 to 10</span>: 3 to 6 EXP<br><span class="sub-key">11 to 50</span>: 12 to 22 EXP<br><span class="sub-key">51 to 100</span>: 35 to 55 EXP</td></tr>
           </tbody>
         </table>
       </div>
-      <div class="callout callout--info"><span class="callout__icon" aria-hidden="true">💡</span><div class="callout__body"><p>These values come from the bundled <code>professions/archer.yml</code>. Server owners can edit them or add entirely new professions — see <a href="../index.html#custom">Professions &amp; EXP</a>.</p></div></div>
+      <div class="callout callout--info"><span class="callout__icon" aria-hidden="true">💡</span><div class="callout__body"><p>These values come from the Archer file that ships with the plugin. Server owners can edit them or add entirely new professions — see <a href="../index.html#custom">Professions &amp; EXP</a>.</p></div></div>
     </section>
     <section class="section">
       <h2>Starting stats</h2>

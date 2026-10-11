@@ -8,12 +8,15 @@ normalised copy of the plugin's default ``professions/*.yml`` resources
 (max level, EXP per level, starting stats, and the action-based EXP rules that
 tell players how to level up). The per-action EXP reference rendered onto the
 listing page comes from the catalog in ``exp_actions.py``. Re-run it whenever
-the bundled professions or the action catalog change:
+the bundled professions or the action catalog change. The pages it writes
+contain no code: profession-file examples are rendered as plain tables.
+
 
     python3 scripts/generate_professions.py
 """
 
 import os
+import re
 
 import exp_actions
 
@@ -379,31 +382,89 @@ def stat_bars(stats):
     return '  <div class="stats-grid">\n' + "\n".join(rows) + "\n  </div>"
 
 
+ACTION_TITLES = {a["key"]: a["title"] for a in exp_actions.ACTIONS}
+
+
+def pretty_key(key):
+    """Turns a profession-file key into words: ``coal_ore`` becomes ``Coal ore``
+    and an amount range such as ``1-10`` becomes ``1 to 10``."""
+    key = str(key)
+    if re.fullmatch(r"\d+[-~]\d+", key):
+        low, high = re.split(r"[-~]", key)
+        return "%s to %s" % (low, high)
+    words = key.replace("_", " ")
+    return words[:1].upper() + words[1:]
+
+
+def pretty_exp(value):
+    """Turns an EXP value into words: ``60~100`` becomes ``60 to 100 EXP``."""
+    value = str(value)
+    if "~" in value:
+        low, high = value.split("~", 1)
+        return "%s to %s EXP" % (low, high)
+    return "%s EXP" % value
+
+
+def plain(fragment):
+    """Removes inline code markup from a catalog sentence, naming another action
+    by its title and anything else in plain words."""
+    def word(match):
+        inner = match.group(1)
+        if inner in ACTION_TITLES:
+            return "“%s”" % ACTION_TITLES[inner].lower()
+        return inner.replace("_", " ")
+    return re.sub(r"<code>(.*?)</code>", word, fragment)
+
+
+def action_title(key):
+    return ACTION_TITLES.get(key, pretty_key(key))
+
+
 def action_rows(actions):
     rows = []
     for key, val in actions:
         trigger = TRIGGERS.get(key, "Perform this action")
         if isinstance(val, list):
             subs = "<br>".join(
-                '<span class="sub-key">%s</span> &rarr; %s EXP' % (esc(sk), esc(sv))
+                '<span class="sub-key">%s</span>: %s' % (esc(pretty_key(sk)), esc(pretty_exp(sv)))
                 for sk, sv in val)
             rows.append(
                 "        <tr><td><span class=\"action-key\">%s</span></td>"
-                "<td>%s</td><td>%s</td></tr>" % (esc(key), esc(trigger), subs))
+                "<td>%s</td><td>%s</td></tr>" % (esc(action_title(key)), esc(trigger), subs))
         else:
             rows.append(
                 "        <tr><td><span class=\"action-key\">%s</span></td>"
-                "<td>%s</td><td class=\"exp-val\">%s EXP</td></tr>"
-                % (esc(key), esc(trigger), esc(val)))
+                "<td>%s</td><td class=\"exp-val\">%s</td></tr>"
+                % (esc(action_title(key)), esc(trigger), esc(pretty_exp(val))))
     return "\n".join(rows)
 
 
-def action_accordions():
-    """Renders the per-action EXP reference as grouped accordions.
+def example_table(action, snippet):
+    """Renders one catalog example as a plain-language table instead of the
+    profession-file text it was written as."""
+    lines = [l.split("#", 1)[0].rstrip() for l in snippet.split("\n")]
+    lines = [l for l in lines if l.strip()]
+    head_value = lines[0].split(":", 1)[1].strip()
+    if head_value:
+        return ('            <p class="example-flat">Every time: <strong>%s</strong></p>'
+                % esc(pretty_exp(head_value)))
+    column = action["keyed_by"]
+    if column.startswith("the "):
+        column = column[len("the "):]
+    column = column[:1].upper() + column[1:]
+    rows = []
+    for line in lines[1:]:
+        sub, value = line.strip().split(":", 1)
+        rows.append("<tr><td>%s</td><td>%s</td></tr>"
+                    % (esc(pretty_key(sub.strip().strip('"'))), esc(pretty_exp(value.strip()))))
+    return ('            <div class="table-wrap"><table class="example-table">'
+            "<thead><tr><th>%s</th><th>EXP</th></tr></thead><tbody>%s</tbody></table></div>"
+            % (esc(column), "".join(rows)))
 
-    The ``desc`` and shape-note strings from :mod:`exp_actions` are trusted
-    fragments that may carry inline ``<code>`` markup, so they are emitted
-    as-is; every other value is escaped.
+
+def action_accordions():
+    """Renders the per-action EXP reference as grouped accordions, with every
+    example shown as a plain table rather than profession-file text.
 
     :return: The HTML for the whole action reference.
     """
@@ -413,14 +474,14 @@ def action_accordions():
         out.append('      <div class="accordion">')
         for a in actions:
             out.append('        <details class="acc">'
-                       '<summary><code>%s</code> &middot; %s</summary>'
-                       % (esc(a["key"]), esc(a["title"])))
+                       '<summary>%s <span class="action-name">%s</span></summary>'
+                       % (esc(a["title"]), esc(a["key"])))
             out.append('          <div class="acc__body">')
-            out.append('            <p>%s</p>' % a["desc"])
-            out.append('            <p>%s</p>' % exp_actions.shape_note(a))
+            out.append('            <p>%s</p>' % plain(a["desc"]))
+            out.append('            <p>%s</p>' % esc(exp_actions.shape_note(a)))
             for caption, snippet in a["examples"]:
-                out.append('            <span class="code-label">%s</span>' % esc(caption))
-                out.append('<pre><code>%s</code></pre>' % esc(snippet))
+                out.append('            <p class="example-label">%s</p>' % esc(caption))
+                out.append(example_table(a, snippet))
             out.append('          </div>')
             out.append('        </details>')
         out.append('      </div>')
@@ -446,8 +507,7 @@ def detail_page(code, p):
     body.append('      <div>')
     body.append('        <span class="eyebrow">Profession</span>')
     body.append('        <h1>%s</h1>' % esc(p["name"]))
-    body.append('        <p class="lead">Theme: <strong>%s</strong>. System code '
-                '<code>%s</code>.</p>' % (esc(p["theme"]), esc(code)))
+    body.append('        <p class="lead">Theme: <strong>%s</strong>.</p>' % esc(p["theme"]))
     body.append('      </div>')
     body.append('    </div>')
 
@@ -475,11 +535,11 @@ def detail_page(code, p):
     body.append('      <h2>How to level up</h2>')
     body.append('      <p>Every level takes <strong>%s EXP</strong>, and the class '
                 'caps at <strong>level %d</strong>. Earn experience by performing the '
-                'actions below — each is configured in this profession\'s YAML file. '
-                'Ranges such as <code>a~b</code> award a random amount between '
-                '<code>a</code> and <code>b</code>; numeric conditions such as '
-                '<code>1-10</code> match the amount involved (for example damage '
-                'dealt or survived).</p>'
+                'actions below, each set in this profession\'s file. Where the EXP is '
+                'a range, such as 60 to 100, a random amount in that range is awarded '
+                'each time. Where an action lists ranges of its own, such as 1 to 5, the '
+                'reward depends on the amount involved, for example the damage dealt or '
+                'survived.</p>'
                 % (f'{p["exp_up"]:,}', p["max"]))
     body.append('      <div class="table-wrap">')
     body.append('        <table>')
@@ -490,10 +550,10 @@ def detail_page(code, p):
     body.append('        </table>')
     body.append('      </div>')
     body.append('      <div class="callout callout--info"><span class="callout__icon" aria-hidden="true">\U0001F4A1</span>'
-                '<div class="callout__body"><p>These values come from the bundled '
-                '<code>professions/%s.yml</code>. Server owners can edit them or add '
-                'entirely new professions — see <a href="../index.html#custom">Professions &amp; EXP</a>.</p></div></div>'
-                % esc(code))
+                '<div class="callout__body"><p>These values come from the %s file that '
+                'ships with the plugin. Server owners can edit them or add entirely new '
+                'professions — see <a href="../index.html#custom">Professions &amp; EXP</a>.</p></div></div>'
+                % esc(p["name"]))
     body.append('    </section>')
 
     # Starting stats
@@ -528,10 +588,10 @@ def index_page():
     rows = []
     for code in ORDER:
         p = PROFESSIONS[code]
-        acts = ", ".join(k for k, _ in p["actions"][:3])
+        acts = ", ".join(action_title(k) for k, _ in p["actions"][:3])
         rows.append(
             '            <tr><td><a href="%s/index.html">%s</a></td><td>%s</td>'
-            '<td>%d</td><td>%s</td><td><code>%s</code></td></tr>'
+            '<td>%d</td><td>%s</td><td>%s</td></tr>'
             % (code, esc(p["name"]), esc(p["theme"]), p["max"],
                f'{p["exp_up"]:,}', esc(acts)))
 
@@ -555,19 +615,19 @@ def index_page():
     # How EXP works (custom-exp.md intro)
     body.append('    <section class="section panel" id="custom">')
     body.append('      <h2>How profession EXP works</h2>')
-    body.append('      <p>Server owners customise how professions gain experience by defining '
-                'action-based EXP configurations in YAML files within the <code>professions/</code> '
-                'folder. New professions are registered into the database automatically on first run.</p>')
-    body.append('      <h3>Key requirements</h3>')
+    body.append('      <p>Every profession is described by its own file in the plugin\'s '
+                'professions folder. Server owners can change how any profession levels by '
+                'editing its file, or create a new profession by adding one. New professions '
+                'are registered automatically the next time the server starts.</p>')
+    body.append('      <h3>What a profession file sets</h3>')
     body.append('      <ul>'
-                '<li><code>system_code</code> — must be unique and provided in <strong>lowercase</strong>.</li>'
-                '<li><code>display_name</code> — the human-readable name for the profession.</li></ul>')
-    body.append('      <h3>Configuration keys</h3>')
-    body.append('      <ul>'
-                '<li><code>level.max</code> / <code>level.exp_up</code> — the max level and EXP required per level.</li>'
-                '<li><code>stats</code> — starting attributes (energy, health, food, strength, defense, wisdom, luck, agility, resilience).</li>'
-                '<li><code>stats_random</code> — bonus points randomly distributed across the six primary attributes on creation.</li>'
-                '<li><code>skins</code> — available Base64 skin textures; one is chosen at random per new identity.</li>'
+                '<li><strong>A unique name</strong>, written in lower case, that identifies the profession.</li>'
+                '<li><strong>A display name</strong> that players see.</li>'
+                '<li><strong>The maximum level</strong> and <strong>the EXP needed per level</strong>.</li>'
+                '<li><strong>Starting stats</strong> for all nine attributes: energy, health, food, strength, defense, wisdom, luck, agility, and resilience.</li>'
+                '<li><strong>Bonus points</strong>, optionally spread at random across the six primary attributes when an identity is created.</li>'
+                '<li><strong>Skins</strong>, one of which is chosen at random for each new identity.</li>'
+                '<li><strong>EXP rules</strong>: which of the actions below earn experience, and how much.</li>'
                 '</ul>')
     body.append('      <div class="callout"><span class="callout__icon" aria-hidden="true">ℹ️</span>'
                 '<div class="callout__body"><p>Editing or deleting a default file does not bring it back '
@@ -577,11 +637,12 @@ def index_page():
     # Per-action EXP reference
     body.append('    <section class="section" id="actions">')
     body.append('      <h2>EXP gain actions</h2>')
-    body.append('      <p>Every key below is a top-level entry in a profession file. Open one to '
-                'see what triggers it, which value shapes it accepts, and a ready-to-paste '
-                'example. A value is either a fixed amount such as <code>10</code> or a random '
-                'range such as <code>10~20</code>, which rolls a fresh amount between the two '
-                'bounds on every gain. All <strong>%d actions</strong> are listed.</p>'
+    body.append('      <p>These are the actions a profession can reward. Open one to see what '
+                'triggers it, how its reward can vary, and worked examples. A reward is either '
+                'a fixed amount, such as 10 EXP, or a range, such as 10 to 20 EXP, which awards '
+                'a fresh random amount between the two every time. The small name beside each '
+                'title is the name the action goes by in a profession file. All '
+                '<strong>%d actions</strong> are listed.</p>'
                 % len(exp_actions.ACTIONS))
     body.append(action_accordions())
     body.append('    </section>')
@@ -601,7 +662,7 @@ def index_page():
 
     return (head("Professions & EXP — MCIdentity",
                  "Browse MCIdentity's %d bundled professions and configure profession experience "
-                 "with a worked example for every one of the %d EXP gain actions."
+                 "with worked examples for every one of the %d EXP gain actions."
                  % (len(ORDER), len(exp_actions.ACTIONS)),
                  root, "profession", css)
             + "\n".join(body) + foot(root))
