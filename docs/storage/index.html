@@ -21,185 +21,103 @@
 
     <span class="eyebrow">Configuration</span>
     <h1>Data Storage</h1>
-    <p class="lead">The plugin supports multiple storage backends, selected with <code>database.type</code> in <code>config.yml</code>: <strong>SQLite</strong> (the default), <strong>MySQL</strong>, <strong>PostgreSQL</strong>, <strong>MongoDB</strong>, and the <strong>MCIdentity central server</strong>.</p>
-    <p>Standalone servers can run entirely on the zero-configuration SQLite file, while networks can share one MySQL, PostgreSQL, or MongoDB deployment — or point every node at the central REST server.</p>
+    <p class="lead">MCIdentity can keep its data in five places: <strong>SQLite</strong> (the default), <strong>MySQL</strong>, <strong>PostgreSQL</strong>, <strong>MongoDB</strong>, or the <strong>MCIdentity Central Server</strong>. You pick one in the plugin's configuration file.</p>
+    <p>A single server can run entirely on the zero-configuration SQLite file. A network can share one MySQL, PostgreSQL, or MongoDB database, or point every game server at the central server so none of them touches a database directly.</p>
 
     <section class="section">
       <h2>Choosing a backend</h2>
       <div class="backend-grid">
         <div class="backend">
-          <div class="backend__name">SQLite <span class="backend__type">sqlite</span></div>
-          <p>Local file in the plugin data folder. Best for single servers; works out of the box with no setup.</p>
+          <div class="backend__name">SQLite</div>
+          <p>A local file in the plugin's folder. Best for a single server; works out of the box with no setup.</p>
         </div>
         <div class="backend">
-          <div class="backend__name">MySQL <span class="backend__type">mysql</span></div>
-          <p>MySQL or MariaDB server. Best for networks that already run a MySQL-compatible database.</p>
+          <div class="backend__name">MySQL</div>
+          <p>A MySQL or MariaDB server. Best for networks that already run a MySQL-compatible database.</p>
         </div>
         <div class="backend">
-          <div class="backend__name">PostgreSQL <span class="backend__type">postgresql</span></div>
-          <p>PostgreSQL server. Best for networks that prefer PostgreSQL.</p>
+          <div class="backend__name">PostgreSQL</div>
+          <p>A PostgreSQL server. Best for networks that prefer PostgreSQL.</p>
         </div>
         <div class="backend">
-          <div class="backend__name">MongoDB <span class="backend__type">mongodb</span></div>
-          <p>MongoDB deployment. Best for document-oriented storage or existing MongoDB infrastructure.</p>
+          <div class="backend__name">MongoDB</div>
+          <p>A MongoDB deployment. Best for document storage or existing MongoDB infrastructure.</p>
         </div>
         <div class="backend">
-          <div class="backend__name">Central server <span class="backend__type">central</span></div>
-          <p>MCIdentity central REST server. Best for whole networks sharing one authenticated API with token roles.</p>
+          <div class="backend__name">Central server</div>
+          <p>The MCIdentity Central Server. Best for whole networks that want one authenticated service to own all identity data.</p>
         </div>
       </div>
-
-      <p>Each backend has its own connection section in <code>config.yml</code>:</p>
-<pre><code>database:
-  type: sqlite
-  sqlite:
-    file: "mcidentity.db"
-  mysql:
-    host: "localhost"
-    port: 3306
-    database: "mcidentity"
-    username: "root"
-    password: "password"
-  postgresql:
-    host: "localhost"
-    port: 5432
-    database: "mcidentity"
-    username: "postgres"
-    password: "password"
-  mongodb:
-    uri: "mongodb://localhost:27017"
-    database: "mcidentity"</code></pre>
-      <p>The <code>central</code> type reads the existing <code>central_server</code> section (<code>url</code>, <code>token</code>, <code>timeout_seconds</code>).</p>
+      <p>Each database backend has its own connection section in the configuration file, where you enter the host, port, database name, and login (or, for MongoDB, a connection address). The central server needs only its address, the API token it was started with, and an optional timeout.</p>
     </section>
 
     <section class="section">
       <h2>How it works</h2>
       <ul>
-        <li>All backends implement the same <code>IMCIdentityDB</code> contract, so gameplay code never knows which storage is active.</li>
-        <li>The SQLite, MySQL, and PostgreSQL backends share their query logic and differ only in schema DDL and upsert dialect. MongoDB stores each identity as one document with embedded properties and stats.</li>
-        <li>The central-server backend implements the same contract by sending asynchronous JSON requests over a single pooled HTTP client, carrying the bearer token configured in <code>config.yml</code> (<code>central_server.token</code>).</li>
-        <li>Every operation runs asynchronously on a dedicated worker pool, so the game thread is never blocked.</li>
-        <li>Reads that fail resolve to safe fallbacks (empty results or zero) so the game server keeps running; failures are logged.</li>
-        <li>Stat identifiers are validated against a fixed allow-list before they are used, on the plugin and (for the central server) on the API as well.</li>
+        <li>Every backend offers the plugin exactly the same set of operations, so gameplay behaves identically whichever one is active.</li>
+        <li>The three SQL databases share the same logic and differ only in small dialect details. MongoDB keeps each identity as a single document holding its properties and stats.</li>
+        <li>The central server backend sends each operation to the central server over the network, authenticated with the configured token, instead of talking to a database.</li>
+        <li>Every read and write runs in the background on its own worker threads, so the game never pauses to wait for storage.</li>
+        <li>Data that is in use is cached in memory, so most reads never reach the backend at all.</li>
+        <li>If a read fails, the plugin falls back to a safe empty answer and logs the problem, so the server keeps running.</li>
+        <li>Stat names are checked against a fixed list before they are stored, both by the plugin and, for the central server, by the server as well.</li>
       </ul>
     </section>
 
     <section class="section">
       <h2>Drivers</h2>
-      <p>The SQLite and MySQL JDBC drivers ship with SpigotMC, PaperMC, and Folia. The PostgreSQL driver and the MongoDB client are packaged inside the plugin JAR, so no backend requires extra downloads.</p>
+      <p>The SQLite and MySQL drivers come with SpigotMC, PaperMC, and Folia, and the PostgreSQL and MongoDB drivers are packaged inside the plugin. No backend needs an extra download.</p>
     </section>
 
     <section class="section">
-      <h2>Schema</h2>
-      <p>The relational backends create their tables automatically on first start:</p>
-      <div class="chip-row">
-        <span class="chip">identity_professions</span>
-        <span class="chip">identity_keys</span>
-        <span class="chip">identity_properties</span>
-        <span class="chip">identity_stats</span>
-        <span class="chip">identity_sessions</span>
-        <span class="chip">identity_logs</span>
-        <span class="chip">player_base_slots</span>
-      </div>
-      <p>The SQLite schema matches the central server's, so a database file can be moved between a game server and a central server deployment.</p>
-
-      <h3><code>identity_properties</code></h3>
-      <p>One row per identity, holding everything about it that is not a stat:</p>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Column</th><th>Type</th><th>Contents</th></tr></thead>
-          <tbody>
-            <tr><td><code>identity_uuid</code></td><td>VARCHAR(36)</td><td>Primary key — the identity this row describes.</td></tr>
-            <tr><td><code>alias</code></td><td>VARCHAR(32)</td><td>The optional name the player gives this identity with <code>/identity alias</code>. Unique across every identity; empty until one is claimed, and never changed afterwards. Once claimed, it replaces the player's Minecraft name in chat and in the tab list while the identity is equipped. Always empty on the base <code>player</code> identity.</td></tr>
-            <tr><td><code>current_level</code></td><td>INT</td><td>The identity's level.</td></tr>
-            <tr><td><code>exp</code></td><td>INT</td><td>Experience toward the next level.</td></tr>
-            <tr><td><code>stat_points</code></td><td>INT</td><td>Unspent points available to <code>/identity stats add</code>.</td></tr>
-            <tr><td><code>head_text</code></td><td>TEXT</td><td>The Base64 skull texture shown for the identity.</td></tr>
-            <tr><td><code>inventory_contents</code></td><td>TEXT</td><td>The identity's own serialized inventory.</td></tr>
-            <tr><td><code>enderchest_contents</code></td><td>TEXT</td><td>The identity's own serialized ender chest.</td></tr>
-            <tr><td><code>updated_at</code></td><td>TIMESTAMP</td><td>When the row last changed.</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h3>The <code>alias</code> column</h3>
-      <p>An alias may contain <strong>alphanumeric characters only</strong> (<code>a-z</code>, <code>A-Z</code>, <code>0-9</code>) and at most <strong>32</strong> of them. It is <strong>unique across every identity</strong> the backend holds, and that uniqueness <strong>ignores case</strong> — once someone holds <code>Alex</code>, nobody else can take <code>alex</code> or <code>ALEX</code>. The value is stored exactly as it was typed, so <code>Alex</code> is displayed as <code>Alex</code>.</p>
-      <p>Each backend enforces that rule in its own way:</p>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Backend</th><th>How uniqueness is enforced</th></tr></thead>
-          <tbody>
-            <tr><td>SQLite</td><td>A unique index over <code>LOWER(alias)</code>.</td></tr>
-            <tr><td>PostgreSQL</td><td>A unique index over <code>LOWER(alias)</code>.</td></tr>
-            <tr><td>MySQL / MariaDB</td><td>A <code>UNIQUE</code> constraint on a column declared with the case-insensitive <code>utf8mb4_general_ci</code> collation.</td></tr>
-            <tr><td>MongoDB</td><td>A sparse unique index over a folded mirror field, stored beside the original <code>properties.alias</code>.</td></tr>
-            <tr><td>Central server</td><td>The server owns the check and answers <code>409 Conflict</code> when the alias is already taken.</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p>The uniqueness check and the write happen together, so two players can never end up holding the same alias.</p>
-      <p><code>/identity alias</code> claims a name once and never renames it afterwards, and it refuses the base <code>player</code> identity outright. In practice a row's <code>alias</code> therefore goes from empty to set exactly once, and the base identity's stays empty. The developer API is unaffected: <code>setIdentityAlias</code> still renames or releases, so an integrating plugin or an administrative tool can correct a name — the rule lives in the command, not in the column.</p>
-      <p>A stored alias is also the name the server shows: while the identity holding it is equipped, it replaces the player's Minecraft name in chat and in the tab list. That display is served from the session already held in memory, so naming a player costs no extra read against the backend.</p>
+      <h2>Setup and upgrades</h2>
+      <p>The database backends create everything they need automatically the first time the server starts. The SQLite layout is the same one the central server uses, so a SQLite file can move between a game server and a central server deployment.</p>
 
       <div class="callout callout--info">
         <span class="callout__icon" aria-hidden="true">ℹ️</span>
         <div class="callout__body">
-          <p>
-            <strong>Upgrading from 4.0.x:</strong> <code>identity_properties</code> gains the
-            <code>alias</code> column automatically on the first start after upgrading. Nothing is
-            dropped and no data is touched — every existing identity simply starts with no alias.
-            On MySQL and MariaDB the column is placed directly after <code>identity_uuid</code>;
-            SQLite and PostgreSQL can only append it, so on an upgraded database it sits last. Both
-            positions behave identically.
-          </p>
+          <p><strong>Upgrading from 4.0.x:</strong> the alias field is added automatically on the first start after upgrading. Nothing is removed and no data is touched; every existing identity simply starts without an alias.</p>
         </div>
       </div>
 
       <div class="callout callout--warn">
         <span class="callout__icon" aria-hidden="true">⚠️</span>
         <div class="callout__body">
-          <p>
-            <strong>Upgrading from 3.x:</strong> runes and cosmetics moved into the standalone
-            <a href="../rune/index.html">MCIdentityRune</a> and
-            <a href="../cosmetic/index.html">MCIdentityCosmetic</a> add-ons, which create and own
-            their own tables. The first start after upgrading <strong>drops</strong>
-            <code>identity_runes</code>, <code>identity_equipped_runes</code>, and
-            <code>identity_equipped_cosmetics</code> — and, on MongoDB, the
-            <code>identity_runes</code> collection and the per-identity <code>equipped_runes</code>
-            and <code>cosmetics</code> fields. Those rows are <strong>not recoverable</strong>, and
-            the add-ons start with empty tables rather than migrating them, so back the database up
-            first if you want to keep them.
-          </p>
-          <p>
-            <strong>Upgrading from 2.x:</strong> the ability system moved into the standalone
-            <a href="../skill/index.html">MCIdentitySkill</a> add-on, where a skill's data lives on
-            the item rather than in a table. The first start after upgrading <strong>drops</strong>
-            <code>identity_abilities</code> and <code>identity_equipped_abilities</code> — and, on
-            MongoDB, the <code>identity_abilities</code> collection and the per-identity
-            <code>equipped_abilities</code> field. Those rows are <strong>not recoverable</strong>,
-            so back the database up first if you want to keep them.
-          </p>
+          <p><strong>Upgrading from 3.x:</strong> runes and cosmetics moved into the standalone <a href="../rune/index.html">MCIdentityRune</a> and <a href="../cosmetic/index.html">MCIdentityCosmetic</a> add-ons, which keep their own data. The first start after upgrading <strong>deletes</strong> the old rune and cosmetic data from the core plugin's storage. It cannot be recovered and the add-ons do not import it, so back up your database first if you want to keep it.</p>
+          <p><strong>Upgrading from 2.x:</strong> abilities moved into the standalone <a href="../skill/index.html">MCIdentitySkill</a> add-on, where a skill lives on the item itself. The first start after upgrading <strong>deletes</strong> the old ability data. It cannot be recovered, so back up your database first if you want to keep it.</p>
         </div>
       </div>
+    </section>
+
+    <section class="section" id="alias">
+      <h2>Identity aliases</h2>
+      <p>A player can give each identity they own a name of its own, called an alias. While that identity is equipped, the alias replaces the player's Minecraft name in chat and in the tab list.</p>
+      <ul>
+        <li>An alias uses letters and numbers only, up to 32 characters.</li>
+        <li>It is unique across the whole server or network, and the check ignores capital letters: once someone holds Alex, nobody else can take alex or ALEX. It is still shown exactly as it was typed.</li>
+        <li>The uniqueness check and the save happen together, so two players can never end up with the same alias.</li>
+        <li>A player claims an alias once and cannot rename it afterwards, and the base Player identity can never have one. Other plugins and administrative tools can still correct or release a name through the developer API.</li>
+        <li>Showing the alias costs nothing extra, because it is read from the session already held in memory.</li>
+      </ul>
     </section>
 
     <section class="section">
       <h2>Data stored</h2>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Resource</th><th>Contents</th></tr></thead>
+          <thead><tr><th>What</th><th>Contents</th></tr></thead>
           <tbody>
-            <tr><td>Professions</td><td>The shared registry identities reference.</td></tr>
-            <tr><td>Identity keys</td><td>Each identity's UUID and profession.</td></tr>
-            <tr><td>Properties</td><td>The optional unique alias, level, experience, stat points, textures, and serialized inventory / ender chest storage.</td></tr>
-            <tr><td>Stats</td><td>The nine numerical attributes (energy, health, food, strength, defense, wisdom, luck, agility, resilience).</td></tr>
-            <tr><td>Sessions</td><td>Which identity each player currently wears, with the serialized identity item.</td></tr>
-            <tr><td>Base identity slots</td><td>How many alternative base "player" identities each player has unlocked.</td></tr>
-            <tr><td>Logs</td><td>The append-only audit trail (EQUIP, UNEQUIP, DEATH_DROP, ADMIN_REMOVE).</td></tr>
+            <tr><td>Professions</td><td>The shared list of professions that identities belong to.</td></tr>
+            <tr><td>Identities</td><td>Each identity's unique ID and its profession.</td></tr>
+            <tr><td>Properties</td><td>The optional alias, level, experience, unspent stat points, head texture, and the identity's own inventory and ender chest.</td></tr>
+            <tr><td>Stats</td><td>The nine attributes: energy, health, food, strength, defense, wisdom, luck, agility, and resilience.</td></tr>
+            <tr><td>Sessions</td><td>Which identity each player is wearing right now, together with the identity item itself.</td></tr>
+            <tr><td>Base identity slots</td><td>How many extra base identities each player has unlocked.</td></tr>
+            <tr><td>Audit log</td><td>A permanent record of every equip, unequip, death drop, and admin removal.</td></tr>
           </tbody>
         </table>
       </div>
-      <p>See the central server repository for the REST API reference, environment configuration, and its storage details.</p>
+      <p>The add-ons store their own data separately, always against the identity rather than the player.</p>
     </section>
   </main>
 

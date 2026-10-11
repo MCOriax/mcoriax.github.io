@@ -85,19 +85,19 @@
         <a class="card" href="rune/index.html">
           <div class="card__icon" aria-hidden="true">🔮</div>
           <div class="card__title">Rune Add-on</div>
-          <p class="card__desc">MCIdentityRune: ten rune slots per identity, with its own menu, database, and <code>/rune</code> command.</p>
+          <p class="card__desc">MCIdentityRune: ten rune slots per identity, with its own menu, database, and /rune command.</p>
           <span class="card__more">Read more →</span>
         </a>
         <a class="card" href="cosmetic/index.html">
           <div class="card__icon" aria-hidden="true">🎨</div>
           <div class="card__title">Cosmetic Add-on</div>
-          <p class="card__desc">MCIdentityCosmetic: a skin and an aura per identity, with its own menu, database, and <code>/cosmetic</code> command.</p>
+          <p class="card__desc">MCIdentityCosmetic: a skin and an aura per identity, with its own menu, database, and /cosmetic command.</p>
           <span class="card__more">Read more →</span>
         </a>
         <a class="card" href="commands/index.html">
           <div class="card__icon" aria-hidden="true">⌨️</div>
           <div class="card__title">Commands &amp; Permissions</div>
-          <p class="card__desc">Every <code>/identity</code> command and the permission nodes behind them.</p>
+          <p class="card__desc">Every /identity command and the permission nodes behind them.</p>
           <span class="card__more">Read more →</span>
         </a>
         <a class="card" href="gui/index.html">
@@ -115,7 +115,7 @@
         <a class="card" href="api/index.html">
           <div class="card__icon" aria-hidden="true">🧩</div>
           <div class="card__title">Developer API</div>
-          <p class="card__desc">Integrate through <code>MCIdentityProvider</code> — one identity is one account.</p>
+          <p class="card__desc">Build on MCIdentity from your own plugin. One identity is one account.</p>
           <span class="card__more">Read more →</span>
         </a>
         <a class="card" href="listeners/index.html">
@@ -150,7 +150,7 @@
       <h2>What MCIdentity does</h2>
       <p>
         Every player has exactly <strong>one primary identity</strong> — their permanent base
-        <code>player</code> profession, keyed by their own UUID. Beyond it, players can unlock
+        Player profession, keyed by their own UUID. Beyond it, players can unlock
         <strong>multiple alternative base identities</strong>, each of any other profession, plus
         equip profession identity keys found in-game. Each identity keeps its own isolated
         inventory, ender chest, level, and stats, and switching is a full context switch — as if
@@ -159,10 +159,30 @@
       <p>
         The whole system is built for performance and safety: identity data can live in SQLite
         (the zero-configuration default), MySQL, PostgreSQL, or MongoDB, or be owned by the
-        MCIdentity central server and accessed through asynchronous REST calls. Every backend is
+        MCIdentity Central Server and reached over the network in the background. Every backend is
         combined with RAM caching and fully asynchronous access for a lag-free experience on
         high-population servers.
       </p>
+    </section>
+
+    <!-- The projects -->
+    <section class="section panel" id="projects">
+      <h2>The MCOriax projects</h2>
+      <p>MCIdentity is a family of projects. The core plugin is the only one a server must install; everything else builds on it.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Project</th><th>What it is</th></tr></thead>
+          <tbody>
+            <tr><td><strong>MCIdentity</strong></td><td>The core plugin. It owns identities, professions, stats, sessions, and storage, and gives other plugins a supported way to build on them.</td></tr>
+            <tr><td><a href="skill/index.html"><strong>MCIdentitySkill</strong></a></td><td>An add-on for skill items that only certain professions can use. Each skill lives on the item itself and is cast through MythicMobs.</td></tr>
+            <tr><td><a href="rune/index.html"><strong>MCIdentityRune</strong></a></td><td>An add-on that gives every identity ten rune slots, with its own menu and storage.</td></tr>
+            <tr><td><a href="cosmetic/index.html"><strong>MCIdentityCosmetic</strong></a></td><td>An add-on that lets every identity wear its own skin and aura.</td></tr>
+            <tr><td><strong>MCIdentityPerks</strong></td><td>An add-on in development for deeper progression: Sigils, Relics, and Perks.</td></tr>
+            <tr><td><strong>MCIdentity Central Server</strong></td><td>A standalone web service that owns all identity data for a whole network, so game servers never need a database of their own.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Every add-on stores its data against the identity rather than the player, so switching identity switches everything that belongs to it.</p>
     </section>
   </main>
 

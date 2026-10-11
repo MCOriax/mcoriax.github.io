@@ -36,7 +36,7 @@
 
     <section class="section">
       <h2>How it runs</h2>
-      <p>The <code>platforms:foliamc</code> module supplies a Folia entry point together with a regionized scheduler implementation. Instead of one main thread, Folia runs many region threads, so MCIdentity's <code>PlatformScheduler</code> abstraction maps onto Folia's <code>RegionScheduler</code> and <code>GlobalRegionScheduler</code> to run each task on the correct thread for its region.</p>
+      <p>MCIdentity ships as one jar for every platform. When it starts, it detects Folia first and switches to Folia's region-aware scheduling. Instead of one main thread, Folia runs many region threads, so the plugin sends each task to the thread that owns the player or place it touches. The add-ons reuse this same scheduling from the core plugin, so they behave correctly on Folia too.</p>
       <ul>
         <li>GUIs, identity swaps, and stat updates are scheduled onto the region owning the relevant player or location.</li>
         <li>Storage I/O still runs on the asynchronous worker pool, exactly as on Spigot and Paper.</li>
@@ -58,7 +58,7 @@
       <h2>Requirements</h2>
       <ul>
         <li><strong>Java 25</strong> or newer.</li>
-        <li>A Folia server on the <code>26.1.x</code> API line.</li>
+        <li>A Folia server on the 26.1 API line.</li>
       </ul>
       <div class="callout callout--info">
         <span class="callout__icon" aria-hidden="true">➡️</span>

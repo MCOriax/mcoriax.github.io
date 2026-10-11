@@ -26,29 +26,20 @@
     <section class="section">
       <h2>Steps</h2>
       <ol class="steps">
-        <li><p>Place the plugin JAR in your server's <code>plugins/</code> folder.</p></li>
-        <li><p>Start the server once to generate the default configuration.</p></li>
+        <li><p>Place the plugin JAR in your server's plugins folder.</p></li>
+        <li><p>Start the server once. The plugin writes its default configuration file, config.yml, into its own folder.</p></li>
         <li>
-          <p>Pick a storage backend in <code>config.yml</code> (see <a href="../storage/index.html">Data Storage</a>). The default is <strong>SQLite</strong>, which needs no setup at all:</p>
-<pre><code>database:
-  type: sqlite</code></pre>
-          <p>MySQL, PostgreSQL, and MongoDB are configured in their sections under <code>database</code>. To share the MCIdentity central server across a network instead, set <code>database.type: central</code> and point the plugin at your deployment:</p>
-<pre><code>database:
-  type: central
-central_server:
-  url: "https://server.com"
-  token: "the value of SERVER_API_TOKEN on the central server"
-  timeout_seconds: 10</code></pre>
+          <p>Choose where identity data is stored (see <a href="../storage/index.html">Data Storage</a>). The default is <strong>SQLite</strong>, a local file that needs no setup at all, so most servers can skip this step.</p>
+          <p>MySQL, PostgreSQL, and MongoDB each have their own connection section in the configuration: fill in the host, database name, and login for the one you pick. To share data across a whole network through the MCIdentity Central Server instead, switch the storage type to the central server and give the plugin two things: the address of your deployment and the API token that deployment was started with. An optional timeout controls how long the plugin waits for an answer.</p>
         </li>
-        <li><p>Restart the server. The plugin initializes the selected storage on startup and logs an error if it is unreachable.</p></li>
+        <li><p>Restart the server. The plugin connects to the selected storage on startup and logs a clear error if it cannot reach it.</p></li>
       </ol>
     </section>
 
     <section class="section">
       <h2>Death behaviour</h2>
-      <p>By default a player keeps their equipped identity when they die and continues wearing it after respawning. To make the identity key drop on death instead — sending the player back to the base <code>player</code> profession — set:</p>
-<pre><code>drop_on_death: true</code></pre>
-      <p><code>drop_on_death</code> is <code>false</code> by default.</p>
+      <p>By default a player keeps their equipped identity when they die and continues wearing it after respawning.</p>
+      <p>Server owners who want death to matter can turn on the <strong>drop on death</strong> option. The equipped identity key then drops like any other item, and the player falls back to the base Player profession until they pick it up again or equip another. The option is off by default.</p>
       <div class="callout callout--info">
         <span class="callout__icon" aria-hidden="true">🌐</span>
         <div class="callout__body">
@@ -60,23 +51,16 @@ central_server:
     <section class="section" id="requirements">
       <h2>Requirements</h2>
       <ul>
-        <li><strong>Java 25</strong> or newer (the Gradle build provisions its own JDK 25 toolchain).</li>
-        <li>A <strong>SpigotMC</strong>, <strong>PaperMC</strong>, or <strong>Folia</strong> server (build <code>26.1.x</code> API line).</li>
-        <li>This project is a plugin extension for those servers — it is not a standalone application.</li>
-        <li>No external database is required by default (SQLite). MySQL, PostgreSQL, MongoDB, or a reachable MCIdentity central server are needed only when configured as the backend.</li>
+        <li><strong>Java 25</strong> or newer on the server.</li>
+        <li>A <strong>SpigotMC</strong>, <strong>PaperMC</strong>, or <strong>Folia</strong> server on the 26.1 API line.</li>
+        <li>MCIdentity is a plugin for those servers, not a standalone application.</li>
+        <li>No external database by default. MySQL, PostgreSQL, MongoDB, or a reachable central server are needed only when you choose them as the backend. Every driver the plugin needs is already included, so there is nothing extra to download.</li>
       </ul>
     </section>
 
     <section class="section" id="testing">
-      <h2>Testing</h2>
-      <p>The plugin includes a suite of unit tests for the <code>common</code> module to ensure data integrity and logic correctness. To run them, use the following Gradle command:</p>
-<pre><code>./gradlew :common:test</code></pre>
-      <p>The tests cover:</p>
-      <ul>
-        <li>Core managers (<code>MCIdentityManager</code>, <code>MCIdentityProvider</code>).</li>
-        <li>The central server client (<code>MCIdentityCentralServer</code>), exercised against a stub HTTP server.</li>
-        <li>Data serialization and session-management logic.</li>
-      </ul>
+      <h2>Quality</h2>
+      <p>Every release is built and checked by an automated test suite before it is published. The tests cover the identity manager and the public provider, the connection to the central server (exercised against a stand-in server), and the logic that saves and restores sessions.</p>
     </section>
   </main>
 
