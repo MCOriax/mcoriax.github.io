@@ -14,7 +14,7 @@
 ## What this repository is
 
 The documentation website for the **MCIdentity** Minecraft plugin and its
-**MCIdentitySkill**, **MCIdentityRune**, and **MCIdentityCosmetic** add-ons,
+**MCIdentitySkill**, **MCIdentityRune**, **MCIdentityCosmetic**, and **MCIdentityPerks** add-ons and the **MCIdentity Central Server**,
 published with GitHub Pages.
 
 It is plain, self-contained static HTML — no build step, no framework, and no
@@ -37,15 +37,17 @@ how to add that page lives in `wiki/`.
 | Features, Installation, Storage, GUI, Commands | The core MCIdentity plugin. |
 | API, Listeners | The developer surface for third-party plugins. |
 | Profession | One generated page per bundled profession, plus the EXP action reference. |
-| Skill, Rune, Cosmetic | The three standalone add-ons. |
+| Skill, Rune, Cosmetic, Perks | The standalone add-ons. Perks is in development. |
+| Server | The MCIdentity Central Server. |
 | Platforms | SpigotMC, PaperMC, and FoliaMC guides. |
 | Logs | Versioned change logs, with a separate version tree per product. |
 
 ## The rule that shapes every page
 
-This is a **public, user-facing** site. It documents how to *use* the plugin,
-never how it is built inside. Implementation details — Java classes, method
-bodies, private helpers — never appear on a page. See
+This is a **public, user-facing** site. It explains what each MCOriax project is
+and how it works, in prose and tables. **No page contains code or code snippets
+of any kind**, not even build or configuration examples, and implementation
+details never appear on a page. See
 [`../../.agents/rules/repository.md`](../../.agents/rules/repository.md) for the
 full iron rules.
 

@@ -46,9 +46,9 @@ How to add a new section page to the site.
 * **Prefer editing shared partials** over duplicating markup.
 * **Use the design tokens** from [`DESIGN.md`](../../DESIGN.md). Do not invent
   new colors or one-off styles.
-* **Never expose internal source.** Code blocks are allowed only for
-  consumer-facing usage: calling the public API, a third-party listener class,
-  build configuration, or server-owner configuration. See
+* **No code, anywhere.** A page never contains a code block, inline code, or a
+  snippet of code or configuration written out as text. Explain it in prose and
+  tables instead. See
   [`../../.agents/rules/repository.md`](../../.agents/rules/repository.md).
 
 ## Verify

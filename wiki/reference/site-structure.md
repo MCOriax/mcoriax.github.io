@@ -60,22 +60,24 @@ runtime dependency on another site); the design system is documented in
 | Directory / File | Purpose |
 |---|---|
 | [`docs/features/index.html`](../../docs/features/index.html) | Key features overview. |
-| [`docs/installation/index.html`](../../docs/installation/index.html) | Installation, death behaviour, requirements, and testing. |
-| [`docs/storage/index.html`](../../docs/storage/index.html) | Data storage backends and schema, including the `identity_properties` column reference and the unique `alias`. |
+| [`docs/installation/index.html`](../../docs/installation/index.html) | Installation steps, death behaviour, requirements, and quality, in prose. |
+| [`docs/storage/index.html`](../../docs/storage/index.html) | Data storage backends, how they work, upgrade notes, identity aliases, and the data stored. |
 | [`docs/gui/index.html`](../../docs/gui/index.html) | The multi-tier GUI system. |
 | [`docs/commands/index.html`](../../docs/commands/index.html) | All command usages and permissions. |
-| [`docs/api/index.html`](../../docs/api/index.html) | Developer API usage of the provider class (accordion reference). |
-| [`docs/skill/index.html`](../../docs/skill/index.html) | The MCIdentitySkill add-on: the PDC based architecture, the profession restriction (including the base `player` identity owning no skills), MythicMobs casting, the single player command and its operator only subcommands, and its developer API. |
+| [`docs/api/index.html`](../../docs/api/index.html) | What the developer library offers, how to get it, the events to react to, and the one identity, one account rule, in prose. |
+| [`docs/skill/index.html`](../../docs/skill/index.html) | The MCIdentitySkill add-on: skills stored on the item, the profession restriction (including the base `player` identity owning no skills), MythicMobs casting, the single player command and its operator only subcommands, and its developer API. |
 | [`docs/rune/index.html`](../../docs/rune/index.html) | The MCIdentityRune add-on: identity-scoped rune slots, the permanent held-once assignment rules, the menu layout, `/rune`, its own storage, and its developer API. |
 | [`docs/cosmetic/index.html`](../../docs/cosmetic/index.html) | The MCIdentityCosmetic add-on: the independent skin and aura fields, the menu layout, `/cosmetic`, its own storage, and its developer API. |
-| [`docs/listeners/index.html`](../../docs/listeners/index.html) | Custom Bukkit events and gameplay listeners. |
+| [`docs/perks/index.html`](../../docs/perks/index.html) | The MCIdentityPerks add-on, in development: Sigils, Relics, and Perks, all stored against the identity. |
+| [`docs/server/index.html`](../../docs/server/index.html) | The MCIdentity Central Server: what it is, how game servers use it, storage, security, running it, and compatibility. |
+| [`docs/listeners/index.html`](../../docs/listeners/index.html) | The identity events other plugins can react to, as a plain table, and the gameplay listeners. |
 | [`docs/donation/index.html`](../../docs/donation/index.html) | Donation page with the GitHub sponsor block. |
 
 ### Profession pages
 
 | Directory / File | Purpose |
 |---|---|
-| [`docs/profession/index.html`](../../docs/profession/index.html) | Professions overview, the per-action EXP gain reference (one accordion with a worked example per action key), and the full profession table. |
+| [`docs/profession/index.html`](../../docs/profession/index.html) | Professions overview, the per-action EXP gain reference (one accordion per action, with examples shown as plain tables), and the full profession table. |
 | [`docs/profession/{profession_name}/index.html`](../../docs/profession/) | Detail page per bundled profession (max level, stats, how to level up). Covers `acrobat`, `archaeologist`, `archer`, `builder`, `chef`, `crafter`, `enchanter`, `engineer`, `explorer`, `farmer`, `fighter`, `fisher`, `gatherer`, `guard`, `lumberjack`, `mariner`, `merchant`, `miner`, `supporter`, `tamer`, and `tanker`. |
 
 ### Platform pages
@@ -90,7 +92,7 @@ runtime dependency on another site); the design system is documented in
 
 | Directory / File | Purpose |
 |---|---|
-| [`docs/logs/index.html`](../../docs/logs/index.html) | Latest MCIdentity change log (`4.6.0`) with a right-side version navigation bar. Each add-on keeps its own version tree under `logs/skill/`, `logs/rune/`, and `logs/cosmetic/`, so the products' versions never collide. |
+| [`docs/logs/index.html`](../../docs/logs/index.html) | Latest MCIdentity change log (`4.7.0`) with a right-side version navigation bar. Each add-on and the central server keep their own version tree under `logs/skill/`, `logs/rune/`, `logs/cosmetic/`, `logs/perks/`, and `logs/server/`, so the products' versions never collide. |
 | [`docs/logs/1/0/0/index.html`](../../docs/logs/1/0/0/index.html) | Permalink for version 1.0.0 (versioned `major/minor/patch` structure). |
 | [`docs/logs/1/1/0/index.html`](../../docs/logs/1/1/0/index.html) | Permalink for version 1.1.0 (universal JAR architecture). |
 | [`docs/logs/2/0/0/index.html`](../../docs/logs/2/0/0/index.html) | Permalink for version 2.0.0 (developer API namespace move). |
@@ -104,16 +106,29 @@ runtime dependency on another site); the design system is documented in
 | [`docs/logs/4/5/0/index.html`](../../docs/logs/4/5/0/index.html) | Permalink for version 4.5.0 (identities are named by their alias, with profession and level in the lore). |
 | [`docs/logs/4/5/1/index.html`](../../docs/logs/4/5/1/index.html) | Permalink for version 4.5.1 (the identity item is re-titled on alias claim and on equip). |
 | [`docs/logs/4/6/0/index.html`](../../docs/logs/4/6/0/index.html) | Permalink for version 4.6.0 (`/identity unuse` is renamed to `/identity unequip`, node included). |
-| [`docs/logs/skill/index.html`](../../docs/logs/skill/index.html) | Latest MCIdentitySkill change log (`0.3.0`), with its own version navigation. |
+| [`docs/logs/4/6/1/index.html`](../../docs/logs/4/6/1/index.html) | Permalink for version 4.6.1 (a quality and security clean-up). |
+| [`docs/logs/4/7/0/index.html`](../../docs/logs/4/7/0/index.html) | Permalink for version 4.7.0 (one shared central server connection for the add-ons). |
+| [`docs/logs/skill/index.html`](../../docs/logs/skill/index.html) | Latest MCIdentitySkill change log (`0.3.1`), with its own version navigation. |
 | [`docs/logs/skill/0/0/0/index.html`](../../docs/logs/skill/0/0/0/index.html) | Permalink for MCIdentitySkill version 0.0.0 (initial release). |
 | [`docs/logs/skill/0/1/0/index.html`](../../docs/logs/skill/0/1/0/index.html) | Permalink for MCIdentitySkill version 0.1.0 (the base `player` identity owns no skills and has no skill menu). |
 | [`docs/logs/skill/0/2/0/index.html`](../../docs/logs/skill/0/2/0/index.html) | Permalink for MCIdentitySkill version 0.2.0 (a player has one command, `/skill`, which opens the menu they equip in). |
 | [`docs/logs/skill/0/3/0/index.html`](../../docs/logs/skill/0/3/0/index.html) | Permalink for MCIdentitySkill version 0.3.0 (an identity holds a given skill in at most one slot). |
-| [`docs/logs/rune/index.html`](../../docs/logs/rune/index.html) | Latest MCIdentityRune change log (`0.1.0`), with its own version navigation. |
+| [`docs/logs/skill/0/3/1/index.html`](../../docs/logs/skill/0/3/1/index.html) | Permalink for MCIdentitySkill version 0.3.1 (maintenance). |
+| [`docs/logs/rune/index.html`](../../docs/logs/rune/index.html) | Latest MCIdentityRune change log (`0.1.1`), with its own version navigation. |
 | [`docs/logs/rune/0/0/0/index.html`](../../docs/logs/rune/0/0/0/index.html) | Permalink for MCIdentityRune version 0.0.0 (initial release). |
 | [`docs/logs/rune/0/1/0/index.html`](../../docs/logs/rune/0/1/0/index.html) | Permalink for MCIdentityRune version 0.1.0 (a rune assignment is permanent and held once). |
+| [`docs/logs/rune/0/1/1/index.html`](../../docs/logs/rune/0/1/1/index.html) | Permalink for MCIdentityRune version 0.1.1 (maintenance). |
 | [`docs/logs/cosmetic/index.html`](../../docs/logs/cosmetic/index.html) | Latest MCIdentityCosmetic change log, with its own version navigation. |
 | [`docs/logs/cosmetic/0/0/0/index.html`](../../docs/logs/cosmetic/0/0/0/index.html) | Permalink for MCIdentityCosmetic version 0.0.0 (initial release). |
+| [`docs/logs/perks/index.html`](../../docs/logs/perks/index.html) | Latest MCIdentityPerks change log (`0.1.0`), with its own version navigation. |
+| [`docs/logs/perks/0/1/0/index.html`](../../docs/logs/perks/0/1/0/index.html) | Permalink for MCIdentityPerks version 0.1.0 (project set up). |
+| [`docs/logs/server/index.html`](../../docs/logs/server/index.html) | Latest MCIdentity Central Server change log (`3.4.5`), with its own version navigation. |
+| [`docs/logs/server/3/4/0/index.html`](../../docs/logs/server/3/4/0/index.html) | Permalink for MCIdentity Central Server version 3.4.0 (documentation reorganised). |
+| [`docs/logs/server/3/4/1/index.html`](../../docs/logs/server/3/4/1/index.html) | Permalink for MCIdentity Central Server version 3.4.1 (two security hardenings). |
+| [`docs/logs/server/3/4/2/index.html`](../../docs/logs/server/3/4/2/index.html) | Permalink for MCIdentity Central Server version 3.4.2 (housekeeping). |
+| [`docs/logs/server/3/4/3/index.html`](../../docs/logs/server/3/4/3/index.html) | Permalink for MCIdentity Central Server version 3.4.3 (stat statements prepared in advance). |
+| [`docs/logs/server/3/4/4/index.html`](../../docs/logs/server/3/4/4/index.html) | Permalink for MCIdentity Central Server version 3.4.4 (housekeeping). |
+| [`docs/logs/server/3/4/5/index.html`](../../docs/logs/server/3/4/5/index.html) | Permalink for MCIdentity Central Server version 3.4.5 (checked against every plugin). |
 
 ## Tooling
 
@@ -121,4 +136,4 @@ runtime dependency on another site); the design system is documented in
 |---|---|
 | [`scripts/`](../../scripts/) | Build scripts (not served by the site). |
 | [`scripts/generate_professions.py`](../../scripts/generate_professions.py) | Generates the profession listing and detail pages from embedded profession data. |
-| [`scripts/exp_actions.py`](../../scripts/exp_actions.py) | Catalog of every EXP gain action key with its trigger, accepted value shapes, and YAML examples; rendered onto the profession listing page. |
+| [`scripts/exp_actions.py`](../../scripts/exp_actions.py) | Catalog of every EXP gain action key with its trigger, accepted value shapes, and examples; rendered as plain tables onto the profession listing page. |

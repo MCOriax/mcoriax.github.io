@@ -72,7 +72,9 @@ commit.
 ## Content rule
 
 Describe **what changed for users and integrators** — features, fixes, config,
-and public-API changes only. Never paste internal implementation details.
+and public-API changes only, in plain language. A log page contains no code:
+no inline code, no class or method names, no table or configuration keys.
+Commands and permission nodes stay as ordinary words.
 
 ## Versioning
 
