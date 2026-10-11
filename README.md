@@ -1,8 +1,9 @@
 # mcoriax.github.io
 
-The documentation website for the **MCIdentity** Minecraft plugin and its
-**MCIdentitySkill**, **MCIdentityRune**, and **MCIdentityCosmetic** add-ons,
-published with GitHub Pages.
+The documentation website for the **MCIdentity** Minecraft plugin, its
+**MCIdentitySkill**, **MCIdentityRune**, **MCIdentityCosmetic**, and
+**MCIdentityPerks** add-ons, and the **MCIdentity Central Server**, published
+with GitHub Pages. Every page is written in prose and tables, with no code.
 
 Plain, self-contained static HTML — no build step, no framework, and no external
 fonts, scripts, or stylesheets.

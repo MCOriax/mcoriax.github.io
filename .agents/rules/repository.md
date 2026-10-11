@@ -25,23 +25,21 @@ repository (see
 This is a **public, user-facing** documentation site. It documents how to *use*
 the plugin, never how it is built inside.
 
-* **Do not** copy the plugin's implementation (Java classes, method bodies,
-  internal fields, private helpers, package-internal logic) onto any page.
-* For the API, show **only the usage of the provider class** and the public
-  contract: how a consumer calls `MCIdentityProvider`, the public method
-  signatures, parameters, and return types, and how to listen to the public
-  Bukkit events (accessors, cancellable status). Nothing about how those are
-  implemented.
-* Code blocks are allowed only when they are **consumer-facing usage**:
-  * calling the public API (`provider.getActiveIdentity(...)`, etc.),
-  * a third-party plugin's own listener class,
-  * build configuration (`build.gradle`, `plugin.yml`),
-  * server-owner **configuration** (`config.yml`, `professions/*.yml`).
-* If an example seems to require internal source to explain something, describe
-  the behaviour in prose instead and link to the public API surface.
+* **No page may contain code or code snippets of any kind.** That covers
+  `<pre>` and `<code>` elements, and also code written out as plain text: Java,
+  build files, configuration files, method signatures, and package or class
+  paths.
+* Describe behaviour in prose and tables instead: what each project is, how it
+  works, and what a reader can do with it. Configuration becomes sentences such
+  as "switch the storage type to the central server"; EXP rules become tables
+  of conditions and rewards.
+* Names a reader has to type stay as ordinary words: commands such as
+  /identity, permission nodes, and the names of the libraries' modules.
+* Never describe how the plugin is built inside: no internal classes, fields,
+  or helpers.
 
-When in doubt, ask: *"Would this line appear in the plugin's own source tree?"*
-If yes, it does not belong on the site.
+When in doubt, ask: *"Is this something a reader would copy into a file?"* If
+yes, it does not belong on the site.
 
 ### 2. Keep the site self-contained
 

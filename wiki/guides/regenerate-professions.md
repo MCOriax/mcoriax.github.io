@@ -14,7 +14,7 @@ python3 scripts/generate_professions.py
 This rewrites:
 
 * `docs/profession/index.html` — the professions overview, the per-action EXP
-  gain reference (one accordion with a worked example per action key), and the
+  gain reference (one accordion with worked examples per action, shown as plain tables), and the
   full profession table.
 * `docs/profession/{profession_name}/index.html` — one detail page per bundled
   profession, covering max level, stats, and how to level up.
@@ -33,7 +33,7 @@ The bundled professions are `acrobat`, `archaeologist`, `archer`, `builder`,
 ## Add or change an EXP action
 
 The catalog of EXP gain action keys — each with its trigger, accepted value
-shapes, and YAML examples — lives in
+shapes, and examples, which the generator renders as plain tables — lives in
 [`scripts/exp_actions.py`](../../scripts/exp_actions.py). It is rendered onto the
 profession listing page, so edit it there and regenerate.
 
