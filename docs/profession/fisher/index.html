@@ -22,7 +22,7 @@
       <div>
         <span class="eyebrow">Profession</span>
         <h1>Fisher</h1>
-        <p class="lead">Theme: <strong>Fishing</strong>. System code <code>fisher</code>.</p>
+        <p class="lead">Theme: <strong>Fishing</strong>.</p>
       </div>
     </div>
     <section class="section">
@@ -35,18 +35,18 @@
     </section>
     <section class="section">
       <h2>How to level up</h2>
-      <p>Every level takes <strong>100 EXP</strong>, and the class caps at <strong>level 100</strong>. Earn experience by performing the actions below — each is configured in this profession's YAML file. Ranges such as <code>a~b</code> award a random amount between <code>a</code> and <code>b</code>; numeric conditions such as <code>1-10</code> match the amount involved (for example damage dealt or survived).</p>
+      <p>Every level takes <strong>100 EXP</strong>, and the class caps at <strong>level 100</strong>. Earn experience by performing the actions below, each set in this profession's file. Where the EXP is a range, such as 60 to 100, a random amount in that range is awarded each time. Where an action lists ranges of its own, such as 1 to 5, the reward depends on the amount involved, for example the damage dealt or survived.</p>
       <div class="table-wrap">
         <table>
           <thead><tr><th>Action</th><th>How it triggers</th><th>EXP</th></tr></thead>
           <tbody>
-        <tr><td><span class="action-key">fish_caught</span></td><td>Reel in a fish</td><td class="exp-val">4~8 EXP</td></tr>
-        <tr><td><span class="action-key">catch_entity_bucket</span></td><td>Capture an entity in a bucket</td><td><span class="sub-key">cod</span> &rarr; 5 EXP<br><span class="sub-key">salmon</span> &rarr; 5 EXP<br><span class="sub-key">pufferfish</span> &rarr; 8 EXP<br><span class="sub-key">tropical_fish</span> &rarr; 12 EXP<br><span class="sub-key">axolotl</span> &rarr; 25 EXP<br><span class="sub-key">tadpole</span> &rarr; 8 EXP</td></tr>
-        <tr><td><span class="action-key">spawn_axolotl_bucket</span></td><td>Release an axolotl from a bucket into the world</td><td class="exp-val">15~25 EXP</td></tr>
+        <tr><td><span class="action-key">Reel in a fish</span></td><td>Reel in a fish</td><td class="exp-val">4 to 8 EXP</td></tr>
+        <tr><td><span class="action-key">Capture an entity in a bucket</span></td><td>Capture an entity in a bucket</td><td><span class="sub-key">Cod</span>: 5 EXP<br><span class="sub-key">Salmon</span>: 5 EXP<br><span class="sub-key">Pufferfish</span>: 8 EXP<br><span class="sub-key">Tropical fish</span>: 12 EXP<br><span class="sub-key">Axolotl</span>: 25 EXP<br><span class="sub-key">Tadpole</span>: 8 EXP</td></tr>
+        <tr><td><span class="action-key">Release an axolotl from a bucket</span></td><td>Release an axolotl from a bucket into the world</td><td class="exp-val">15 to 25 EXP</td></tr>
           </tbody>
         </table>
       </div>
-      <div class="callout callout--info"><span class="callout__icon" aria-hidden="true">💡</span><div class="callout__body"><p>These values come from the bundled <code>professions/fisher.yml</code>. Server owners can edit them or add entirely new professions — see <a href="../index.html#custom">Professions &amp; EXP</a>.</p></div></div>
+      <div class="callout callout--info"><span class="callout__icon" aria-hidden="true">💡</span><div class="callout__body"><p>These values come from the Fisher file that ships with the plugin. Server owners can edit them or add entirely new professions — see <a href="../index.html#custom">Professions &amp; EXP</a>.</p></div></div>
     </section>
     <section class="section">
       <h2>Starting stats</h2>

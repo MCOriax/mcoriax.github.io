@@ -22,7 +22,7 @@
       <div>
         <span class="eyebrow">Profession</span>
         <h1>Supporter</h1>
-        <p class="lead">Theme: <strong>Team &amp; community aid</strong>. System code <code>supporter</code>.</p>
+        <p class="lead">Theme: <strong>Team &amp; community aid</strong>.</p>
       </div>
     </div>
     <section class="section">
@@ -35,19 +35,19 @@
     </section>
     <section class="section">
       <h2>How to level up</h2>
-      <p>Every level takes <strong>120 EXP</strong>, and the class caps at <strong>level 100</strong>. Earn experience by performing the actions below — each is configured in this profession's YAML file. Ranges such as <code>a~b</code> award a random amount between <code>a</code> and <code>b</code>; numeric conditions such as <code>1-10</code> match the amount involved (for example damage dealt or survived).</p>
+      <p>Every level takes <strong>120 EXP</strong>, and the class caps at <strong>level 100</strong>. Earn experience by performing the actions below, each set in this profession's file. Where the EXP is a range, such as 60 to 100, a random amount in that range is awarded each time. Where an action lists ranges of its own, such as 1 to 5, the reward depends on the amount involved, for example the damage dealt or survived.</p>
       <div class="table-wrap">
         <table>
           <thead><tr><th>Action</th><th>How it triggers</th><th>EXP</th></tr></thead>
           <tbody>
-        <tr><td><span class="action-key">apply_buff</span></td><td>Land a beneficial (non-healing) potion on another player</td><td class="exp-val">15~25 EXP</td></tr>
-        <tr><td><span class="action-key">heal_target</span></td><td>Heal another entity with a splash potion</td><td class="exp-val">20 EXP</td></tr>
-        <tr><td><span class="action-key">ring_bell</span></td><td>Ring a bell (rate-limited)</td><td class="exp-val">3~5 EXP</td></tr>
-        <tr><td><span class="action-key">cure_zombie_villager</span></td><td>Feed a golden apple to a weakened zombie villager</td><td class="exp-val">100~150 EXP</td></tr>
+        <tr><td><span class="action-key">Buff another player</span></td><td>Land a beneficial (non-healing) potion on another player</td><td class="exp-val">15 to 25 EXP</td></tr>
+        <tr><td><span class="action-key">Heal another entity</span></td><td>Heal another entity with a splash potion</td><td class="exp-val">20 EXP</td></tr>
+        <tr><td><span class="action-key">Ring a bell</span></td><td>Ring a bell (rate-limited)</td><td class="exp-val">3 to 5 EXP</td></tr>
+        <tr><td><span class="action-key">Cure a zombie villager</span></td><td>Feed a golden apple to a weakened zombie villager</td><td class="exp-val">100 to 150 EXP</td></tr>
           </tbody>
         </table>
       </div>
-      <div class="callout callout--info"><span class="callout__icon" aria-hidden="true">💡</span><div class="callout__body"><p>These values come from the bundled <code>professions/supporter.yml</code>. Server owners can edit them or add entirely new professions — see <a href="../index.html#custom">Professions &amp; EXP</a>.</p></div></div>
+      <div class="callout callout--info"><span class="callout__icon" aria-hidden="true">💡</span><div class="callout__body"><p>These values come from the Supporter file that ships with the plugin. Server owners can edit them or add entirely new professions — see <a href="../index.html#custom">Professions &amp; EXP</a>.</p></div></div>
     </section>
     <section class="section">
       <h2>Starting stats</h2>

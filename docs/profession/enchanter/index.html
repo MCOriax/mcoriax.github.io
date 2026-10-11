@@ -22,7 +22,7 @@
       <div>
         <span class="eyebrow">Profession</span>
         <h1>Enchanter</h1>
-        <p class="lead">Theme: <strong>Magic, alchemy &amp; repair</strong>. System code <code>enchanter</code>.</p>
+        <p class="lead">Theme: <strong>Magic, alchemy &amp; repair</strong>.</p>
       </div>
     </div>
     <section class="section">
@@ -35,21 +35,21 @@
     </section>
     <section class="section">
       <h2>How to level up</h2>
-      <p>Every level takes <strong>130 EXP</strong>, and the class caps at <strong>level 100</strong>. Earn experience by performing the actions below — each is configured in this profession's YAML file. Ranges such as <code>a~b</code> award a random amount between <code>a</code> and <code>b</code>; numeric conditions such as <code>1-10</code> match the amount involved (for example damage dealt or survived).</p>
+      <p>Every level takes <strong>130 EXP</strong>, and the class caps at <strong>level 100</strong>. Earn experience by performing the actions below, each set in this profession's file. Where the EXP is a range, such as 60 to 100, a random amount in that range is awarded each time. Where an action lists ranges of its own, such as 1 to 5, the reward depends on the amount involved, for example the damage dealt or survived.</p>
       <div class="table-wrap">
         <table>
           <thead><tr><th>Action</th><th>How it triggers</th><th>EXP</th></tr></thead>
           <tbody>
-        <tr><td><span class="action-key">enchant_item</span></td><td>Enchant an item at an enchanting table</td><td class="exp-val">20~35 EXP</td></tr>
-        <tr><td><span class="action-key">repair_item</span></td><td>Take a repaired or combined item out of an anvil</td><td class="exp-val">8~15 EXP</td></tr>
-        <tr><td><span class="action-key">brew_potion</span></td><td>Collect a brewed potion from a brewing stand</td><td class="exp-val">12 EXP</td></tr>
-        <tr><td><span class="action-key">consume_potion</span></td><td>Drink a potion</td><td class="exp-val">5~10 EXP</td></tr>
-        <tr><td><span class="action-key">repair_trident</span></td><td>Take a repaired trident out of an anvil</td><td class="exp-val">12~20 EXP</td></tr>
-        <tr><td><span class="action-key">clean_armor_trim</span></td><td>Wash a trimmed armor piece in a cauldron (rate-limited)</td><td class="exp-val">8~12 EXP</td></tr>
+        <tr><td><span class="action-key">Enchant an item</span></td><td>Enchant an item at an enchanting table</td><td class="exp-val">20 to 35 EXP</td></tr>
+        <tr><td><span class="action-key">Repair or combine an item on an anvil</span></td><td>Take a repaired or combined item out of an anvil</td><td class="exp-val">8 to 15 EXP</td></tr>
+        <tr><td><span class="action-key">Collect a brewed potion</span></td><td>Collect a brewed potion from a brewing stand</td><td class="exp-val">12 EXP</td></tr>
+        <tr><td><span class="action-key">Drink a potion</span></td><td>Drink a potion</td><td class="exp-val">5 to 10 EXP</td></tr>
+        <tr><td><span class="action-key">Repair a trident on an anvil</span></td><td>Take a repaired trident out of an anvil</td><td class="exp-val">12 to 20 EXP</td></tr>
+        <tr><td><span class="action-key">Wash a trimmed armor piece</span></td><td>Wash a trimmed armor piece in a cauldron (rate-limited)</td><td class="exp-val">8 to 12 EXP</td></tr>
           </tbody>
         </table>
       </div>
-      <div class="callout callout--info"><span class="callout__icon" aria-hidden="true">💡</span><div class="callout__body"><p>These values come from the bundled <code>professions/enchanter.yml</code>. Server owners can edit them or add entirely new professions — see <a href="../index.html#custom">Professions &amp; EXP</a>.</p></div></div>
+      <div class="callout callout--info"><span class="callout__icon" aria-hidden="true">💡</span><div class="callout__body"><p>These values come from the Enchanter file that ships with the plugin. Server owners can edit them or add entirely new professions — see <a href="../index.html#custom">Professions &amp; EXP</a>.</p></div></div>
     </section>
     <section class="section">
       <h2>Starting stats</h2>

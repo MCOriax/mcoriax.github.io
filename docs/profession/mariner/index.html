@@ -22,7 +22,7 @@
       <div>
         <span class="eyebrow">Profession</span>
         <h1>Mariner</h1>
-        <p class="lead">Theme: <strong>Seafaring &amp; aquatic</strong>. System code <code>mariner</code>.</p>
+        <p class="lead">Theme: <strong>Seafaring &amp; aquatic</strong>.</p>
       </div>
     </div>
     <section class="section">
@@ -35,18 +35,18 @@
     </section>
     <section class="section">
       <h2>How to level up</h2>
-      <p>Every level takes <strong>120 EXP</strong>, and the class caps at <strong>level 100</strong>. Earn experience by performing the actions below — each is configured in this profession's YAML file. Ranges such as <code>a~b</code> award a random amount between <code>a</code> and <code>b</code>; numeric conditions such as <code>1-10</code> match the amount involved (for example damage dealt or survived).</p>
+      <p>Every level takes <strong>120 EXP</strong>, and the class caps at <strong>level 100</strong>. Earn experience by performing the actions below, each set in this profession's file. Where the EXP is a range, such as 60 to 100, a random amount in that range is awarded each time. Where an action lists ranges of its own, such as 1 to 5, the reward depends on the amount involved, for example the damage dealt or survived.</p>
       <div class="table-wrap">
         <table>
           <thead><tr><th>Action</th><th>How it triggers</th><th>EXP</th></tr></thead>
           <tbody>
-        <tr><td><span class="action-key">swim_distance</span></td><td>Sprint-swim in water (per 10 blocks travelled)</td><td class="exp-val">2~4 EXP</td></tr>
-        <tr><td><span class="action-key">ride_vehicle</span></td><td>Start riding a boat or minecart (rate-limited)</td><td class="exp-val">3~5 EXP</td></tr>
-        <tr><td><span class="action-key">catch_entity_bucket</span></td><td>Capture an entity in a bucket</td><td><span class="sub-key">cod</span> &rarr; 5 EXP<br><span class="sub-key">salmon</span> &rarr; 5 EXP<br><span class="sub-key">pufferfish</span> &rarr; 8 EXP<br><span class="sub-key">tropical_fish</span> &rarr; 12 EXP<br><span class="sub-key">axolotl</span> &rarr; 25 EXP</td></tr>
+        <tr><td><span class="action-key">Swim 10 blocks</span></td><td>Sprint-swim in water (per 10 blocks travelled)</td><td class="exp-val">2 to 4 EXP</td></tr>
+        <tr><td><span class="action-key">Start riding a vehicle</span></td><td>Start riding a boat or minecart (rate-limited)</td><td class="exp-val">3 to 5 EXP</td></tr>
+        <tr><td><span class="action-key">Capture an entity in a bucket</span></td><td>Capture an entity in a bucket</td><td><span class="sub-key">Cod</span>: 5 EXP<br><span class="sub-key">Salmon</span>: 5 EXP<br><span class="sub-key">Pufferfish</span>: 8 EXP<br><span class="sub-key">Tropical fish</span>: 12 EXP<br><span class="sub-key">Axolotl</span>: 25 EXP</td></tr>
           </tbody>
         </table>
       </div>
-      <div class="callout callout--info"><span class="callout__icon" aria-hidden="true">💡</span><div class="callout__body"><p>These values come from the bundled <code>professions/mariner.yml</code>. Server owners can edit them or add entirely new professions — see <a href="../index.html#custom">Professions &amp; EXP</a>.</p></div></div>
+      <div class="callout callout--info"><span class="callout__icon" aria-hidden="true">💡</span><div class="callout__body"><p>These values come from the Mariner file that ships with the plugin. Server owners can edit them or add entirely new professions — see <a href="../index.html#custom">Professions &amp; EXP</a>.</p></div></div>
     </section>
     <section class="section">
       <h2>Starting stats</h2>

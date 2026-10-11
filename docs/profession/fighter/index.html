@@ -22,7 +22,7 @@
       <div>
         <span class="eyebrow">Profession</span>
         <h1>Fighter</h1>
-        <p class="lead">Theme: <strong>Melee combat &amp; bosses</strong>. System code <code>fighter</code>.</p>
+        <p class="lead">Theme: <strong>Melee combat &amp; bosses</strong>.</p>
       </div>
     </div>
     <section class="section">
@@ -35,20 +35,20 @@
     </section>
     <section class="section">
       <h2>How to level up</h2>
-      <p>Every level takes <strong>150 EXP</strong>, and the class caps at <strong>level 100</strong>. Earn experience by performing the actions below — each is configured in this profession's YAML file. Ranges such as <code>a~b</code> award a random amount between <code>a</code> and <code>b</code>; numeric conditions such as <code>1-10</code> match the amount involved (for example damage dealt or survived).</p>
+      <p>Every level takes <strong>150 EXP</strong>, and the class caps at <strong>level 100</strong>. Earn experience by performing the actions below, each set in this profession's file. Where the EXP is a range, such as 60 to 100, a random amount in that range is awarded each time. Where an action lists ranges of its own, such as 1 to 5, the reward depends on the amount involved, for example the damage dealt or survived.</p>
       <div class="table-wrap">
         <table>
           <thead><tr><th>Action</th><th>How it triggers</th><th>EXP</th></tr></thead>
           <tbody>
-        <tr><td><span class="action-key">deal_damage</span></td><td>Deal melee damage to another entity (by damage dealt)</td><td><span class="sub-key">1-10</span> &rarr; 2~5 EXP<br><span class="sub-key">11-50</span> &rarr; 10~20 EXP<br><span class="sub-key">51-100</span> &rarr; 30~50 EXP</td></tr>
-        <tr><td><span class="action-key">kill_mob</span></td><td>Kill an entity</td><td><span class="sub-key">zombie</span> &rarr; 20~30 EXP<br><span class="sub-key">skeleton</span> &rarr; 25~35 EXP<br><span class="sub-key">creeper</span> &rarr; 40~60 EXP<br><span class="sub-key">spider</span> &rarr; 20~30 EXP<br><span class="sub-key">enderman</span> &rarr; 100~150 EXP</td></tr>
-        <tr><td><span class="action-key">critical_hit</span></td><td>Land a critical melee hit</td><td class="exp-val">15~25 EXP</td></tr>
-        <tr><td><span class="action-key">apply_debuff</span></td><td>Land a harmful potion on another entity</td><td class="exp-val">10~18 EXP</td></tr>
-        <tr><td><span class="action-key">summon_boss</span></td><td>Summon a boss such as the Wither (credited to the nearest player)</td><td><span class="sub-key">wither</span> &rarr; 200~400 EXP</td></tr>
+        <tr><td><span class="action-key">Deal melee damage</span></td><td>Deal melee damage to another entity (by damage dealt)</td><td><span class="sub-key">1 to 10</span>: 2 to 5 EXP<br><span class="sub-key">11 to 50</span>: 10 to 20 EXP<br><span class="sub-key">51 to 100</span>: 30 to 50 EXP</td></tr>
+        <tr><td><span class="action-key">Kill an entity</span></td><td>Kill an entity</td><td><span class="sub-key">Zombie</span>: 20 to 30 EXP<br><span class="sub-key">Skeleton</span>: 25 to 35 EXP<br><span class="sub-key">Creeper</span>: 40 to 60 EXP<br><span class="sub-key">Spider</span>: 20 to 30 EXP<br><span class="sub-key">Enderman</span>: 100 to 150 EXP</td></tr>
+        <tr><td><span class="action-key">Land a critical melee hit</span></td><td>Land a critical melee hit</td><td class="exp-val">15 to 25 EXP</td></tr>
+        <tr><td><span class="action-key">Debuff another entity</span></td><td>Land a harmful potion on another entity</td><td class="exp-val">10 to 18 EXP</td></tr>
+        <tr><td><span class="action-key">Summon a boss</span></td><td>Summon a boss such as the Wither (credited to the nearest player)</td><td><span class="sub-key">Wither</span>: 200 to 400 EXP</td></tr>
           </tbody>
         </table>
       </div>
-      <div class="callout callout--info"><span class="callout__icon" aria-hidden="true">💡</span><div class="callout__body"><p>These values come from the bundled <code>professions/fighter.yml</code>. Server owners can edit them or add entirely new professions — see <a href="../index.html#custom">Professions &amp; EXP</a>.</p></div></div>
+      <div class="callout callout--info"><span class="callout__icon" aria-hidden="true">💡</span><div class="callout__body"><p>These values come from the Fighter file that ships with the plugin. Server owners can edit them or add entirely new professions — see <a href="../index.html#custom">Professions &amp; EXP</a>.</p></div></div>
     </section>
     <section class="section">
       <h2>Starting stats</h2>
