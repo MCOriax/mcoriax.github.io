@@ -45,6 +45,15 @@ must never cross-reference another repository's `.agents/`.
 |---|---|
 | [`prompts/branch-and-commit.md`](prompts/branch-and-commit.md) | Standing prompt applying the branch and commit convention to every task. |
 
+## Memory
+
+| File | Purpose |
+|---|---|
+| [`memory/tasks/content-refresh.md`](memory/tasks/content-refresh.md) | Plan and outcome of the no-code content refresh released as site 1.1.0. |
+| [`memory/tasks/content-refresh-findings.md`](memory/tasks/content-refresh-findings.md) | Unapplied follow-ups from the 1.1.0 refresh, for the owner to choose from. |
+
+Memory records what happened; it never states a rule.
+
 ## Creators
 
 | File | Purpose |
