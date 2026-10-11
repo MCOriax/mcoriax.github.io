@@ -27,41 +27,28 @@
     <div class="logs-layout">
       <article class="log-entry">
         <div class="log-entry__head">
-          <span class="log-entry__version">0.3.0</span>
+          <span class="log-entry__version">0.3.1</span>
           <span class="badge badge--ok">Latest</span>
-          <span class="log-entry__date">2026-08-03 &middot; A skill is held once</span>
+          <span class="log-entry__date">2026-08-27 &middot; Maintenance</span>
         </div>
-        <p class="lead">An identity may now hold a given skill in at most one slot. Equipping a skill it already has equipped elsewhere is refused, so the slots are a set of distinct skills rather than somewhere to stack one skill for extra effect.</p>
+        <p class="lead">A maintenance release that tidies the MongoDB backend and the project's own housekeeping. Skills behave exactly as before.</p>
 
         <div class="log-section">
-          <h3><span class="log-tag log-tag--new">Added</span> A skill is held once</h3>
+          <h3><span class="log-tag log-tag--improve">Changed</span> Under the hood</h3>
           <ul>
-            <li>Equipping a skill the identity already holds in another slot is refused, in the menu and through <code>/skill equip</code> alike. The refusal names the reason rather than looking like a failed click.</li>
-            <li>The check reads the skill code out of each filled slot's item. The item is where a skill's code lives and no column records it, so nothing was added to storage &mdash; the rows and the items cannot drift apart.</li>
-            <li>Codes are compared trimmed and lower-cased. A code is a MythicMobs ID typed by hand into <code>/skill give</code>, so <code>Quarry_Sense</code> and <code>quarry_sense</code> are one skill; treating them as two would let the rule be sidestepped with the shift key.</li>
+            <li>The MongoDB backend names the skill code field in one place, so it can never drift between the places that use it.</li>
           </ul>
         </div>
 
         <div class="log-section">
-          <h3><span class="log-tag log-tag--note">Note</span> When a slot cannot be read</h3>
+          <h3><span class="log-tag log-tag--note">Note</span> Server owners</h3>
           <ul>
-            <li>A filled slot whose item cannot be decoded refuses the equip. Its code is unknowable, so allowing would assert the slots differ without having checked, and a restriction that cannot be proved denies.</li>
-            <li>The practical cost: one corrupt row blocks equipping for that identity until an administrator clears that slot. The alternative &mdash; letting an unreadable slot pass silently &mdash; is worse.</li>
+            <li>No behaviour, configuration, or storage change.</li>
+            <li>Nothing to do on upgrade: drop the new jar in and restart.</li>
           </ul>
         </div>
 
-        <div class="log-section">
-          <h3><span class="log-tag log-tag--note">Note</span> For server owners and integrators</h3>
-          <ul>
-            <li><strong>Nothing is rewritten.</strong> An identity that already holds the same skill in two slots keeps both. The rule applies to new equips only.</li>
-            <li>Slot permanence is unchanged and was already enforced: a filled slot has never been replaceable.</li>
-            <li>No item format change and no schema change. Skill items already in players' inventories carry the same data and keep working.</li>
-            <li>Library coordinates move with the release: <code>io.github.mcoriax:mcidentity-skill-api:0.3.0</code>, <code>-common:0.3.0</code>, and <code>-bukkit:0.3.0</code>. A plugin constructing the equip service directly now passes the item codec to it.</li>
-          </ul>
-        </div>
-
-        <p style="margin-top:1.2rem;"><a href="0/3/0/index.html">Permalink for 0.3.0 &rarr;</a></p>
-        <p style="margin-top:1.2rem;"><a href="0/3/0/index.html">Permalink for 0.3.0 &rarr;</a></p>
+        <p style="margin-top:1.2rem;"><a href="0/3/1/index.html">Permalink for 0.3.1 &rarr;</a></p>
       </article>
 
       <!-- Version list lives in partials/logs-nav.html; js/site.js fills this in. -->

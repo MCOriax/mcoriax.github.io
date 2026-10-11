@@ -52,27 +52,27 @@
         <div class="log-section">
           <h3><span class="log-tag log-tag--improve">Removed</span> Database tables</h3>
           <ul>
-            <li><code>identity_abilities</code> and <code>identity_equipped_abilities</code> are no longer created, and are <strong>dropped on the first start</strong> after upgrading. On MongoDB the <code>identity_abilities</code> collection is dropped and the per-identity <code>equipped_abilities</code> field is unset.</li>
-            <li>The central server drops the same two tables on startup; its <code>/v1/abilities</code> and <code>/v1/identities/:uuid/abilities</code> endpoints now answer 404.</li>
+            <li>The ability data is no longer created, and is <strong>deleted on the first start</strong> after upgrading, on every backend including MongoDB.</li>
+            <li>The central server drops the same two tables on startup; its /v1/abilities and /v1/identities/:uuid/abilities endpoints now answer 404.</li>
           </ul>
         </div>
 
         <div class="log-section">
           <h3><span class="log-tag log-tag--improve">Removed</span> Commands, GUI, and permissions</h3>
           <ul>
-            <li><code>/identity ability get</code> and <code>/identity ability create</code> are gone, along with their tab completion. Use <code>/skill give</code> from the add-on instead.</li>
+            <li>/identity ability get and /identity ability create are gone, along with their tab completion. Use /skill give from the add-on instead.</li>
             <li>The <strong>Ability GUI</strong> and its button in slot 2 of the main identity menu were removed. The Rune and Cosmetic GUIs are unchanged.</li>
-            <li>The <code>gui.buttons.ability</code> entry in <code>textures.yml</code> is no longer read and can be deleted.</li>
+            <li>The ability button texture in the menu texture file is no longer read and can be deleted.</li>
           </ul>
         </div>
 
         <div class="log-section">
           <h3><span class="log-tag log-tag--improve">Removed</span> Developer API surface</h3>
           <ul>
-            <li>Dropped from <code>MCIdentityProvider</code>: <code>createAbility</code>, <code>getAbilities</code>, <code>getEquippedAbilities</code>, and <code>setEquippedAbility</code>.</li>
-            <li>Deleted model types: <code>Ability</code> and <code>EquippedAbility</code>. <code>ActiveIdentitySession</code> no longer carries an equipped abilities map, so its constructor takes one fewer argument.</li>
-            <li>Deleted event: <code>IdentityAbilitySetEvent</code>. The add-on fires its own <code>MCIdentitySkillEquipEvent</code> and <code>MCIdentitySkillUseEvent</code>.</li>
-            <li>Integrating plugins that used any of these must depend on <code>MCIdentitySkill</code> and move to its API. Everything else in the provider is source-compatible with 2.0.0.</li>
+            <li>The provider no longer offers any way to create, list, or equip abilities.</li>
+            <li>The ability data types are gone, and an active session no longer carries the identity's equipped abilities.</li>
+            <li>The ability set event is gone. The add-on fires its own skill equip and skill use events.</li>
+            <li>Integrating plugins that used any of these must depend on MCIdentitySkill and move to its API. Everything else in the provider is source-compatible with 2.0.0.</li>
           </ul>
         </div>
 
@@ -80,7 +80,7 @@
           <h3><span class="log-tag log-tag--note">Note</span> Server owners</h3>
           <ul>
             <li>Install <a href="../../../../skill/index.html">MCIdentitySkill</a> alongside this plugin if you use skills. It requires both MCIdentity and MythicMobs, and refuses to enable without them.</li>
-            <li>Existing ability items stop working — the add-on reads its own persistent data keys, not the old ones. Re-issue them with <code>/skill give</code>.</li>
+            <li>Existing ability items stop working — the add-on reads its own persistent data keys, not the old ones. Re-issue them with /skill give.</li>
           </ul>
         </div>
       </article>

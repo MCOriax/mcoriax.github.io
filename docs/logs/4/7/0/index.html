@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Change Log 4.7.0 — MCIdentity</title>
+  <meta name="description" content="Release notes for MCIdentity version 4.7.0 — one shared central server connection for the add-ons.">
+  <link rel="stylesheet" href="../../../../css/main.css">
+  <link rel="stylesheet" href="../../../../css/shared/layout.css">
+  <link rel="stylesheet" href="../../../../css/shared/components.css">
+  <link rel="stylesheet" href="../../../../css/logs/logs.css">
+  <script>window.SITE_ROOT = "../../../../"; window.PAGE_SECTION = "logs";</script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="../../../../index.html">Home</a><span class="sep">/</span>
+      <a href="../../../../logs/index.html">Change Logs</a><span class="sep">/</span><span>4.7.0</span>
+    </nav>
+
+    <span class="eyebrow">Release notes</span>
+    <h1>Change Log — 4.7.0</h1>
+    <p class="lead">Permalink for version 4.7.0.</p>
+
+    <div class="logs-layout">
+      <article class="log-entry">
+        <div class="log-entry__head">
+          <span class="log-entry__version">4.7.0</span>
+          <span class="badge badge--ok">Latest</span>
+          <span class="log-entry__date">2026-10-11 &middot; One shared central server connection</span>
+        </div>
+        <p class="lead">The connection MCIdentity uses to talk to the central server is now part of its published developer library, so the add-ons can share it instead of each carrying a copy. Nothing changes in game.</p>
+
+        <div class="log-section">
+          <h3><span class="log-tag log-tag--new">Added</span> A shared central server connection</h3>
+          <ul>
+            <li>The developer library now includes the central server connection itself: authentication, reading, writing, and the health check that wakes a sleeping server.</li>
+            <li>The add-ons use it when they store their data on the central server, which is why that setup needs MCIdentity 4.7.0 or newer.</li>
+          </ul>
+        </div>
+
+        <div class="log-section">
+          <h3><span class="log-tag log-tag--improve">Changed</span> A new name in the log</h3>
+          <ul>
+            <li>Problems talking to the central server are now logged under the connection's own name. A server that filters its log by the old name needs to update that filter.</li>
+          </ul>
+        </div>
+
+        <div class="log-section">
+          <h3><span class="log-tag log-tag--note">Note</span> Releases</h3>
+          <ul>
+            <li>This is the first release published to GitHub Packages and tagged automatically the moment it reached the main branch, so the library on GitHub Packages always matches the plugin.</li>
+            <li>Nothing to do on upgrade: drop the new jar in and restart.</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Version list lives in partials/logs-nav.html; js/site.js fills this in. -->
+      <aside class="logs-nav" id="logs-nav" aria-label="Log versions"></aside>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="../../../../js/site.js" defer></script>
+</body>
+</html>

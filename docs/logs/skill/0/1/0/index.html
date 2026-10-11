@@ -31,24 +31,24 @@
           <span class="log-entry__version">0.1.0</span>
           <span class="log-entry__date">2026-08-02 · Base identity lock</span>
         </div>
-        <p class="lead">The base <code>player</code> identity every player starts with now owns no skills at all. It cannot equip or use a skill item, and it has no skill menu. Skills belong to a chosen profession, so a player picks one first.</p>
+        <p class="lead">The base player identity every player starts with now owns no skills at all. It cannot equip or use a skill item, and it has no skill menu. Skills belong to a chosen profession, so a player picks one first.</p>
 
         <div class="log-section">
-          <h3><span class="log-tag log-tag--improve">Changed</span> The base <code>player</code> identity owns no skills</h3>
+          <h3><span class="log-tag log-tag--improve">Changed</span> The base player identity owns no skills</h3>
           <ul>
-            <li><code>player</code> is the reserved profession of the base identity. It is now the one profession that <strong>never</strong> matches a skill item — previously it was treated like any other profession.</li>
+            <li>player is the reserved profession of the base identity. It is now the one profession that <strong>never</strong> matches a skill item — previously it was treated like any other profession.</li>
             <li>While the base identity is worn, a skill item cannot be equipped or used <strong>whatever profession it asks for</strong>. The refusal applies everywhere the restriction already applied: inventory click, drag, hotbar selection, and right-click use.</li>
-            <li>An item stamped with the profession <code>player</code> does not work around it. The base identity is answered <em>before</em> the two professions are compared, so no item can be built that grants it a skill.</li>
+            <li>An item stamped with the profession player does not work around it. The base identity is answered <em>before</em> the two professions are compared, so no item can be built that grants it a skill.</li>
             <li>The denial has its own message, so a player is told what to do rather than only that they were refused:
-              <br><code>[Skill] Your base player identity has no skills. Wear an identity with a profession to use one.</code></li>
+              <br>[Skill] Your base player identity has no skills. Wear an identity with a profession to use one.</li>
           </ul>
         </div>
 
         <div class="log-section">
           <h3><span class="log-tag log-tag--improve">Changed</span> The skill menu belongs to a profession</h3>
           <ul>
-            <li><code>/skill gui</code> no longer opens for the base identity — it has no slots to show, and the refusal happens before any storage is read.</li>
-            <li><code>/skill equip &lt;slot&gt;</code> refuses for the base identity as well, so nothing can be written to a slot it does not own.</li>
+            <li>/skill gui no longer opens for the base identity — it has no slots to show, and the refusal happens before any storage is read.</li>
+            <li>/skill equip &lt;slot&gt; refuses for the base identity as well, so nothing can be written to a slot it does not own.</li>
             <li>Both refusals name the base identity and point at the fix: wear an identity with a profession first.</li>
           </ul>
         </div>
@@ -56,8 +56,8 @@
         <div class="log-section">
           <h3><span class="log-tag log-tag--note">Note</span> For integrators</h3>
           <ul>
-            <li>The access check reports a new outcome, <code>BASE_PROFESSION</code>, alongside the existing ones. Code that treats anything other than the allowing outcome as a denial needs no change; a listener that switches on the outcome by name may want a branch for it.</li>
-            <li>Library coordinates move with the release: <code>io.github.mcoriax:mcidentity-skill-api:0.1.0</code>, <code>-common:0.1.0</code>, and <code>-bukkit:0.1.0</code>.</li>
+            <li>The access check reports a new outcome, BASE_PROFESSION, alongside the existing ones. Code that treats anything other than the allowing outcome as a denial needs no change; a listener that switches on the outcome by name may want a branch for it.</li>
+            <li>The developer library moves to version 0.1.0.</li>
             <li>Nothing else changed: the item is still the record, the restriction still fails closed and cannot be switched off, and an equipped skill is still permanent.</li>
           </ul>
         </div>

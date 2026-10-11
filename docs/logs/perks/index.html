@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Change Logs — MCIdentityPerks</title>
+  <meta name="description" content="Release notes for MCIdentityPerks, showing the latest version with a navigation bar for earlier logs.">
+  <link rel="stylesheet" href="../../css/main.css">
+  <link rel="stylesheet" href="../../css/shared/layout.css">
+  <link rel="stylesheet" href="../../css/shared/components.css">
+  <link rel="stylesheet" href="../../css/logs/logs.css">
+  <script>window.SITE_ROOT = "../../"; window.PAGE_SECTION = "logs";</script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="../../index.html">Home</a><span class="sep">/</span>
+      <a href="../index.html">Change Logs</a><span class="sep">/</span><span>MCIdentityPerks</span>
+    </nav>
+
+    <span class="eyebrow">Release notes · MCIdentityPerks</span>
+    <h1>MCIdentityPerks Change Logs</h1>
+    <p class="lead">The latest release of the perks add-on is shown below. Use the version list on the right to view a specific log. The core plugin's own logs live on the <a href="../index.html">main change log page</a>.</p>
+
+    <div class="logs-layout">
+      <article class="log-entry">
+        <div class="log-entry__head">
+          <span class="log-entry__version">0.1.0</span>
+          <span class="badge badge--ok">Latest</span>
+          <span class="log-entry__date">2026-08-29 &middot; Project set up</span>
+        </div>
+        <p class="lead">The first release of MCIdentityPerks sets the project up: its build, its documentation, and its licence. The plugin itself is not written yet, so this jar contains no gameplay.</p>
+
+        <div class="log-section">
+          <h3><span class="log-tag log-tag--new">Added</span> The foundations</h3>
+          <ul>
+            <li>A build that produces one universal jar for SpigotMC, PaperMC, and Folia, in the same shape as the core plugin.</li>
+            <li>Documentation describing the three progression systems, Sigils, Relics, and Perks, and the rule that all of their data belongs to the identity rather than the player.</li>
+            <li>The planned storage layout for the six kinds of data the add-on will own.</li>
+            <li>A commercial licence.</li>
+          </ul>
+        </div>
+
+        <div class="log-section">
+          <h3><span class="log-tag log-tag--note">Note</span> Not playable yet</h3>
+          <ul>
+            <li>There are no commands, menus, or storage yet, so there is nothing to install. Follow the <a href="../../perks/index.html">Perks page</a> for progress.</li>
+          </ul>
+        </div>
+
+        <p style="margin-top:1.2rem;"><a href="0/1/0/index.html">Permalink for 0.1.0 &rarr;</a></p>
+      </article>
+
+      <!-- Version list lives in partials/logs-nav.html; js/site.js fills this in. -->
+      <aside class="logs-nav" id="logs-nav" aria-label="Log versions"></aside>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="../../js/site.js" defer></script>
+</body>
+</html>

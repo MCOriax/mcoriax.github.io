@@ -29,16 +29,15 @@
       <article class="log-entry">
         <div class="log-entry__head">
           <span class="log-entry__version">0.1.0</span>
-          <span class="badge badge--ok">Latest</span>
           <span class="log-entry__date">2026-08-03 · A rune assignment is permanent</span>
         </div>
-        <p class="lead">A rune has always been described as a permanent slot assignment on an identity. It now behaves like one: <code>/rune set</code> fills an empty slot and refuses to write over a filled one, and an identity holds a given rune in one slot or none.</p>
+        <p class="lead">A rune has always been described as a permanent slot assignment on an identity. It now behaves like one: /rune set fills an empty slot and refuses to write over a filled one, and an identity holds a given rune in one slot or none.</p>
 
         <div class="log-section">
           <h3><span class="log-tag log-tag--improve">Changed</span> An assignment is permanent</h3>
           <ul>
             <li>Equipping into a slot that already holds a rune is <strong>refused</strong>. It previously replaced whatever was there.</li>
-            <li><code>/rune clear &lt;slot&gt;</code> is the only way a slot is ever emptied, and stays an operator's command. It exists to correct a bad row, not to swap runes around.</li>
+            <li>/rune clear &lt;slot&gt; is the only way a slot is ever emptied, and stays an operator's command. It exists to correct a bad row, not to swap runes around.</li>
             <li>Moving a rune is therefore deliberate: clear the slot, then set it.</li>
           </ul>
         </div>
@@ -47,14 +46,14 @@
           <h3><span class="log-tag log-tag--new">Added</span> A rune is held once</h3>
           <ul>
             <li>Equipping a rune the identity already holds in another slot is refused.</li>
-            <li>Codes are compared trimmed and lower-cased, so <code>Ember</code> and <code>ember</code> are one rune. Rows written before codes were normalised are compared the same way.</li>
+            <li>Codes are compared trimmed and lower-cased, so Ember and ember are one rune. Rows written before codes were normalised are compared the same way.</li>
           </ul>
         </div>
 
         <div class="log-section">
           <h3><span class="log-tag log-tag--improve">Changed</span> A refusal says which rule stopped it</h3>
           <ul>
-            <li><code>/rune set</code> and <code>/rune clear</code> now report the specific outcome — an occupied slot, a rune already held, no active identity, the base profession, or a listener's cancel — instead of one flat "that rune change was refused".</li>
+            <li>/rune set and /rune clear now report the specific outcome — an occupied slot, a rune already held, no active identity, the base profession, or a listener's cancel — instead of one flat "that rune change was refused".</li>
             <li>The change event now fires <em>after</em> the rules have passed rather than before the write, so a listener is no longer told about a write that was refused.</li>
           </ul>
         </div>
@@ -63,9 +62,9 @@
           <h3><span class="log-tag log-tag--note">Note</span> For server owners and integrators</h3>
           <ul>
             <li><strong>Nothing is rewritten.</strong> An identity already holding the same rune in two slots keeps both, and every existing assignment stays where it is. The rules apply to new writes only.</li>
-            <li><strong>A workflow changes.</strong> Setting straight over an old rune no longer works; run <code>/rune clear &lt;slot&gt;</code> first.</li>
-            <li>No schema change. <code>identity_runes</code> and <code>identity_equipped_runes</code> are untouched.</li>
-            <li>Library coordinates move with the release: <code>io.github.mcoriax:mcidentity-rune-api:0.1.0</code>, <code>-common:0.1.0</code>, and <code>-bukkit:0.1.0</code>. The service's slot-change method now reports a result type rather than a boolean.</li>
+            <li><strong>A workflow changes.</strong> Setting straight over an old rune no longer works; run /rune clear &lt;slot&gt; first.</li>
+            <li>No storage change. Rune types and slot assignments are untouched.</li>
+            <li>The developer library moves to version 0.1.0, and changing a slot now reports why it was refused rather than a plain yes or no.</li>
             <li>While the database is unreachable the reads that back these rules return nothing, so the checks cannot see the filled slots. The rules hold in every normal case but are not absolute during an outage.</li>
           </ul>
         </div>

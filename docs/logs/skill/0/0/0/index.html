@@ -36,8 +36,8 @@
         <div class="log-section">
           <h3><span class="log-tag log-tag--new">Added</span> Skill items stored on the item (PDC)</h3>
           <ul>
-            <li>Every skill item carries its data in the Minecraft <code>ItemStack</code> <strong>Persistent Data Container</strong>. There is no database, no schema, and no migration — the item <em>is</em> the record.</li>
-            <li>Keys, all namespaced to this plugin: <code>skill_code</code> and <code>profession</code> (both required), plus optional <code>display_name</code>, <code>skill_skin</code>, and <code>cooldown_seconds</code>.</li>
+            <li>Every skill item carries its data <strong>on the item itself</strong>, in the hidden data every Minecraft item can hold. There is no database, no schema, and no migration — the item <em>is</em> the record.</li>
+            <li>Each item holds, labelled as belonging to this add-on: the skill and the profession (both required), plus an optional display name, look, and cooldown.</li>
             <li>Item data is treated as untrusted input: values are trimmed, length-capped, and range-clamped, and an item missing a required key is denied rather than partially honoured.</li>
           </ul>
         </div>
@@ -45,7 +45,7 @@
         <div class="log-section">
           <h3><span class="log-tag log-tag--new">Added</span> Profession restriction</h3>
           <ul>
-            <li>A player may equip or use a skill item only while their active MCIdentity profession matches the item's <code>profession</code>.</li>
+            <li>A player may equip or use a skill item only while their active MCIdentity profession matches the item's profession.</li>
             <li>Matching is case-insensitive and ignores whitespace, but is otherwise exact — no wildcard, no prefix match, no alternates.</li>
             <li>Enforced on inventory click, drag, hotbar selection, and right-click use. Every denial names the profession the item requires.</li>
             <li>The check <strong>fails closed</strong>: a malformed item, no active identity, or an unreachable core plugin all deny. There is no setting that turns it off.</li>
@@ -56,27 +56,27 @@
         <div class="log-section">
           <h3><span class="log-tag log-tag--new">Added</span> MythicMobs casting</h3>
           <ul>
-            <li>A skill item's <code>skill_code</code> is a MythicMobs skill ID. Using an allowed item asks MythicMobs to cast it with the player as caster.</li>
+            <li>A skill item's skill is a MythicMobs skill. Using an allowed item asks MythicMobs to cast it with the player as caster.</li>
             <li>The profession check runs first, so MythicMobs is never consulted for a player in the wrong profession.</li>
-            <li>An unknown skill ID logs a warning and tells the player, never throwing onto the game thread. <code>/skill give</code> warns at creation time when MythicMobs cannot resolve the ID.</li>
+            <li>An unknown skill ID logs a warning and tells the player, never throwing onto the game thread. /skill give warns at creation time when MythicMobs cannot resolve the ID.</li>
           </ul>
         </div>
 
         <div class="log-section">
           <h3><span class="log-tag log-tag--new">Added</span> Commands and developer API</h3>
           <ul>
-            <li><code>/skill info</code> shows what the held item stores and whether you can use it. <code>/skill give &lt;player&gt; &lt;skill&gt; &lt;profession&gt; [cooldown]</code> and <code>/skill clear</code> require <code>mcidentityskill.admin</code>.</li>
-            <li>Cancellable <code>MCIdentitySkillEquipEvent</code> and <code>MCIdentitySkillUseEvent</code>, both fired after the profession check has already passed.</li>
-            <li>Published library modules: <code>mcidentity-skill-api</code>, <code>mcidentity-skill-common</code>, and <code>mcidentity-skill-bukkit</code>.</li>
+            <li>/skill info shows what the held item stores and whether you can use it. /skill give &lt;player&gt; &lt;skill&gt; &lt;profession&gt; [cooldown] and /skill clear require mcidentityskill.admin.</li>
+            <li>Cancellable skill equip and skill use events, both fired after the profession check has already passed.</li>
+            <li>A published developer library in three modules, matching the core plugin's shape.</li>
           </ul>
         </div>
 
         <div class="log-section">
           <h3><span class="log-tag log-tag--note">Note</span> Requirements</h3>
           <ul>
-            <li>One universal jar for <strong>SpigotMC</strong>, <strong>PaperMC</strong>, and <strong>Folia</strong>; the server type is detected at enable time.</li>
+            <li>One universal jar for <strong>SpigotMC</strong>, <strong>PaperMC</strong>, and <strong>Folia</strong>; the server type is detected at startup.</li>
             <li><strong>MCIdentity 3.0.0</strong> and <strong>MythicMobs</strong> are hard dependencies. Without either, the plugin logs a severe message and refuses to enable rather than leaving skills unrestricted or inert.</li>
-            <li>No database is required. The whole configuration file is a single <code>enable</code> switch, which defaults to <code>false</code>.</li>
+            <li>No database is required. The whole configuration file is a single on and off switch, which starts off.</li>
           </ul>
         </div>
       </article>
