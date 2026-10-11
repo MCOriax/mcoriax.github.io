@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MCIdentityPerks — Sigils, Relics, and Perks per identity</title>
+  <meta name="description" content="MCIdentityPerks is an add-on for MCIdentity, in development, that adds deep progression to every identity: a permanent Sigil, equippable Relics, and upgradeable Perks.">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/shared/layout.css">
+  <link rel="stylesheet" href="../css/shared/components.css">
+  <link rel="stylesheet" href="../css/addon/addon.css">
+  <script>window.SITE_ROOT = "../"; window.PAGE_SECTION = "addons";</script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="../index.html">Home</a><span class="sep">/</span><span>Perks Add-on</span>
+    </nav>
+
+    <section class="hero">
+      <span class="eyebrow">Add-on plugin · MCIdentityPerks</span>
+      <h1>Every identity grows in its own way.</h1>
+      <p class="lead">
+        <strong>MCIdentityPerks</strong> is an add-on that gives each MCIdentity identity deep
+        progression of its own: a permanent <strong>Sigil</strong>, a set of equippable
+        <strong>Relics</strong>, and <strong>Perks</strong> that level up over time. Like the other
+        add-ons, it ships as its own jar, keeps its own database, and installs alongside the core
+        plugin.
+      </p>
+      <div class="addon-hero__badges">
+        <span class="badge badge--warn">In development</span>
+        <span class="badge badge--ok">SpigotMC</span>
+        <span class="badge badge--ok">PaperMC</span>
+        <span class="badge badge--ok">Folia</span>
+        <span class="badge badge--accent">Own database</span>
+      </div>
+    </section>
+
+    <div class="callout callout--warn">
+      <span class="callout__icon" aria-hidden="true">🚧</span>
+      <div class="callout__body">
+        <p>
+          <strong>Not released yet.</strong> MCIdentityPerks is in early development. Its design
+          and documentation are in place, but the plugin itself cannot be installed yet. This page
+          describes what it is being built to do.
+        </p>
+      </div>
+    </div>
+
+    <!-- The three systems -->
+    <section class="section">
+      <h2>Three ways to build a character</h2>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card__icon" aria-hidden="true">🜂</div>
+          <div class="card__title">Sigils</div>
+          <p class="card__desc">
+            A permanent symbol an identity pledges itself to, such as one of the seven deadly sins
+            or the seven heavenly virtues. An identity may choose exactly one, and the choice can
+            never be undone or swapped, so the plugin asks the player to confirm before saving it.
+          </p>
+        </div>
+        <div class="card">
+          <div class="card__icon" aria-hidden="true">🗝️</div>
+          <div class="card__title">Relics</div>
+          <p class="card__desc">
+            Artifacts placed into numbered slots to mix and match their effects. An identity can
+            wear several Relics, but never the same one twice. Placing a Relic into a filled slot
+            replaces what was there, and the number of slots is set by the server owner.
+          </p>
+        </div>
+        <div class="card">
+          <div class="card__icon" aria-hidden="true">⬆️</div>
+          <div class="card__title">Perks</div>
+          <p class="card__desc">
+            Passive traits that are unlocked once and then levelled up, usually for Gold and
+            themed items, to permanently increase an identity's power or usefulness.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Identity scoped -->
+    <section class="section">
+      <h2>It belongs to the identity, not the player</h2>
+      <p class="lead">
+        There is no such thing as "this player's perks", only "this identity's perks".
+      </p>
+      <p>
+        MCIdentity stays in charge of identities, stats, and sessions. This add-on only asks it which
+        identity a player is wearing, and keeps all of its own data against that identity. When a
+        player switches to another identity, their Sigil, Relics, and Perks switch with it
+        completely. Nothing is ever copied between identities, because nothing was ever tied to the
+        player.
+      </p>
+    </section>
+
+    <!-- Storage -->
+    <section class="section">
+      <h2>Storage</h2>
+      <p>
+        The add-on keeps its own database, so progression survives every relog. It stores the
+        lists of Sigils, Relics, and Perks the server offers, and for each identity its chosen
+        Sigil, its equipped Relics, and its unlocked Perks with their levels.
+      </p>
+      <p>
+        It never reads or changes the core plugin's data, and nothing in its storage depends on the
+        core plugin's storage. The two plugins can even use different databases, and each can be
+        upgraded without waiting for the other.
+      </p>
+    </section>
+
+    <!-- Requirements -->
+    <section class="section">
+      <h2>Requirements</h2>
+      <ul>
+        <li>A SpigotMC, PaperMC, or Folia server. One universal jar covers all three.</li>
+        <li>The core MCIdentity plugin, installed and enabled. It is a hard dependency, so the server will not enable this add-on without it.</li>
+      </ul>
+      <div class="callout callout--info">
+        <span class="callout__icon" aria-hidden="true">📖</span>
+        <div class="callout__body">
+          <p>
+            The other add-ons are <a href="../skill/index.html">MCIdentitySkill</a>,
+            <a href="../rune/index.html">MCIdentityRune</a>, and
+            <a href="../cosmetic/index.html">MCIdentityCosmetic</a>.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="../js/site.js" defer></script>
+</body>
+</html>
